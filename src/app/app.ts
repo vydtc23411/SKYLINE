@@ -36,6 +36,10 @@ import { Notifications } from './notifications/notifications';
 })
 export class App {
   protected readonly title = signal('skyline');
+
+  constructor() {
+    // Initialize app
+  }
 }
 
 export const routes: Routes = [

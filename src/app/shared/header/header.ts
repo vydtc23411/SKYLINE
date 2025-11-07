@@ -44,6 +44,7 @@ export class HeaderComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+    localStorage.removeItem('fullUserData'); // Xóa thêm dữ liệu user đầy đủ
     this.isLoggedIn = false;
     this.userName = 'Tài khoản';
     this.showDropdown = false;

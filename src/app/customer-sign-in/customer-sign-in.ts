@@ -40,7 +40,7 @@ export class CustomerSignInComponent {
         if (result.success) {
           this.showMessage(result.message, 'success');
           setTimeout(() => {
-            this.router.navigate(['/home']);
+            this.router.navigate(['home']);
           }, 800);
         } else {
           this.showMessage(result.message, 'error');

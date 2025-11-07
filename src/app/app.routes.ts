@@ -7,11 +7,10 @@ import { CheckTicket2 } from './checkticket2/checkticket2';
 import { MainLayout } from './main-layout/main-layout';
 import { Notifications } from './notifications/notifications';
 
-
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/customer-sign-in',
+    redirectTo: 'customer-sign-in',
     pathMatch: 'full'
   },
   {
