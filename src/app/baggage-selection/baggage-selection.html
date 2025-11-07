@@ -1,0 +1,96 @@
+<div class="main-container">
+
+    <div class="flight-info-header">
+        <div class="flight-info-content">
+            <h2>Tên chuyến bay</h2>
+            <p class="flight-data">{{ selectedFlight.name }}</p>
+            <h3 class="flight-date-label">Ngày đi</h3>
+            <p class="flight-data">{{ selectedFlight.date }}</p>
+        </div>
+    </div>
+
+    <div class="baggage-content">
+
+        <div class="form-section">
+            <form [formGroup]="passengerForm" (ngSubmit)="onSubmit()">
+
+                <div class="form-card">
+                    <h3>Thông tin hành khách</h3>
+                    <p class="form-description">
+                        Thông tin phải chính xác như trên giấy tờ tùy thân (như trên CMND, Hộ Chiếu, giấy phép lái xe…).
+                        Quý khách bị từ chối vận chuyển nếu thông tin không chính xác. Vui lòng nhập thông tin bằng
+                        Tiếng Việt không dấu.
+                    </p>
+                    <div class="form-group">
+                        <label>Hành khách</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" formControlName="salutation" value="Quý Ông"> Quý Ông
+                            </label>
+                            <label>
+                                <input type="radio" formControlName="salutation" value="Quý Bà"> Quý Bà
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fullName">Họ và tên</label>
+                        <input type="text" id="fullName" formControlName="fullName" placeholder="Họ và tên">
+                    </div>
+                    <div class="form-group">
+                        <label for="dob">Ngày sinh</label>
+                        <input type="date" id="dob" formControlName="dob">
+                    </div>
+                    <div class="form-group">
+                        <label for="idNumber">Số CCCD</label>
+                        <input type="text" id="idNumber" formControlName="idNumber" placeholder="Số CCCD">
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <h3>Thông tin liên hệ</h3>
+                    <p class="form-description">
+                        Thông tin này giúp hãng hàng không liên lạc với quý khách để thông báo cập nhật lịch bay thay
+                        đổi và gửi vé điện tử cho quý khách.
+                    </p>
+                    <div class="form-group">
+                        <label for="phoneNumber">Số điện thoại</label>
+                        <input type="tel" id="phoneNumber" formControlName="phoneNumber" placeholder="Số điện thoại">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" formControlName="email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Địa chỉ</label>
+                        <input type="text" id="address" formControlName="address" placeholder="Địa chỉ">
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <h3>Thông tin hành lý</h3>
+                    <p class="form-description">
+                        Theo quy định, mỗi hành khách được mang theo một hành lý xách tay miễn phí và một vật dụng cá
+                        nhân, cùng với một kiện hành lý ký gửi đầu tiên miễn phí.
+                    </p>
+                    <div class="form-group quantity-selector">
+                        <label>Số lượng:</label>
+                        <button type="button" class="quantity-btn" (click)="decrementBaggage()"
+                            [disabled]="baggageQuantity <= 1">-</button>
+                        <span class="quantity-display">{{ baggageQuantity }}</span>
+                        <button type="button" class="quantity-btn" (click)="incrementBaggage()">+</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" [disabled]="!passengerForm.valid">
+                    Tiếp tục
+                </button>
+
+            </form>
+        </div>
+        <div class="image-section">
+            <img src="/assets/media/mainLogo.png" alt="Logo">
+            <img src="/assets/media/Baggage.png" alt="Kích thước hành lý tiêu chuẩn">
+        </div>
+
+    </div>
+</div>

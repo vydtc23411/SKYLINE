@@ -1,0 +1,309 @@
+<main class="main-content">
+
+    <div class="seat-map-column">
+
+        <header>
+            <img src="/assets/media/Logo.png" alt="Logo" class="logo">
+        </header>
+
+        <div class="seat-map-scroller">
+
+            <div class="seat-container">
+
+                <div class="seat-business" (click)="selectSeat('A01', 'business')"
+                    [class.selected]="selectedSeat === 'A01'" style="top: 490px; left: 39%;">A01</div>
+                <div class="seat-business" (click)="selectSeat('B01', 'business')"
+                    [class.selected]="selectedSeat === 'B01'" style="top: 490px; left: 49%;">B01</div>
+                <div class="seat-business occupied" style="top: 490px; left: 59%;">C01</div>
+
+                <div class="seat-business" (click)="selectSeat('A02', 'business')"
+                    [class.selected]="selectedSeat === 'A02'" style="top: 548px; left: 39%;">A02</div>
+                <div class="seat-business" (click)="selectSeat('B02', 'business')"
+                    [class.selected]="selectedSeat === 'B02'" style="top: 548px; left: 49%;">B02</div>
+                <div class="seat-business occupied" style="top: 548px; left: 59%;">C02</div>
+
+                <div class="seat-business" (click)="selectSeat('A03', 'business')"
+                    [class.selected]="selectedSeat === 'A03'" style="top: 606px; left: 39%;">A03</div>
+                <div class="seat-business" (click)="selectSeat('B03', 'business')"
+                    [class.selected]="selectedSeat === 'B03'" style="top: 606px; left: 49%;">B03</div>
+                <div class="seat-business occupied" style="top: 606px; left: 59%;">C03</div>
+
+                <div class="seat-business" (click)="selectSeat('A04', 'business')"
+                    [class.selected]="selectedSeat === 'A04'" style="top: 664px; left: 39%;">A04</div>
+                <div class="seat-business" (click)="selectSeat('B04', 'business')"
+                    [class.selected]="selectedSeat === 'B04'" style="top: 664px; left: 49%;">B04</div>
+                <div class="seat-business occupied" style="top: 664px; left: 59%;">C04</div>
+
+                <div class="seat-business" (click)="selectSeat('A05', 'business')"
+                    [class.selected]="selectedSeat === 'A05'" style="top: 722px; left: 39%;">A05</div>
+                <div class="seat-business" (click)="selectSeat('B05', 'business')"
+                    [class.selected]="selectedSeat === 'B05'" style="top: 722px; left: 49%;">B05</div>
+                <div class="seat-business occupied" style="top: 722px; left: 59%;">C05</div>
+
+                <div class="seat-economy" (click)="selectSeat('A06', 'economy')"
+                    [class.selected]="selectedSeat === 'A06'" style="top: 810px; left: 39%;">A06</div>
+                <div class="seat-economy" (click)="selectSeat('B06', 'economy')"
+                    [class.selected]="selectedSeat === 'B06'" style="top: 810px; left: 45%;">B06</div>
+                <div class="seat-economy occupied" style="top: 810px; left: 54%;">C06</div>
+                <div class="seat-economy occupied" style="top: 810px; left: 60%;">D06</div>
+
+                <div class="seat-economy" (click)="selectSeat('A07', 'economy')"
+                    [class.selected]="selectedSeat === 'A07'" style="top: 860px; left: 39%;">A07</div>
+                <div class="seat-economy" (click)="selectSeat('B07', 'economy')"
+                    [class.selected]="selectedSeat === 'B07'" style="top: 860px; left: 45%;">B07</div>
+                <div class="seat-economy occupied" style="top: 860px; left: 54%;">C07</div>
+                <div class="seat-economy occupied" style="top: 860px; left: 60%;">D07</div>
+
+                <div class="seat-economy" (click)="selectSeat('A08', 'economy')"
+                    [class.selected]="selectedSeat === 'A08'" style="top: 910px; left: 39%;">A08</div>
+                <div class="seat-economy" (click)="selectSeat('B08', 'economy')"
+                    [class.selected]="selectedSeat === 'B08'" style="top: 910px; left: 45%;">B08</div>
+                <div class="seat-economy occupied" style="top: 910px; left: 54%;">C08</div>
+                <div class="seat-economy occupied" style="top: 910px; left: 60%;">D08</div>
+
+                <div class="seat-economy" (click)="selectSeat('A09', 'economy')"
+                    [class.selected]="selectedSeat === 'A09'" style="top: 960px; left: 39%;">A09</div>
+                <div class="seat-economy" (click)="selectSeat('B09', 'economy')"
+                    [class.selected]="selectedSeat === 'B09'" style="top: 960px; left: 45%;">B09</div>
+                <div class="seat-economy occupied" style="top: 960px; left: 54%;">C09</div>
+                <div class="seat-economy occupied" style="top: 960px; left: 60%;">D09</div>
+
+                <div class="seat-economy" (click)="selectSeat('A10', 'economy')"
+                    [class.selected]="selectedSeat === 'A10'" style="top: 1010px; left: 39%;">A10</div>
+                <div class="seat-economy" (click)="selectSeat('B10', 'economy')"
+                    [class.selected]="selectedSeat === 'B10'" style="top: 1010px; left: 45%;">B10</div>
+                <div class="seat-economy occupied" style="top: 1010px; left: 54%;">C10</div>
+                <div class="seat-economy occupied" style="top: 1010px; left: 60%;">D10</div>
+
+                <div class="seat-economy" (click)="selectSeat('A11', 'economy')"
+                    [class.selected]="selectedSeat === 'A11'" style="top: 1090px; left: 39%;">A11</div>
+                <div class="seat-economy" (click)="selectSeat('B11', 'economy')"
+                    [class.selected]="selectedSeat === 'B11'" style="top: 1090px; left: 45%;">B11</div>
+                <div class="seat-economy occupied" style="top: 1090px; left: 54%;">C11</div>
+                <div class="seat-economy occupied" style="top: 1090px; left: 60%;">D11</div>
+
+                <div class="seat-economy" (click)="selectSeat('A12', 'economy')"
+                    [class.selected]="selectedSeat === 'A12'" style="top: 1140px; left: 39%;">A12</div>
+                <div class="seat-economy" (click)="selectSeat('B12', 'economy')"
+                    [class.selected]="selectedSeat === 'B12'" style="top: 1140px; left: 45%;">B12</div>
+                <div class="seat-economy occupied" style="top: 1140px; left: 54%;">C12</div>
+                <div class="seat-economy occupied" style="top: 1140px; left: 60%;">D12</div>
+
+                <div class="seat-economy" (click)="selectSeat('A13', 'economy')"
+                    [class.selected]="selectedSeat === 'A13'" style="top: 1190px; left: 39%;">A13</div>
+                <div class="seat-economy" (click)="selectSeat('B13', 'economy')"
+                    [class.selected]="selectedSeat === 'B13'" style="top: 1190px; left: 45%;">B13</div>
+                <div class="seat-economy occupied" style="top: 1190px; left: 54%;">C13</div>
+                <div class="seat-economy occupied" style="top: 1190px; left: 60%;">D13</div>
+
+                <div class="seat-economy" (click)="selectSeat('A14', 'economy')"
+                    [class.selected]="selectedSeat === 'A14'" style="top: 1240px; left: 39%;">A14</div>
+                <div class="seat-economy" (click)="selectSeat('B14', 'economy')"
+                    [class.selected]="selectedSeat === 'B14'" style="top: 1240px; left: 45%;">B14</div>
+                <div class="seat-economy occupied" style="top: 1240px; left: 54%;">C14</div>
+                <div class="seat-economy occupied" style="top: 1240px; left: 60%;">D14</div>
+
+                <div class="seat-economy" (click)="selectSeat('A15', 'economy')"
+                    [class.selected]="selectedSeat === 'A15'" style="top: 1290px; left: 39%;">A15</div>
+                <div class="seat-economy" (click)="selectSeat('B15', 'economy')"
+                    [class.selected]="selectedSeat === 'B15'" style="top: 1290px; left: 45%;">B15</div>
+                <div class="seat-economy occupied" style="top: 1290px; left: 54%;">C15</div>
+                <div class="seat-economy occupied" style="top: 1290px; left: 60%;">D15</div>
+
+                <div class="seat-economy" (click)="selectSeat('A16', 'economy')"
+                    [class.selected]="selectedSeat === 'A16'" style="top: 1370px; left: 39%;">A16</div>
+                <div class="seat-economy" (click)="selectSeat('B16', 'economy')"
+                    [class.selected]="selectedSeat === 'B16'" style="top: 1370px; left: 45%;">B16</div>
+                <div class="seat-economy occupied" style="top: 1370px; left: 54%;">C16</div>
+                <div class="seat-economy occupied" style="top: 1370px; left: 60%;">D16</div>
+
+                <div class="seat-economy" (click)="selectSeat('A17', 'economy')"
+                    [class.selected]="selectedSeat === 'A17'" style="top: 1420px; left: 39%;">A17</div>
+                <div class="seat-economy" (click)="selectSeat('B17', 'economy')"
+                    [class.selected]="selectedSeat === 'B17'" style="top: 1420px; left: 45%;">17B</div>
+                <div class="seat-economy occupied" style="top: 1420px; left: 54%;">C17</div>
+                <div class="seat-economy occupied" style="top: 1420px; left: 60%;">D17</div>
+
+                <div class="seat-economy" (click)="selectSeat('A18', 'economy')"
+                    [class.selected]="selectedSeat === 'A18'" style="top: 1470px; left: 39%;">A18</div>
+                <div class="seat-economy" (click)="selectSeat('B18', 'economy')"
+                    [class.selected]="selectedSeat === 'B18'" style="top: 1470px; left: 45%;">B18</div>
+                <div class="seat-economy occupied" style="top: 1470px; left: 54%;">C18</div>
+                <div class="seat-economy occupied" style="top: 1470px; left: 60%;">D18</div>
+
+                <div class="seat-economy" (click)="selectSeat('A19', 'economy')"
+                    [class.selected]="selectedSeat === 'A19'" style="top: 1520px; left: 39%;">A19</div>
+                <div class="seat-economy" (click)="selectSeat('B19', 'economy')"
+                    [class.selected]="selectedSeat === 'B19'" style="top: 1520px; left: 45%;">B19</div>
+                <div class="seat-economy occupied" style="top: 1520px; left: 54%;">C19</div>
+                <div class="seat-economy occupied" style="top: 1520px; left: 60%;">D19</div>
+
+                <div class="seat-economy" (click)="selectSeat('A20', 'economy')"
+                    [class.selected]="selectedSeat === 'A20'" style="top: 1570px; left: 39%;">A20</div>
+                <div class="seat-economy" (click)="selectSeat('B20', 'economy')"
+                    [class.selected]="selectedSeat === 'B20'" style="top: 1570px; left: 45%;">B20</div>
+                <div class="seat-economy occupied" style="top: 1570px; left: 54%;">C20</div>
+                <div class="seat-economy occupied" style="top: 1570px; left: 60%;">D20</div>
+
+                <div class="seat-economy" (click)="selectSeat('A22', 'economy')"
+                    [class.selected]="selectedSeat === 'A22'" style="top: 1650px; left: 39%;">A22</div>
+                <div class="seat-economy" (click)="selectSeat('B22', 'economy')"
+                    [class.selected]="selectedSeat === 'B22'" style="top: 1650px; left: 45%;">B22</div>
+                <div class="seat-economy occupied" style="top: 1650px; left: 54%;">C22</div>
+                <div class="seat-economy occupied" style="top: 1650px; left: 60%;">D22</div>
+
+                <div class="seat-economy" (click)="selectSeat('A22', 'economy')"
+                    [class.selected]="selectedSeat === 'A22'" style="top: 1700px; left: 39%;">A22</div>
+                <div class="seat-economy" (click)="selectSeat('B22', 'economy')"
+                    [class.selected]="selectedSeat === 'B22'" style="top: 1700px; left: 45%;">B22</div>
+                <div class="seat-economy occupied" style="top: 1700px; left: 54%;">C22</div>
+                <div class="seat-economy occupied" style="top: 1700px; left: 60%;">D22</div>
+
+                <div class="seat-economy" (click)="selectSeat('A23', 'economy')"
+                    [class.selected]="selectedSeat === 'A23'" style="top: 1750px; left: 39%;">A23</div>
+                <div class="seat-economy" (click)="selectSeat('B23', 'economy')"
+                    [class.selected]="selectedSeat === 'B23'" style="top: 1750px; left: 45%;">B23</div>
+                <div class="seat-economy occupied" style="top: 1750px; left: 54%;">C23</div>
+                <div class="seat-economy occupied" style="top: 1750px; left: 60%;">D23</div>
+
+                <div class="seat-economy" (click)="selectSeat('A24', 'economy')"
+                    [class.selected]="selectedSeat === 'A24'" style="top: 1800px; left: 39%;">A24</div>
+                <div class="seat-economy" (click)="selectSeat('B24', 'economy')"
+                    [class.selected]="selectedSeat === 'B24'" style="top: 1800px; left: 45%;">B24</div>
+                <div class="seat-economy occupied" style="top: 1800px; left: 54%;">C24</div>
+                <div class="seat-economy occupied" style="top: 1800px; left: 60%;">D24</div>
+
+                <div class="seat-economy" (click)="selectSeat('A25', 'economy')"
+                    [class.selected]="selectedSeat === 'A25'" style="top: 1850px; left: 39%;">A25</div>
+                <div class="seat-economy" (click)="selectSeat('B25', 'economy')"
+                    [class.selected]="selectedSeat === 'B25'" style="top: 1850px; left: 45%;">B25</div>
+                <div class="seat-economy occupied" style="top: 1850px; left: 54%;">C25</div>
+                <div class="seat-economy occupied" style="top: 1850px; left: 60%;">D25</div>
+
+                <div class="seat-economy" (click)="selectSeat('A26', 'economy')"
+                    [class.selected]="selectedSeat === 'A26'" style="top: 1930px; left: 39%;">A26</div>
+                <div class="seat-economy" (click)="selectSeat('B26', 'economy')"
+                    [class.selected]="selectedSeat === 'B26'" style="top: 1930px; left: 45%;">B26</div>
+                <div class="seat-economy occupied" style="top: 1930px; left: 54%;">C26</div>
+                <div class="seat-economy occupied" style="top: 1930px; left: 60%;">D26</div>
+
+                <div class="seat-economy" (click)="selectSeat('A27', 'economy')"
+                    [class.selected]="selectedSeat === 'A27'" style="top: 1980px; left: 39%;">A27</div>
+                <div class="seat-economy" (click)="selectSeat('B27', 'economy')"
+                    [class.selected]="selectedSeat === 'B27'" style="top: 1980px; left: 45%;">B27</div>
+                <div class="seat-economy occupied" style="top: 1980px; left: 54%;">C27</div>
+                <div class="seat-economy occupied" style="top: 1980px; left: 60%;">D27</div>
+
+                <div class="seat-economy" (click)="selectSeat('A28', 'economy')"
+                    [class.selected]="selectedSeat === 'A28'" style="top: 2030px; left: 39%;">A28</div>
+                <div class="seat-economy" (click)="selectSeat('B28', 'economy')"
+                    [class.selected]="selectedSeat === 'B28'" style="top: 2030px; left: 45%;">B28</div>
+                <div class="seat-economy occupied" style="top: 2030px; left: 54%;">C28</div>
+                <div class="seat-economy occupied" style="top: 2030px; left: 60%;">D28</div>
+
+                <div class="seat-economy" (click)="selectSeat('A29', 'economy')"
+                    [class.selected]="selectedSeat === 'A29'" style="top: 2080px; left: 39%;">A29</div>
+                <div class="seat-economy" (click)="selectSeat('B29', 'economy')"
+                    [class.selected]="selectedSeat === 'B29'" style="top: 2080px; left: 45%;">B29</div>
+                <div class="seat-economy occupied" style="top: 2080px; left: 54%;">C29</div>
+                <div class="seat-economy occupied" style="top: 2080px; left: 60%;">D29</div>
+            </div>
+
+        </div>
+    </div>
+
+    <aside class="info-column">
+
+        <header class="sidebar-header">
+
+            <div class="header-box">
+                <div class="hightlight">SFO</div>
+                <div>California, US</div>
+            </div>
+
+            <div class="header-box">
+                <div class="hightlight">&rarr;</div>
+            </div>
+
+            <div class="header-box">
+                <div class="hightlight">NRT</div>
+                <div>Tokyo, Japan</div>
+            </div>
+
+            <div class="header-box">
+                <div>Feb 25 | 7:00AM</div>
+                <div>Departing</div>
+            </div>
+
+            <div class="header-box">
+                <div>Mar 21 | 12:15PM</div>
+                <div>Arriving</div>
+            </div>
+
+        </header>
+
+        <main class="sidebar-main">
+
+            <div class="sidebar-sub-column">
+                <div class="ticket-type">
+                    <img src="/assets/media/Economy Seats.png" alt="Economy Seats" class="seat-img">
+                    <h2>
+                        Phổ thông
+                        <span *ngIf="selectedSeatType === 'economy'" class="selected-badge blue">Selected</span>
+                    </h2>
+                    <div>Vé hạng phổ thông cung cấp dịch vụ cơ bản với chi phí tiết kiệm, bao gồm:</div>
+                    <ul>
+                        <li class="item-blue">Chỗ ngồi tiêu chuẩn trên khoang máy bay.</li>
+                        <li class="item-blue">Dịch vụ ăn uống và giải trí cơ bản, có thể phải trả phí.</li>
+                        <li class="item-blue">Ưu tiên làm thủ tục, lên máy bay và nhận hành lý cơ bản.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="sidebar-sub-column">
+                <div class="ticket-type">
+                    <img src="/assets/media/Business Seats.png" alt="Economy Seats" class="seat-img">
+                    <h2>
+                        Thương gia
+                        <span *ngIf="selectedSeatType === 'business'" class="selected-badge green">Selected</span>
+                    </h2>
+                    <div>Hạng thương gia là hạng vé lý tưởng dành cho những hành khách muốn có trải nghiệm bay thoải
+                        mái, riêng tư với nhiều đặc quyền.</div>
+                    <ul>
+                        <li class="item-green">Ghế rộng, thoải mái, có thể ngả thành giường.</li>
+                        <li class="item-green">Suất ăn và đồ uống cao cấp, miễn phí và đa dạng.</li>
+                        <li class="item-green">Ưu tiên làm thủ tục check-in và lên máy bay tại quầy riêng.</li>
+                        <li class="item-green">Được sử dụng phòng chờ VIP.</li>
+                        <li class="item-green">Quyền lợi về hành lý ký gửi và xách tay ưu tiên với trọng lượng lớn hơn.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="sidebar-footer">
+
+            <div class="footer-info-box">
+                <div>Hành khách</div>
+                <strong>Nguyễn Văn A</strong>
+            </div>
+
+            <div class="footer-info-box">
+                <span>Seat number</span>
+                <strong>{{ selectedSeat || '--' }}</strong>
+            </div>
+
+            <div class="footer-button-wrapper">
+                <button class="btn-secondary">Đóng</button>
+            </div>
+
+            <div class="footer-button-wrapper">
+                <button class="btn-primary">Tiếp tục</button>
+            </div>
+
+        </footer>
+
+    </aside>
+
+</main>

@@ -1,0 +1,237 @@
+.main-content {
+    display: flex;
+    flex-grow: 1;
+    height: 100vh;
+}
+
+.logo {
+    width: 300px;
+}
+
+.seat-map-column {
+    flex: 50%;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    position: relative;
+}
+
+.seat-map-scroller {
+    position: relative;
+    overflow-y: auto;
+}
+
+.seat-container {
+    position: relative;
+    background-image: url('/assets/media/Plane.png');
+    width: 100%;
+    height: 2600px;
+}
+
+.seat-economy {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    background-color: #6a5acd;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.seat-business {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #22C3A6;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* Ghế đã có người chọn */
+.seat-economy.occupied {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    background-color: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: default;
+}
+
+.seat-business.occupied {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: default;
+}
+
+/* Ghế bạn đang chọn */
+.selected {
+    background-color: red;
+    color: white;
+}
+
+.seat-map-header {
+    padding: 20px 20px;
+}
+
+.info-column {
+    flex: 50%;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border-left: 1px solid #375578;
+}
+
+.sidebar-header {
+    padding: 20px 20px;
+    background-color: #375578;
+    color: #f0f0f0;
+    display: flex;
+    align-items: center;
+}
+
+.header-box {
+    flex: 1;
+    text-align: center;
+}
+
+.header-box:nth-child(2) {
+    flex: 0.5;
+}
+
+.header-box:nth-child(4),
+.header-box:nth-child(5) {
+    flex: 1.25;
+}
+
+.hightlight {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.sidebar-main {
+    display: flex;
+}
+
+.seat-img {
+    width: 75%;
+}
+
+.sidebar-sub-column {
+    flex: 50%;
+    padding: 20px 30px;
+}
+
+.ticket-type ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.ticket-type li {
+    margin-bottom: 12px;
+    position: relative;
+    padding-left: 25px;
+}
+
+.ticket-type li.item-blue::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 5px;
+
+    /* Vẽ hình tròn */
+    width: 10px;
+    height: 10px;
+    background-color: #606DEC;
+    border-radius: 50%;
+}
+
+.ticket-type li.item-green::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    /* Tùy chỉnh ký tự check */
+    color: #22C3A6;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.sidebar-footer {
+    padding: 20px 20px;
+    border-top: 1px solid #375578;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.footer-info-box {
+    text-align: left;
+}
+
+.footer-info-box span {
+    display: block;
+}
+
+.footer-info-box strong {
+    font-size: 1.1rem;
+}
+
+.btn-secondary,
+.btn-primary {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn-secondary {
+    background-color: #f0f0f0;
+}
+
+.btn-primary {
+    background-color: #606DEC;
+    color: white;
+}
+
+.selected-badge {
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 10px;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.selected-badge.blue {
+    background-color: #606DEC;
+}
+
+.selected-badge.green {
+    background-color: #22C3A6;
+}

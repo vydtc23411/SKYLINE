@@ -1,0 +1,177 @@
+.main-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.baggage-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    gap: 2rem;
+    padding: 1.5rem 2rem;
+    box-sizing: border-box;
+}
+
+.form-section {
+    flex: 2;
+    min-width: 300px;
+}
+
+.image-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20rem;
+}
+
+.image-section img {
+    max-width: 100%;
+    height: auto;
+}
+
+.flight-info-header {
+    width: 100%;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 1.5rem 1rem;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+}
+
+.flight-info-content {
+    width: 100%;
+    padding: 0 3rem;
+}
+
+.flight-info-content h2 {
+    margin: 0;
+}
+
+.flight-info-content h3.flight-date-label {
+    margin-bottom: 0.25rem;
+}
+
+.flight-info-content p.flight-data {
+    color: #606DEC;
+    font-weight: 500;
+    margin: 0.25rem 0 0 0;
+}
+
+.form-card {
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 1rem 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-card h3 {
+    font-size: 1.25rem;
+    color: #606DEC;
+}
+
+.form-description {
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="date"] {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.form-group input::placeholder {
+    color: #aaa;
+}
+
+.radio-group {
+    display: flex;
+    gap: 5rem;
+}
+
+.radio-group label {
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.quantity-selector label {
+    margin-bottom: 0;
+}
+
+.quantity-btn {
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.quantity-btn:disabled {
+    background-color: #99BBFF;
+    color: #fff;
+    cursor: not-allowed;
+}
+
+.quantity-display {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #606DEC;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background-color: #375578;
+}
+
+.submit-btn:disabled {
+    background-color: #c0c0c0;
+    color: #666;
+    cursor: not-allowed;
+}

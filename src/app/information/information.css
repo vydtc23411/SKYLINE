@@ -1,0 +1,85 @@
+.profile-container {
+    display: flex;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f8f8f8;
+    min-height: 100vh;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  .main-content {
+    flex: 1;
+    background-color: #fff;
+    padding: 40px;
+  }
+  
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #375578;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group.half {
+    width: 48%;
+    display: inline-block;
+    vertical-align: top;
+  }
+  
+  label {
+    display: block;
+    font-size: 14px;
+    color: #375578;
+    margin-bottom: 6px;
+  }
+  
+  input,
+  select {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid #a9a9a9;
+    font-size: 14px;
+    color: #333;
+    background: transparent;
+    outline: none;
+  }
+  
+  input[readonly],
+  select[disabled] {
+    background-color: #fafafa;
+    color: #555;
+  }
+  
+  .actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  
+  .btn-edit {
+    background-color: #375578;
+    color: #fff;
+  }
+  
+  .btn-save {
+    background-color: #375578;
+    color: #fff;
+  }
+  
+  button:hover {
+    opacity: 0.9;
+  }
+  

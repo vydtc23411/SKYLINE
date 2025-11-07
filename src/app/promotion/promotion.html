@@ -1,0 +1,58 @@
+<app-header></app-header>
+
+<div class="deals-page">
+  <!-- Banner -->
+  <div class="deals-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h2>Mã giảm giá ở gần đây chứ đâu xa!</h2>
+        <p>Áp mã liền tay, đặt vé du lịch ngay!</p>
+      </div>
+
+      <div class="search-bar">
+        <i class="fa fa-search search-icon"></i>
+        <input type="text" placeholder="Nhập khuyến mãi mà bạn muốn" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="deals-tabs">
+    <button (click)="scrollTo('special')" class="active">
+      <i class="fa fa-bullhorn"></i> <span>Chiến dịch đặc biệt</span>
+    </button>
+    <button (click)="scrollTo('payment')">
+      <i class="fa fa-credit-card"></i> <span>Thanh toán & Trả sau</span>
+    </button>
+    <button (click)="scrollTo('related')">
+      <i class="fa fa-gift"></i> <span>Ưu đãi liên quan</span>
+    </button>
+  </div>
+
+  <!-- Sections -->
+  <div class="deals-container">
+    <div *ngFor="let section of sections; let i = index" [id]="section.id" class="deal-section">
+      <div class="section-header">
+        <h2><i class="{{ section.icon }}"></i> {{ section.title }}</h2>
+      </div>
+
+      <div class="deal-grid">
+        <div *ngFor="let item of getVisibleItems(i)" class="deal-card">
+          <img [src]="item.image" alt="Deal image" />
+          <div class="deal-info">
+            <p class="deal-date-title">Thời gian khuyến mãi</p>
+            <p class="deal-date">{{ item.date }}</p>
+            <button class="deal-btn">{{ item.label }}</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="view-more" *ngIf="hasMoreItems(i) || canCollapse(i)">
+        <button *ngIf="hasMoreItems(i)" (click)="toggleSection(i)" class="view-more-btn">Xem thêm</button>
+        <button *ngIf="canCollapse(i)" (click)="toggleSection(i)" class="collapse-btn">Thu gọn</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

@@ -1,0 +1,86 @@
+.profile-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f7f8fa;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+/* ===== NỘI DUNG CHÍNH ===== */
+.content {
+    flex-grow: 1;
+    padding: 40px;
+  }
+  
+  .content h2 {
+    font-size: 22px;
+    margin-bottom: 30px;
+    color: #375578;
+  }
+  
+  .notification-settings {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  }
+  
+  .setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 16px;
+    color: #444;
+  }
+  
+  .setting-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* Switch */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+  }
+  
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    background-color: #ccc;
+    border-radius: 34px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: 0.3s;
+  }
+  
+  .slider::before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
+  }
+  
+  input:checked + .slider {
+    background-color: #22C3A6;
+  }
+  
+  input:checked + .slider::before {
+    transform: translateX(22px);
+  }
+  

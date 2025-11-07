@@ -1,0 +1,83 @@
+<div class="checkticket-container detail-container">
+
+    <div *ngIf="ticketDetail" class="ticket-detail-card-content">
+        
+        <div class="ticket-summary-area">
+            <h3>THÔNG TIN VÉ</h3>
+            
+            <div class="ticket-summary-grid grid-header-row">
+                <span>Mã đặt chỗ</span>
+                <span>Họ và tên</span>
+                <span>Liên hệ</span>
+                <span>Tình trạng thanh toán</span>
+                <span>Ngày đặt</span>
+            </div>
+            
+            <hr class="summary-line">
+
+            <div class="ticket-summary-grid summary-data-row">
+                <span class="code-value">{{ ticketDetail.code }}</span>
+                <span>{{ ticketDetail.name }}</span>
+                <span class="placeholder-data">0123456789</span> <span 
+                    class="status-value-summary"
+                    [ngClass]="{
+                        paid: ticketDetail.status === 'Đã thanh toán',
+                        unpaid: ticketDetail.status === 'Chờ thanh toán'
+                    }"
+                >
+                    {{ ticketDetail.status }}
+                </span>
+                <span class="placeholder-data">dd/mm/yy</span> </div>
+        </div>
+
+        <div class="flight-detail-block">
+            <div class="flight-main-info">
+                
+                <div class="image-placeholder"></div> 
+
+                <div class="time-col">
+                    <div class="time">17:45</div>
+                    <div class="city">Hà Nội (HAN)</div>
+                </div>
+                
+                <div class="duration-col">
+                    <span class="duration-label">1h20m</span>
+                </div>
+                
+                <div class="time-col arrival-time-route">
+                    <div class="time">19:05</div>
+                    <div class="city">TP HCM (SGN)</div>
+                </div>
+
+                <div class="seat-col">
+                    <div class="seat-label">Số ghế</div>
+                    <div class="seat-value">{{ ticketDetail.seat }}</div>
+                </div>
+            </div>
+
+            <div class="flight-actions">
+                <a href="#" class="link-action">Khuyến mãi</a>
+                <a href="#" class="link-action">Lợi ích đi kèm</a>
+                <button 
+                    class="btn-swap" 
+                    onclick="if(confirm('Bạn có chắc chắn muốn đổi vé? Điều này có thể phát sinh chi phí.')){alert('Chuyển đến trang Đổi vé.')} else {alert('Đã hủy thao tác đổi vé.')}"
+                >
+                    Đổi vé
+                </button>
+                <button 
+                    class="btn-cancel"
+                    onclick="if(confirm('Bạn có chắc chắn muốn hủy vé? Chính sách hoàn tiền sẽ được áp dụng.')){alert('Yêu cầu hủy vé đã được gửi đi.')} else {alert('Đã hủy thao tác hủy vé.')}"
+                >
+                    Hủy vé
+                </button>
+            </div>
+        </div>
+        
+        <button class="home-btn" (click)="goBack()">Quay lại</button>
+
+    </div>
+
+    <div *ngIf="!ticketDetail" class="not-found">
+        <p>Không tìm thấy thông tin vé.</p>
+    </div>
+</div>

@@ -1,0 +1,158 @@
+<div class="payment-page">
+    <!-- Header -->
+    <div class="section-header">
+      <h2>Tên chuyến bay đã chọn</h2>
+      <p class="sub">Ngày đi</p>
+    </div>
+  
+    <div class="payment-container">
+      <!-- Left column -->
+      <div class="payment-left">
+        <h3>Phương thức thanh toán</h3>
+        <p class="note">
+          Chọn phương thức thanh toán bên dưới. Skyline xử lý thanh toán của bạn một cách an toàn
+          với mã hóa đầu cuối.
+        </p>
+  
+        <!-- Payment method buttons -->
+        <div class="method-group">
+          <button
+            class="method-btn"
+            [class.active]="paymentMethod === 'credit'"
+            (click)="selectMethod('credit')"
+          >
+            VISA
+          </button>
+          <button
+            class="method-btn"
+            [class.active]="paymentMethod === 'google'"
+            (click)="selectMethod('google')"
+          >
+            Google Pay
+          </button>
+          <button
+            class="method-btn"
+            [class.active]="paymentMethod === 'apple'"
+            (click)="selectMethod('apple')"
+          >
+            Apple Pay
+          </button>
+          <button
+            class="method-btn"
+            [class.active]="paymentMethod === 'paypal'"
+            (click)="selectMethod('paypal')"
+          >
+            Paypal
+          </button>
+        </div>
+  
+        <!-- Payment details -->
+        <div class="payment-details">
+          <h4>Chi tiết thẻ thanh toán</h4>
+  
+          <label>
+            <input type="checkbox" (change)="focusCardName($event)" /> Địa chỉ thanh toán:
+          </label>
+          
+          <div class="form-field">
+            <input
+              #cardNameInput
+              type="text"
+              [(ngModel)]="nameOnCard"
+              placeholder="Tên trên thẻ"
+            />
+          </div>          
+  
+          <div class="form-field">
+            <input type="text" [(ngModel)]="cardNumber" placeholder="Số thẻ" />
+          </div>
+  
+          <div class="form-row">
+            <div class="form-field small">
+              <input type="text" [(ngModel)]="expiry" placeholder="10/23" />
+            </div>
+            <div class="form-field small">
+              <input type="password" [(ngModel)]="cvv" placeholder="CVV" />
+            </div>
+          </div>
+  
+          <p class="powered"><span>Skyline</span></p>
+        </div>
+  
+        <!-- Policy -->
+        <div class="policy">
+          <h4>Chính sách hủy</h4>
+          <p>
+            Chuyến bay này có chính sách hủy linh hoạt. Nếu bạn hủy hoặc thay đổi chuyến bay trong
+            vòng 30 ngày trước ngày khởi hành, bạn sẽ được hoàn tiền miễn phí. Tất cả các chuyến bay
+            được đặt qua Tripma đều được bảo đảm hài lòng khách hàng, tuy nhiên chính sách hủy có thể
+            khác nhau tùy theo hãng hàng không. Vui lòng xem
+            <a href="#">chính sách hủy đầy đủ</a> của chuyến bay này để biết thêm chi tiết.
+          </p>
+        </div>
+  
+        <div class="action-buttons">
+          <button class="btn-secondary" (click)="backToSeatSelection()">
+            Quay lại chọn chỗ ngồi
+          </button>
+          <button class="btn-primary" (click)="confirmPayment()">
+            Xác nhận và thanh toán
+          </button>
+        </div>
+      </div>
+  
+      <!-- Right column -->
+      <div class="payment-right">
+        <div class="flight-card">
+          <div class="flight-item">
+            <img src="/Angular/skyline/src/assets/logo_skyline.png" alt="plane" />
+            <div>
+              <p class="airline">Tên hãng bay</p>
+              <p class="time">16h 45m (+1d)</p>
+              <p class="detail">7:00 AM - 4:15 PM • 2h 45m in HNL</p>
+            </div>
+          </div>
+          <div class="flight-item">
+            <img src="/skyline/src/assets/logo_skyline.png" alt="plane" />
+            <div>
+              <p class="airline">Tên hãng bay</p>
+              <p class="detail">7:00 AM - 4:15 PM • 2h 45m in HNL</p>
+            </div>
+          </div>
+        </div>
+  
+        <div class="summary">
+          <div class="row">
+            <span>Tạm tính</span>
+            <span>0.000.000 đ</span>
+          </div>
+          <div class="row">
+            <span>Thuế và Phí</span>
+            <span>000.000 đ</span>
+          </div>
+
+          <hr>
+  
+          <div class="coupon">
+            <input
+              type="text"
+              placeholder="Mã giảm giá"
+              [(ngModel)]="couponCode"
+            />
+            <button (click)="applyCoupon()">Sử dụng</button>
+          </div>
+  
+          <div class="total">
+            <span>Tổng cộng</span>
+            <span>0.000.000 đ</span>
+          </div>
+
+          <div class="confirm-btn-wrapper">
+            <button class="btn-primary" (click)="confirmPayment()">Xác nhận và thanh toán</button>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  
