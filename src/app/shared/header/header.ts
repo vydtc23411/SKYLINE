@@ -1,12 +1,12 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
@@ -28,17 +28,34 @@ export class HeaderComponent implements OnInit {
 
   toggleDropdown(): void {
     this.showDropdown = !this.showDropdown;
-  }
-
-  closeDropdownManually(): void {
-    this.showDropdown = false;
+    console.log('Dropdown toggled:', this.showDropdown); // Debug log
   }
 
   @HostListener('document:click', ['$event'])
   closeDropdown(event: Event): void {
     const target = event.target as HTMLElement;
-    if (!target.closest('.user-menu')) {
+    const userMenu = target.closest('.user-menu');
+    const dropdownMenu = target.closest('.dropdown-menu');
+    
+    // Nếu click outside cả user-menu và dropdown-menu
+    if (!userMenu && !dropdownMenu && this.showDropdown) {
       this.showDropdown = false;
+      console.log('Dropdown closed by outside click');
+    }
+  }
+
+  @HostListener('window:scroll')
+  onWindowScroll(): void {
+    if (this.showDropdown) {
+      this.showDropdown = false;
+    }
+  }
+
+  // Prevent closing when clicking inside dropdown
+  @HostListener('click', ['$event'])
+  onClick(event: Event): void {
+    if ((event.target as HTMLElement).closest('.dropdown-menu')) {
+      event.stopPropagation();
     }
   }
 

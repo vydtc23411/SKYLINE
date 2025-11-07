@@ -596,7 +596,27 @@ body {
 
 @media (max-width: 768px) {
     .nav {
-        display: none;
+        display: flex;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+        gap: 20px; /* Giảm khoảng cách giữa các items trên mobile */
+        padding: 10px 0;
+    }
+    
+    .nav::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+
+    .nav-link {
+        flex: 0 0 auto;
+        font-size: 13px; /* Giảm kích thước chữ trên mobile */
+    }
+
+    .header-content {
+        padding: 0 15px;
     }
     
     .search-row {
@@ -630,5 +650,19 @@ body {
     .footer-bottom {
         flex-direction: column;
         gap: 20px;
+    }
+
+    /* Thêm responsive cho phần hero */
+    .hero-title {
+        font-size: 36px; /* Giảm kích thước chữ tiêu đề trên mobile */
+        padding: 0 15px;
+    }
+
+    .search-form {
+        margin: 20px 15px;
+    }
+
+    .form-group {
+        padding: 10px;
     }
 }
