@@ -16,12 +16,10 @@ export class SeatSelection {
 
   constructor(private router: Router) { }
 
-  // ✅ Hàm chọn ghế
   selectSeat(seatId: string, seatType: string) {
     console.log('Ghế đã chọn:', seatId, 'Loại:', seatType);
 
     if (this.selectedSeat === seatId) {
-      // Nếu bấm lại cùng ghế → bỏ chọn
       this.selectedSeat = null;
       this.selectedSeatType = null;
     } else {
@@ -30,7 +28,6 @@ export class SeatSelection {
     }
   }
 
-  // ✅ Hàm nhấn "Tiếp tục"
   tiepTuc() {
     if (!this.selectedSeat) {
       alert('⚠️ Vui lòng chọn ghế trước khi tiếp tục!');
@@ -39,7 +36,6 @@ export class SeatSelection {
     this.router.navigate(['/baggage-selection']);
   }
 
-  // ✅ Hàm nhấn "Quay lại"
   quayLai() {
     this.router.navigate(['/flight-selection']);
   }

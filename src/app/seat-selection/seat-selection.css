@@ -69,7 +69,6 @@
     font-weight: bold;
     color: #ffffff;
     cursor: default;
-    /* Thêm để chỉ rõ là không thể click */
 }
 
 .seat-business.occupied {
@@ -84,10 +83,9 @@
     font-weight: bold;
     color: #ffffff;
     cursor: default;
-    /* Thêm để chỉ rõ là không thể click */
 }
 
-/* Ghế bạn đang chọn (Đã sửa .seat.selected thành .selected) */
+/* Ghế bạn đang chọn */
 .selected {
     background-color: red;
     color: white;
@@ -100,7 +98,6 @@
 .info-column {
     flex: 50%;
     height: 100vh;
-    /* chiếm trọn chiều cao màn hình */
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -212,7 +209,6 @@
     justify-content: center;
     align-items: center;
     gap: 20px;
-    /* Khoảng cách giữa 2 nút */
     margin-top: 20px;
 }
 
@@ -270,7 +266,6 @@
     background-color: #22C3A6;
 }
 
-/* --- Phần thêm cho nút "Tiếp tục" --- */
 .btn-continue:disabled {
     background-color: #b0c4de;
     cursor: not-allowed;

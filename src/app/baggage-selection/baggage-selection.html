@@ -32,17 +32,37 @@
                             </label>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="fullName">Họ và tên</label>
-                        <input type="text" id="fullName" formControlName="fullName" placeholder="Họ và tên">
+                        <input type="text" id="fullName" formControlName="fullName" placeholder="Họ và tên"
+                            [class.invalid-field]="f['fullName'].invalid && (f['fullName'].dirty || f['fullName'].touched)">
+
+                        <div *ngIf="f['fullName'].invalid && (f['fullName'].dirty || f['fullName'].touched)"
+                            class="error-message">
+                            <span *ngIf="f['fullName'].errors?.['required']">Vui lòng nhập họ và tên.</span>
+                        </div>
                     </div>
+
                     <div class="form-group">
                         <label for="dob">Ngày sinh</label>
-                        <input type="date" id="dob" formControlName="dob">
+                        <input type="date" id="dob" formControlName="dob"
+                            [class.invalid-field]="f['dob'].invalid && (f['dob'].dirty || f['dob'].touched)">
+
+                        <div *ngIf="f['dob'].invalid && (f['dob'].dirty || f['dob'].touched)" class="error-message">
+                            <span *ngIf="f['dob'].errors?.['required']">Vui lòng chọn ngày sinh.</span>
+                        </div>
                     </div>
+
                     <div class="form-group">
                         <label for="idNumber">Số CCCD</label>
-                        <input type="text" id="idNumber" formControlName="idNumber" placeholder="Số CCCD">
+                        <input type="text" id="idNumber" formControlName="idNumber" placeholder="Số CCCD"
+                            [class.invalid-field]="f['idNumber'].invalid && (f['idNumber'].dirty || f['idNumber'].touched)">
+
+                        <div *ngIf="f['idNumber'].invalid && (f['idNumber'].dirty || f['idNumber'].touched)"
+                            class="error-message">
+                            <span *ngIf="f['idNumber'].errors?.['required']">Vui lòng nhập số CCCD.</span>
+                        </div>
                     </div>
                 </div>
 
@@ -52,17 +72,41 @@
                         Thông tin này giúp hãng hàng không liên lạc với quý khách để thông báo cập nhật lịch bay thay
                         đổi và gửi vé điện tử cho quý khách.
                     </p>
+
                     <div class="form-group">
                         <label for="phoneNumber">Số điện thoại</label>
-                        <input type="tel" id="phoneNumber" formControlName="phoneNumber" placeholder="Số điện thoại">
+                        <input type="tel" id="phoneNumber" formControlName="phoneNumber" placeholder="Số điện thoại"
+                            [class.invalid-field]="f['phoneNumber'].invalid && (f['phoneNumber'].dirty || f['phoneNumber'].touched)">
+
+                        <div *ngIf="f['phoneNumber'].invalid && (f['phoneNumber'].dirty || f['phoneNumber'].touched)"
+                            class="error-message">
+                            <span *ngIf="f['phoneNumber'].errors?.['required']">Vui lòng nhập số điện thoại.</span>
+                            <span *ngIf="f['phoneNumber'].errors?.['pattern']">Số điện thoại phải là 10 chữ số.</span>
+                        </div>
                     </div>
+
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" formControlName="email" placeholder="Email">
+                        <input type="email" id="email" formControlName="email" placeholder="Email"
+                            [class.invalid-field]="f['email'].invalid && (f['email'].dirty || f['email'].touched)">
+
+                        <div *ngIf="f['email'].invalid && (f['email'].dirty || f['email'].touched)"
+                            class="error-message">
+                            <span *ngIf="f['email'].errors?.['required']">Vui lòng nhập email.</span>
+                            <span *ngIf="f['email'].errors?.['email']">Email không đúng định dạng (ví dụ:
+                                example@mail.com).</span>
+                        </div>
                     </div>
+
                     <div class="form-group">
                         <label for="address">Địa chỉ</label>
-                        <input type="text" id="address" formControlName="address" placeholder="Địa chỉ">
+                        <input type="text" id="address" formControlName="address" placeholder="Địa chỉ"
+                            [class.invalid-field]="f['address'].invalid && (f['address'].dirty || f['address'].touched)">
+
+                        <div *ngIf="f['address'].invalid && (f['address'].dirty || f['address'].touched)"
+                            class="error-message">
+                            <span *ngIf="f['address'].errors?.['required']">Vui lòng nhập địa chỉ.</span>
+                        </div>
                     </div>
                 </div>
 

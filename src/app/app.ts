@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Confirmation } from './confirmation/confirmation';
 import { CheckTicket } from './checkticket/checkticket';
-import { CheckTicket2 } from './checkticket2/checkticket2';  // Đường dẫn chuẩn đúng file
+import { CheckTicket2 } from './checkticket2/checkticket2';
 import { SeatSelection } from './seat-selection/seat-selection';
 import { BaggageSelection } from './baggage-selection/baggage-selection';
 import { Checkout } from './checkout/checkout';
@@ -18,11 +18,11 @@ import { Notifications } from './notifications/notifications';
 @Component({
   selector: 'app-root',
   imports: [
-    RouterOutlet, 
-    CommonModule, // 👈 thêm dòng này để có ngIf, ngFor, ngClass
+    RouterOutlet,
+    CommonModule,
     FormsModule,
-    SeatSelection, 
-    BaggageSelection, 
+    SeatSelection,
+    BaggageSelection,
     Checkout,
     Sidebar,
     Confirmation,
@@ -38,7 +38,6 @@ export class App {
   protected readonly title = signal('skyline');
 
   constructor() {
-    // Initialize app
   }
 }
 

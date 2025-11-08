@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router'; // ✅ Import Router
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-baggage-selection',
@@ -23,7 +23,7 @@ export class BaggageSelection implements OnInit {
     date: 'Thứ Sáu, 07/11/2025'
   };
 
-  constructor(private fb: FormBuilder, private router: Router) { // ✅ Inject Router
+  constructor(private fb: FormBuilder, private router: Router) {
     this.passengerForm = this.fb.group({
       salutation: ['Quý Ông', Validators.required],
       fullName: ['', Validators.required],
@@ -38,6 +38,10 @@ export class BaggageSelection implements OnInit {
   ngOnInit(): void {
   }
 
+  get f() {
+    return this.passengerForm.controls;
+  }
+
   decrementBaggage(): void {
     if (this.baggageQuantity > 1) {
       this.baggageQuantity--;
@@ -48,20 +52,17 @@ export class BaggageSelection implements OnInit {
     this.baggageQuantity++;
   }
 
-  // ✅ Hàm submit form → chuyển sang trang xác nhận
   onSubmit(): void {
     if (this.passengerForm.valid) {
       console.log('Form Data:', this.passengerForm.value);
       console.log('Baggage Quantity:', this.baggageQuantity);
-      // alert('Đã gửi thông tin thành công!'); // có thể dùng alert nếu muốn
-      this.router.navigate(['/confirmation']); // ✅ Điều hướng sang confirmation
+      this.router.navigate(['/confirmation']);
     } else {
       this.passengerForm.markAllAsTouched();
       console.error('Form không hợp lệ.');
     }
   }
 
-  // ✅ Hàm quay lại trang chọn ghế
   quayLai(): void {
     this.router.navigate(['/seat-selection']);
   }
