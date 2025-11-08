@@ -1,52 +1,66 @@
 .payment-page {
+  font-family: "Inter", sans-serif;
+  color: #333;
   padding: 40px 80px;
   background-color: #fafafa;
 }
 
+
+/* ===== HEADER ===== */
 .section-header h2 {
   font-size: 22px;
   margin-bottom: 4px;
 }
+
 
 .section-header .sub {
   font-size: 14px;
   color: #666;
 }
 
+
+/* ===== LAYOUT ===== */
 .payment-container {
   display: flex;
   gap: 40px;
   margin-top: 30px;
 }
 
-.payment-left,
-.payment-right {
+
+.payment-left {
+  flex: 2;
   background: #fff;
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-.payment-left {
-  flex: 2;
-}
 
 .payment-right {
   flex: 1;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
+
+/* ===== TEXT ===== */
 .note {
   color: #666;
   font-size: 14px;
   margin-bottom: 20px;
 }
 
+
+/* ===== PAYMENT METHODS ===== */
 .method-group {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 25px;
 }
+
 
 .method-btn {
   padding: 10px 20px;
@@ -57,15 +71,19 @@
   transition: all 0.2s;
 }
 
+
 .method-btn.active {
   border-color: #606DEC;
   background: #eaf0ff;
   color: #606DEC;
 }
 
+
+/* ===== FORM FIELDS ===== */
 .payment-details h4 {
   margin-bottom: 12px;
 }
+
 
 .form-field {
   display: flex;
@@ -73,22 +91,56 @@
   margin-bottom: 15px;
 }
 
+
+.form-field label {
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+
 .form-field input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
+  transition: border 0.2s, background 0.2s;
 }
+
+
+.form-field input:focus {
+  border-color: #606DEC;
+  outline: none;
+}
+
+
+.form-field input.invalid-field {
+  border-color: #dc3545;
+  background-color: #fff8f8;
+}
+
 
 .form-row {
   display: flex;
   gap: 20px;
 }
 
+
 .form-field.small {
   flex: 1;
 }
 
+
+/* ===== ERROR MESSAGES ===== */
+.error-message,
+.error-message-small {
+  color: #dc3545;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+
+/* ===== POWERED BY ===== */
 .powered {
   text-align: center;
   margin-top: 20px;
@@ -97,11 +149,14 @@
   color: #999;
 }
 
+
 .powered span {
   background: #fff;
   padding: 0 10px;
 }
 
+
+/* ===== POLICY ===== */
 .policy {
   margin-top: 30px;
   font-size: 14px;
@@ -109,17 +164,20 @@
   line-height: 20px;
 }
 
+
 .policy a {
   color: #606DEC;
   text-decoration: none;
 }
 
-/* ✅ Nút quay lại căn giữa */
+
+/* ===== BUTTONS ===== */
 .action-buttons {
   display: flex;
   justify-content: center;
   margin-top: 30px;
 }
+
 
 .btn-primary {
   background-color: #606DEC;
@@ -132,6 +190,18 @@
   transition: background 0.2s;
 }
 
+
+.btn-primary:hover {
+  background-color: #4f5edc;
+}
+
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
 .btn-secondary {
   background-color: #eee;
   border: none;
@@ -139,8 +209,16 @@
   padding: 12px 28px;
   cursor: pointer;
   color: #333;
+  transition: background 0.2s;
 }
 
+
+.btn-secondary:hover {
+  background-color: #ddd;
+}
+
+
+/* ===== FLIGHT INFO (RIGHT COLUMN) ===== */
 .flight-card {
   display: flex;
   flex-direction: column;
@@ -148,36 +226,44 @@
   margin-bottom: 25px;
 }
 
+
 .flight-item {
   display: flex;
   gap: 10px;
   align-items: center;
 }
 
+
 .flight-item img {
   width: 32px;
   height: 32px;
 }
 
+
 .airline {
   font-weight: 600;
 }
+
 
 .detail {
   font-size: 13px;
   color: #666;
 }
 
+
+.time {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+
+/* ===== SUMMARY ===== */
 .summary .row {
   display: flex;
   justify-content: space-between;
   margin: 8px 0;
 }
 
-.confirm-btn-wrapper {
-  display: flex;
-  justify-content: flex-end;
-}
 
 .coupon {
   display: flex;
@@ -185,12 +271,14 @@
   margin: 15px 0;
 }
 
+
 .coupon input {
   flex: 1;
   padding: 8px;
   border-radius: 6px;
   border: 1px solid #ccc;
 }
+
 
 .coupon button {
   padding: 8px 16px;
@@ -201,9 +289,30 @@
   cursor: pointer;
 }
 
+
+.coupon button:hover {
+  background: #4f5edc;
+}
+
+
 .total {
   display: flex;
   justify-content: space-between;
   font-weight: 600;
   margin: 10px 0 20px;
 }
+
+
+/* ===== CONFIRM BUTTON RIGHT ===== */
+.confirm-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+.confirm-btn-wrapper .btn-primary {
+  padding: 10px 24px;
+}
+
+
+
