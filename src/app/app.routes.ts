@@ -13,6 +13,7 @@ import { Confirmation } from './user/confirmation/confirmation';
 import { SeatSelection } from './user/seat-selection/seat-selection';
 import { BaggageSelection } from './user/baggage-selection/baggage-selection';
 import { Checkout } from './user/checkout/checkout';
+import { Contact } from './user/contact/contact';
 
 export const routes: Routes = [
   // Trang mặc định khi vào app
@@ -49,13 +50,9 @@ export const routes: Routes = [
       { path: 'notifications', component: Notifications },
       { path: 'checkticket', component: CheckTicket },
       { path: 'checkticket2', component: CheckTicket2 },
-<<<<<<< HEAD
       { path: '', redirectTo: 'checkticket', pathMatch: 'full' }, 
       { path: 'contact', component: Contact }, 
       { path: '', redirectTo: 'checkticket', pathMatch: 'full' },
-=======
-      { path: '', redirectTo: 'information', pathMatch: 'full' }, // default child
->>>>>>> a8af3483ea41390ba031ec3dabd87abf9a68e446
     ]
   },
 
