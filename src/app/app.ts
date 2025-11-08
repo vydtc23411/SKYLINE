@@ -14,6 +14,7 @@ import { Information } from './information/information';
 import { Promotion } from './promotion/promotion';
 import { Rewards } from './rewards/rewards';
 import { Notifications } from './notifications/notifications';
+import { Contact } from './contact/contact';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +30,8 @@ import { Notifications } from './notifications/notifications';
     Information,
     Promotion,
     Rewards,
-    Notifications
+    Notifications,
+    Contact
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'

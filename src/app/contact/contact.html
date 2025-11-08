@@ -1,0 +1,79 @@
+<div class="contact-container">
+    <h2>Liên hệ hỗ trợ</h2>
+    <p class="contact-description">
+      Nếu bạn gặp sự cố khi đặt vé, thanh toán hoặc cần tư vấn dịch vụ, hãy liên hệ với chúng tôi qua biểu mẫu dưới đây. 
+      Đội ngũ <strong>Skyline</strong> sẽ phản hồi trong vòng 24 giờ làm việc.
+    </p>
+  
+    <!-- Thông tin liên hệ -->
+    <div class="contact-info">
+      <div class="info-item">
+        <i class="fa fa-envelope"></i>
+        <span><strong>Email:</strong> support@skyline.com</span>
+      </div>
+      <div class="info-item">
+        <i class="fa fa-phone"></i>
+        <span><strong>Hotline:</strong> 1900 123 456</span>
+      </div>
+      <div class="info-item">
+        <i class="fa fa-comments"></i>
+        <span><strong>Chat trực tuyến: </strong> 
+          <a href="https://zalo.me/1234567890" target="_blank">Zalo</a> / 
+          <a href="https://m.me/skyline" target="_blank">Messenger</a>
+        </span>
+      </div>
+    </div>
+  
+    <!-- Biểu mẫu gửi yêu cầu -->
+    <div class="contact-form">
+      <h3>Gửi yêu cầu hỗ trợ</h3>
+  
+      <form (submit)="onSubmit($event)">
+        <div class="form-group">
+          <label for="name">Họ tên</label>
+          <input id="name" type="text" placeholder="Nhập họ tên" required />
+        </div>
+  
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="Nhập email" required />
+        </div>
+  
+        <div class="form-group">
+          <label for="topic">Chủ đề</label>
+          <select id="topic" required>
+            <option value="">-- Chọn chủ đề --</option>
+            <option>Hỗ trợ thanh toán</option>
+            <option>Vấn đề khuyến mãi</option>
+            <option>Góp ý & Phản hồi</option>
+            <option>Khác</option>
+          </select>
+        </div>
+  
+        <div class="form-group">
+          <label for="message">Nội dung</label>
+          <textarea id="message" rows="5" placeholder="Nhập nội dung" required></textarea>
+        </div>
+  
+        <button type="submit" class="submit-btn">Gửi yêu cầu</button>
+      </form>
+  
+      <div *ngIf="submitted" class="success-message">
+        🎉 Cảm ơn bạn! Yêu cầu của bạn đã được gửi, Skyline sẽ phản hồi sớm nhất có thể.
+      </div>
+    </div>
+  
+    <!-- Google Map -->
+    <div class="map-section">
+      <h3>Văn phòng Skyline</h3>
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.436923646091!2d106.78252847480558!3d10.853826489304599!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175272d09b4470f%3A0x4b6512f885b80d29!2zQ8O0bmcgVHkgVE5ISCBQaOG6p24gUGjhuqFtIFRpbiBIw6AgLSBIVVRFQ0ggVMOCTg!5e0!3m2!1svi!2s!4v1731040000000!5m2!1svi!2s"
+        width="100%"
+        height="300"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+      ></iframe>
+    </div>
+  </div>
+  

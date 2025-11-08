@@ -1,12 +1,5 @@
 {
 
-    "fullName": "Trần Thị Thiên Thảo",
-    "avatar": "assets/img/AVT.jpg",
-    "currentRank": "Bạc",
-    "points": 2450,
-    "nextRank": "Vàng",
-    "nextThreshold": 5000
-  ,
     "ranks": {
       "Đồng": {
         "name": "★ Hạng Đồng",

@@ -191,7 +191,7 @@
   
   .deal-btn {
     width: 100%;
-    background: #606DEC;
+    background: #375578;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -253,6 +253,89 @@
   background: #d1d5db;
 }
 
+
+/* Popup overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+
+/* Popup box */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  z-index: 1001;
+  width: 400px;
+  max-width: 90%;
+  animation: fadeIn 0.3s ease;
+  overflow: hidden;
+}
+
+/* Popup content */
+.popup-content {
+  padding: 20px;
+  text-align: left;
+  position: relative;
+}
+
+/* Ảnh popup */
+.popup-content img {
+  width: 100%;
+  border-radius: 16px 16px 0 0; /* bo tròn chỉ phía trên */
+  margin-bottom: 15px;
+  object-fit: cover;
+  max-height: 220px; /* giới hạn chiều cao */
+}
+
+/* Nút đóng popup kiểu hiện đại */
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  background: rgba(0, 0, 0, 0.6); /* nền bán trong suốt để nổi bật */
+  color: #fff;
+  font-size: 22px;
+  font-weight: bold;
+  border: none;
+  border-radius: 50%; /* tròn hoàn toàn */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1002;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: #ff4d4f;
+  transform: scale(1.1);
+}
+
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
   
   /* Responsive */
   @media (max-width: 992px) {
@@ -266,3 +349,4 @@
     }
   }
   
+

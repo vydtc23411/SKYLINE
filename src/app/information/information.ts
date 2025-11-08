@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import userData from './user_data.json';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-information',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './information.html',
   styleUrl: './information.css',
 })
@@ -26,16 +27,38 @@ export class Information implements OnInit {
     'Singapore'
   ];
 
+  constructor(private http: HttpClient, private authService: AuthService) {}
+
   ngOnInit(): void {
-    // Always load from JSON first
-    if (Array.isArray(userData) && userData.length > 0) {
-      this.user = { ...userData[0] }; // Create a copy of the first user
-      console.log('Loaded user data:', this.user);
-      
-      // Save to localStorage for persistence
-      localStorage.setItem('currentUser', JSON.stringify(this.user));
+    // Ưu tiên lấy từ localStorage nếu đã có
+    const saved = localStorage.getItem('fullUserData');
+    if (saved) {
+      this.user = JSON.parse(saved);
+      console.log('🔹 Loaded from localStorage:', this.user);
     } else {
-      console.warn('⚠️ No user data found in user_data.json');
+      // Nếu chưa có, tải từ file JSON
+      this.http.get<any[]>('assets/data/user_data.json').subscribe({
+        next: (data) => {
+          if (Array.isArray(data) && data.length > 0) {
+            this.user = { ...data[0] };
+            console.log('📦 Loaded from JSON:', this.user);
+
+            // Cập nhật vào AuthService & localStorage
+            const currentUser = {
+              id: Date.now(),
+              name: this.user.fullName,
+              email: this.user.email,
+              createdAt: new Date().toISOString(),
+            };
+
+            localStorage.setItem('fullUserData', JSON.stringify(this.user));
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+          } else {
+            console.warn('⚠️ No user data found in user_data.json');
+          }
+        },
+        error: (err) => console.error('❌ Failed to load JSON:', err),
+      });
     }
   }
 
@@ -45,8 +68,7 @@ export class Information implements OnInit {
 
   onSave(): void {
     this.isEditing = false;
-    // Update localStorage
-    localStorage.setItem('currentUser', JSON.stringify(this.user));
+    localStorage.setItem('fullUserData', JSON.stringify(this.user));
     alert('✅ Thông tin đã được lưu thành công!');
   }
 }

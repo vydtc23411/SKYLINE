@@ -25,8 +25,9 @@
       <i class="fa fa-credit-card"></i> <span>Thanh toán & Trả sau</span>
     </button>
     <button (click)="scrollTo('related')">
-      <i class="fa fa-gift"></i> <span>Ưu đãi liên quan</span>
-    </button>
+  <i class="fa fa-tags"></i> <span>Ưu đãi liên quan</span>
+</button>
+
   </div>
 
   <!-- Sections -->
@@ -42,7 +43,7 @@
           <div class="deal-info">
             <p class="deal-date-title">Thời gian khuyến mãi</p>
             <p class="deal-date">{{ item.date }}</p>
-            <button class="deal-btn">{{ item.label }}</button>
+            <button class="deal-btn" (click)="openPopup(item)">Xem khuyến mãi</button>
           </div>
         </div>
       </div>
@@ -52,6 +53,20 @@
         <button *ngIf="canCollapse(i)" (click)="toggleSection(i)" class="collapse-btn">Thu gọn</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ✅ Popup chi tiết -->
+<div class="popup-overlay" *ngIf="selectedDeal" (click)="closePopup()"></div>
+
+<div class="popup" *ngIf="selectedDeal">
+  <div class="popup-content">
+    <button class="close-btn" (click)="closePopup()">×</button>
+    <img [src]="selectedDeal.image" alt="Promotion detail" />
+    <h3>🎉 Thông tin khuyến mãi</h3>
+    <p><strong>Thời gian áp dụng:</strong> {{ selectedDeal.applyTime }}</p>
+    <p><strong>Đối tượng áp dụng:</strong> {{ selectedDeal.target }}</p>
+    <p><strong>Chi tiết:</strong> {{ selectedDeal.details }}</p>
   </div>
 </div>
 

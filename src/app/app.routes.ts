@@ -6,6 +6,7 @@ import { CheckTicket } from './checkticket/checkticket';
 import { CheckTicket2 } from './checkticket2/checkticket2';
 import { MainLayout } from './main-layout/main-layout';
 import { Notifications } from './notifications/notifications';
+import { Contact } from './contact/contact';
 
 export const routes: Routes = [
   {
@@ -40,6 +41,8 @@ export const routes: Routes = [
       { path: 'checkticket', component: CheckTicket },
       { path: 'checkticket2', component: CheckTicket2 },
       { path: '', redirectTo: 'checkticket', pathMatch: 'full' }, 
+      { path: 'contact', component: Contact }, 
+      { path: '', redirectTo: 'checkticket', pathMatch: 'full' },
     ]
   },
   { path: 'confirmation', component: Confirmation },

@@ -15,10 +15,14 @@ export class Sidebar implements OnInit {
   };
 
   ngOnInit(): void {
-    // ✅ Lấy thông tin user đang đăng nhập từ localStorage
-    const savedUser = localStorage.getItem('currentUser');
-    if (savedUser) {
-      this.user = JSON.parse(savedUser);
+    const fullUser = localStorage.getItem('fullUserData');
+    if (fullUser) {
+      this.user = JSON.parse(fullUser);
+    } else {
+      const currentUser = localStorage.getItem('currentUser');
+      if (currentUser) {
+        this.user = JSON.parse(currentUser);
+      }
     }
-  }
+  }  
 }

@@ -1,36 +1,57 @@
-import { Component } from '@angular/core';
-import rewardsData from './rewards-data.json';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import rewardsData from './rewards-data.json'; // file chỉ chứa quyền lợi
+import { CommonModule } from '@angular/common';
+
+interface Rank {
+  name: string;
+  benefits: string[];
+}
+
+interface UserData {
+  fullName: string;
+  currentRank: string;
+  points: number;
+  nextRank: string;
+  nextThreshold: number;
+  avatar?: string;
+}
 
 @Component({
   selector: 'app-rewards',
-  imports: [CommonModule, DecimalPipe],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './rewards.html',
-  styleUrl: './rewards.css',
+  styleUrls: ['./rewards.css'],
 })
-export class Rewards {
-  userData: any = rewardsData;
-  displayedRanks: any[] = [];
+export class Rewards implements OnInit {
+  userData: UserData | null = null;
+  displayedRanks: Rank[] = [];
 
-  ngOnInit() {
-    this.loadDisplayedRanks();
+  private allRanks: { [key: string]: Rank } = rewardsData.ranks;
+
+  ngOnInit(): void {
+    const saved = localStorage.getItem('fullUserData');
+    if (saved) {
+      this.userData = JSON.parse(saved);
+      this.updateDisplayedRanks();
+    } else {
+      console.warn('Chưa có user đăng nhập');
+    }
   }
 
-  loadDisplayedRanks() {
+  private updateDisplayedRanks(): void {
+    if (!this.userData) return;
+
     const current = this.userData.currentRank;
+
     if (current === 'Đồng') {
-      this.displayedRanks = [
-        this.userData.ranks['Đồng'],
-        this.userData.ranks['Bạc']
-      ];
+      this.displayedRanks = [this.allRanks['Đồng'], this.allRanks['Bạc']];
     } else if (current === 'Bạc') {
-      this.displayedRanks = [
-        this.userData.ranks['Bạc'],
-        this.userData.ranks['Vàng']
-      ];
+      this.displayedRanks = [this.allRanks['Bạc'], this.allRanks['Vàng']];
+    } else if (current === 'Vàng') {
+      this.displayedRanks = [this.allRanks['Vàng']];
     } else {
-      this.displayedRanks = [this.userData.ranks['Vàng']];
+      this.displayedRanks = [];
     }
   }
 }
-
