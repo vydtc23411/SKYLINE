@@ -1,52 +1,54 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-confirmation',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './confirmation.html',
-  styleUrl: './confirmation.css',
+  styleUrls: ['./confirmation.css'],
 })
 export class Confirmation {
-  paymentMethod = 'credit';
+  // ✅ Chỉnh kiểu cho khớp với tất cả nút HTML
+  paymentMethod: 'credit' | 'google' | 'apple' | 'paypal' = 'credit';
+
   nameOnCard = '';
   cardNumber = '';
   expiry = '';
   cvv = '';
   couponCode = '';
 
+  @ViewChild('cardNameInput') cardNameInput!: ElementRef<HTMLInputElement>;
+
   constructor(private router: Router) {}
 
-  selectMethod(method: string) {
+  // ✅ Chọn phương thức thanh toán
+  selectMethod(method: 'credit' | 'google' | 'apple' | 'paypal') {
     this.paymentMethod = method;
   }
 
+  // ✅ Áp dụng mã giảm giá (giả lập)
   applyCoupon() {
     alert('Mã giảm giá đã được áp dụng (giả lập).');
   }
 
+  // ✅ Xác nhận và thanh toán → chuyển sang trang checkout
   confirmPayment() {
-    // TODO: điều hướng sang trang xác nhận sau khi thanh toán
-    alert('Thanh toán thành công (giả lập).');
-    // this.router.navigate(['/thank-you']);
+    this.router.navigate(['/checkout']);
   }
 
+  // ✅ Quay lại trang chọn chỗ ngồi
   backToSeatSelection() {
-    // TODO: điều hướng về trang chọn chỗ ngồi
-    this.router.navigate(['/seat-selection']);
+    this.router.navigate(['/baggage-selection']);
   }
 
-  @ViewChild('cardNameInput') cardNameInput!: ElementRef<HTMLInputElement>;
-
-focusCardName(event: Event) {
-  const checkbox = event.target as HTMLInputElement;
-  if (checkbox.checked && this.cardNameInput) {
-    this.cardNameInput.nativeElement.focus();
+  // ✅ Focus vào input tên thẻ khi chọn checkbox
+  focusCardName(event: Event) {
+    const checkbox = event.target as HTMLInputElement;
+    if (checkbox.checked && this.cardNameInput) {
+      this.cardNameInput.nativeElement.focus();
+    }
   }
-}
-
-
 }

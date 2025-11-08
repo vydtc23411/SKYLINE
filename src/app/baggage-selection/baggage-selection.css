@@ -153,6 +153,39 @@
     border-radius: 5px;
 }
 
+.button-group {
+    display: flex;
+    justify-content: center; /* căn phải */
+    align-items: center;
+    gap: 1rem; /* khoảng cách giữa hai nút */
+    margin-top: 1.5rem;
+}
+
+/* Đặt kích thước đồng nhất cho hai nút */
+.back-btn,
+.submit-btn {
+    width: 180px;           /* cùng chiều rộng */
+    height: 48px;           /* cùng chiều cao */
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Nút Quay lại */
+.back-btn {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.back-btn:hover {
+    background-color: #ddd;
+    color: #000;
+}
+
+/* Nút Tiếp tục */
 .submit-btn {
     width: 100%;
     padding: 1rem;
