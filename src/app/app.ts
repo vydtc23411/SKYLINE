@@ -3,18 +3,18 @@ import { Routes } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Confirmation } from './confirmation/confirmation';
-import { CheckTicket } from './checkticket/checkticket';
-import { CheckTicket2 } from './checkticket2/checkticket2';
-import { SeatSelection } from './seat-selection/seat-selection';
-import { BaggageSelection } from './baggage-selection/baggage-selection';
-import { Checkout } from './checkout/checkout';
-import { Sidebar } from './sidebar/sidebar';
-import { Information } from './information/information';
-import { Promotion } from './promotion/promotion';
-import { Rewards } from './rewards/rewards';
-import { Notifications } from './notifications/notifications';
-import { Contact } from './contact/contact';
+import { Confirmation } from './user/confirmation/confirmation';
+import { CheckTicket } from './user/checkticket/checkticket';
+import { CheckTicket2 } from './user/checkticket2/checkticket2';
+import { SeatSelection } from './user/seat-selection/seat-selection';
+import { BaggageSelection } from './user/baggage-selection/baggage-selection';
+import { Checkout } from './user/checkout/checkout';
+import { Sidebar } from './user/sidebar/sidebar';
+import { Information } from './user/information/information';
+import { Promotion } from './user/promotion/promotion';
+import { Rewards } from './user/rewards/rewards';
+import { Notifications } from './user/notifications/notifications';
+import { Contact } from './user/contact/contact';
 
 @Component({
   selector: 'app-root',
