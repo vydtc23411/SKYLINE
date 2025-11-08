@@ -1,18 +1,18 @@
 import { Routes } from '@angular/router';
 
 // Layout & pages
-import { MainLayout } from './main-layout/main-layout';
-import { Information } from './information/information';
-import { Rewards } from './rewards/rewards';
-import { Notifications } from './notifications/notifications';
-import { CheckTicket } from './checkticket/checkticket';
-import { CheckTicket2 } from './checkticket2/checkticket2';
-import { Confirmation } from './confirmation/confirmation';
+import { MainLayout } from './user/main-layout/main-layout';
+import { Information } from './user/information/information';
+import { Rewards } from './user/rewards/rewards';
+import { Notifications } from './user/notifications/notifications';
+import { CheckTicket } from './user/checkticket/checkticket';
+import { CheckTicket2 } from './user/checkticket2/checkticket2';
+import { Confirmation } from './user/confirmation/confirmation';
 
 // Booking pages
-import { SeatSelection } from './seat-selection/seat-selection';
-import { BaggageSelection } from './baggage-selection/baggage-selection';
-import { Checkout } from './checkout/checkout';
+import { SeatSelection } from './user/seat-selection/seat-selection';
+import { BaggageSelection } from './user/baggage-selection/baggage-selection';
+import { Checkout } from './user/checkout/checkout';
 
 export const routes: Routes = [
   // Trang mặc định khi vào app
@@ -21,22 +21,22 @@ export const routes: Routes = [
   // Đăng nhập/đăng ký
   {
     path: 'customer-sign-in',
-    loadComponent: () => import('./customer-sign-in/customer-sign-in').then(m => m.CustomerSignInComponent)
+    loadComponent: () => import('./user/customer-sign-in/customer-sign-in').then(m => m.CustomerSignInComponent)
   },
   {
     path: 'customer-sign-up',
-    loadComponent: () => import('./customer-sign-up/customer-sign-up').then(m => m.CustomerSignUpComponent)
+    loadComponent: () => import('./user/customer-sign-up/customer-sign-up').then(m => m.CustomerSignUpComponent)
   },
 
   // Trang chính
   {
     path: 'home',
-    loadComponent: () => import('./home/home').then(m => m.HomeComponent)
+    loadComponent: () => import('./user/home/home').then(m => m.HomeComponent)
   },
 
   {
     path: 'promotion',
-    loadComponent: () => import('./promotion/promotion').then(m => m.Promotion)
+    loadComponent: () => import('./user/promotion/promotion').then(m => m.Promotion)
   },
 
   // Các trang trong layout chính
