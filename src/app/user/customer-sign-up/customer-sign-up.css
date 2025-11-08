@@ -255,20 +255,46 @@ h1 {
 
 /* Responsive */
 @media (max-width: 768px) {
+    body {
+        overflow: auto;
+    }
+
     .container {
         flex-direction: column;
+        height: auto;
+        min-height: 100vh;
     }
 
     .left-section {
-        height: 150px;
+        height: 200px;
+        min-height: 200px;
+        padding: 20px;
+        padding-top: 60px; /* Tránh bị che bởi notch */
+    }
+
+    .logo-link {
+        max-width: 50%;
+        max-height: 50%;
     }
 
     .right-section {
         flex: 1;
         padding: 20px;
+        min-height: calc(100vh - 200px);
     }
 
     .social-login {
         flex-direction: column;
+    }
+
+    .password-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    h1 {
+        font-size: 20px;
+        margin-bottom: 30px;
     }
 }
