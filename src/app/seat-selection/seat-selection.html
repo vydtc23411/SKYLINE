@@ -294,12 +294,12 @@
                 <strong>{{ selectedSeat || '--' }}</strong>
             </div>
 
-            <div class="footer-button-wrapper">
-                <button class="btn-secondary">Đóng</button>
-            </div>
-
-            <div class="footer-button-wrapper">
-                <button class="btn-primary">Tiếp tục</button>
+            <div class="footer-button-group">
+                <button class="btn-secondary" (click)="quayLai()">Quay lại</button>
+                <button class="btn-primary" [disabled]="!selectedSeat" [class.disabled]="!selectedSeat"
+                    (click)="tiepTuc()">
+                    Tiếp tục
+                </button>
             </div>
 
         </footer>

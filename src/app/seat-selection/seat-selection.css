@@ -97,6 +97,8 @@
 
 .info-column {
     flex: 50%;
+    height: 100vh;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     padding: 0;
@@ -140,7 +142,7 @@
 
 .sidebar-sub-column {
     flex: 50%;
-    padding: 20px 30px;
+    padding: 30px;
 }
 
 .ticket-type ul {
@@ -180,12 +182,14 @@
 }
 
 .sidebar-footer {
-    padding: 20px 20px;
+    padding: 10px 20px;
     border-top: 1px solid #375578;
     background-color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    position: relative;
+    overflow-y: hidden;
 }
 
 .footer-info-box {
@@ -200,30 +204,56 @@
     font-size: 1.1rem;
 }
 
-.btn-secondary,
-.btn-primary {
-    padding: 10px 20px;
+.footer-button-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.footer-button-group button {
+    width: 150px;
+    height: 45px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
-    font-size: 1rem;
+    transition: 0.3s;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: #0069d9;
+}
+
+.btn-primary:disabled,
+.btn-primary.disabled {
+    background-color: #b0c4de;
+    cursor: not-allowed;
 }
 
 .btn-secondary {
-    background-color: #f0f0f0;
+    background-color: #f1f1f1;
+    color: #333;
 }
 
-.btn-primary {
-    background-color: #606DEC;
-    color: white;
+.btn-secondary:hover {
+    background-color: #e0e0e0;
 }
+
 
 .selected-badge {
     color: #ffffff;
     font-size: 0.8rem;
     font-weight: bold;
     padding: 3px 10px;
-    border-radius: 10px;
+    border-radius: 12px;
     margin-left: 10px;
     vertical-align: middle;
 }
@@ -234,4 +264,25 @@
 
 .selected-badge.green {
     background-color: #22C3A6;
+}
+
+.btn-continue:disabled {
+    background-color: #b0c4de;
+    cursor: not-allowed;
+}
+
+.btn-continue {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-continue:hover:not(:disabled) {
+    background-color: #0069d9;
 }
