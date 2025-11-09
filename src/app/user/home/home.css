@@ -166,10 +166,33 @@ body {
     font-size: 14px;
     background: transparent;
     outline: none;
+    cursor: pointer;
+    color: #333;
 }
 
 .search-input::placeholder {
     color: #999;
+}
+
+/* Style for select dropdown */
+.search-input option {
+    background: white;
+    color: #333;
+    padding: 10px;
+}
+
+/* Style for date input */
+.search-input[type="date"] {
+    cursor: text;
+}
+
+.search-input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.search-input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
 }
 
 .search-btn {

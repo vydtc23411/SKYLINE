@@ -1,1 +1,357 @@
-<p>admin-home works!</p>
+<div class="admin-container">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="/assets/images/logongang.png" alt="Skyline Logo" class="logo">
+    </div>
+    
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active">
+        <img src="/assets/icons/overview.png" alt="Overview Icon">
+        <span>Tổng quan</span>
+      </a>
+      <a href="#" class="nav-item">
+        <img src="/assets/icons/ticket.png" alt="Ticket Icon">
+        <span>Quản lý vé và giao dịch</span>
+      </a>
+      <a href="#" class="nav-item">
+        <img src="/assets/icons/flight.png" alt="Flight Icon">
+        <span>Quản lý chuyến bay</span>
+      </a>
+      <a href="#" class="nav-item">
+        <img src="/assets/icons/airline.png" alt="Airline Icon">
+        <span>Quản lý hãng bay</span>
+      </a>
+      <a href="#" class="nav-item">
+        <img src="/assets/icons/seat.png" alt="Seat Icon">
+        <span>Ghế ngồi</span>
+      </a>
+      <a href="#" class="nav-item">
+        <img src="/assets/icons/promotion.png" alt="Promotion Icon">
+        <span>Khuyến mãi</span>
+      </a>
+      <a href="#" class="nav-item">
+        <img src="/assets/icons/customer.png" alt="Customer Icon">
+        <span>Khách hàng</span>
+      </a>
+      <a href="#" class="nav-item">
+        <img src="/assets/icons/settings.png" alt="Settings Icon">
+        <span>Cài đặt hệ thống</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="header">
+      <div class="search-bar">
+        <input type="text" placeholder="Tìm kiếm">
+        <button class="search-btn">🔍</button>
+      </div>
+      
+      <div class="header-actions">
+        <button class="icon-btn"><img src="/assets/icons/notification.png" alt="Notification Icon"></button>
+        <button class="icon-btn"><img src="/assets/icons/Setting.png" alt="Settings Icon"></button>
+        <div class="user-info">
+          <img src="https://i.pravatar.cc/150?img=12" alt="User" class="user-avatar">
+          <div class="user-details">
+            <span class="user-name">Nhân viên</span>
+            <span class="user-role">Tường Vy</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Welcome Section -->
+    <section class="welcome-section">
+      <div class="welcome-text">
+        <h1>Tổng quan</h1>
+        <p>Chào, Tường Vy, mừng bạn đến với trang admin!</p>
+      </div>
+      <div class="date-filter">
+        <button class="filter-btn" (click)="toggleDateDropdown()">
+            <img src="/assets/icons/Calendar1.png" alt="Calendar Icon">
+            <div>
+              <span>Lọc theo thời gian</span>
+              <span class="date-range">{{ dateRange }}</span>
+            </div>
+        </button>
+        
+        <!-- Dropdown Menu -->
+        <div class="date-dropdown" *ngIf="showDateDropdown">
+          <div class="dropdown-header">
+            <h4>Chọn khoảng thời gian</h4>
+          </div>
+          
+          <!-- Quick Filters -->
+          <div class="quick-filters">
+            <button class="quick-filter-btn" (click)="selectQuickFilter(7)">7 ngày qua</button>
+            <button class="quick-filter-btn" (click)="selectQuickFilter(30)">30 ngày qua</button>
+            <button class="quick-filter-btn" (click)="selectQuickFilter(90)">90 ngày qua</button>
+          </div>
+          
+          <!-- Custom Date Range -->
+          <div class="custom-date-range">
+            <div class="date-input-group">
+              <label for="start-date">Từ ngày:</label>
+              <input type="date" id="start-date" [(ngModel)]="startDate" class="date-input">
+            </div>
+            <div class="date-input-group">
+              <label for="end-date">Đến ngày:</label>
+              <input type="date" id="end-date" [(ngModel)]="endDate" class="date-input">
+            </div>
+          </div>
+          
+          <!-- Apply Button -->
+          <div class="dropdown-actions">
+            <button class="cancel-btn" (click)="toggleDateDropdown()">Hủy</button>
+            <button class="apply-btn" (click)="applyDateFilter()">Áp dụng</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Statistics Cards -->
+    <section class="stats-grid">
+      <div class="stat-card" *ngFor="let stat of stats" [style.background-color]="stat.bgColor">
+        <div class="stat-icon">
+          <img *ngIf="stat.image" [src]="stat.image" [alt]="stat.label">
+        </div>
+        <div class="stat-content">
+          <p class="stat-label">{{ stat.label }}</p>
+          <h3 class="stat-value">{{ stat.value }} <span class="stat-unit">{{ stat.unit }}</span></h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- Charts Section -->
+    <section class="charts-section">
+      <!-- Left: Donut Charts -->
+      <div class="chart-container donut-charts">
+        <h3 class="chart-title">Tỷ lệ và tốc độ tăng trưởng kinh doanh</h3>
+        <div class="donut-grid">
+          <div class="donut-item" *ngFor="let chart of chartData">
+            <svg class="donut-chart" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="45" fill="none" stroke="#E0E0E0" stroke-width="10"></circle>
+              <circle 
+                cx="50" 
+                cy="50" 
+                r="45" 
+                fill="none" 
+                [attr.stroke]="chart.color" 
+                stroke-width="10"
+                [attr.stroke-dasharray]="getChartStrokeDasharray(chart.percentage)"
+                stroke-dashoffset="0"
+                transform="rotate(-90 50 50)">
+              </circle>
+              <text x="50" y="50" text-anchor="middle" dy="7" class="donut-percentage">{{ chart.percentage }}%</text>
+            </svg>
+            <p class="donut-label">{{ chart.label }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Line Chart -->
+      <div class="chart-container line-chart">
+        <div class="chart-header-row">
+          <div class="chart-header-left">
+            <h3 class="chart-title">Số lượng vé được đặt trong tuần</h3>
+            <p class="chart-subtitle">Hiển thị lượng đặt vé mỗi ngày trong tuần</p>
+          </div>
+          <button class="download-btn">
+            <img src="/assets/icons/download.png" alt="Download Icon">
+            Lưu báo cáo
+          </button>
+        </div>
+        
+        <div class="line-chart-area">
+          
+          <svg viewBox="0 0 700 280" class="line-svg">
+            <!-- Grid line (bottom only) -->
+            <line x1="40" y1="220" x2="680" y2="220" stroke="#E8EBF0" stroke-width="2"></line>
+            
+            <!-- Smooth curve path -->
+            <path 
+              d="M 80,140 C 120,130 130,125 170,120 C 210,115 220,85 260,70 C 300,55 310,145 350,160 C 390,175 400,115 440,110 C 480,105 490,125 530,130 C 570,135 580,70 620,60"
+              fill="none" 
+              stroke="#42A5F5" 
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+            </path>
+            
+            <!-- Area fill with smooth curve -->
+            <path 
+              d="M 80,140 C 120,130 130,125 170,120 C 210,115 220,85 260,70 C 300,55 310,145 350,160 C 390,175 400,115 440,110 C 480,105 490,125 530,130 C 570,135 580,70 620,60 L 620,220 L 80,220 Z"
+              fill="url(#gradient)" 
+              opacity="0.4">
+            </path>
+            
+            <!-- Hover areas (invisible rectangles) -->
+            <rect class="hover-area" data-day="Sunday" data-value="320" x="35" y="0" width="130" height="220" fill="transparent" />
+            <rect class="hover-area" data-day="Monday" data-value="380" x="125" y="0" width="130" height="220" fill="transparent" />
+            <rect class="hover-area" data-day="Tuesday" data-value="456" x="215" y="0" width="130" height="220" fill="transparent" />
+            <rect class="hover-area" data-day="Wednesday" data-value="290" x="305" y="0" width="130" height="220" fill="transparent" />
+            <rect class="hover-area" data-day="Thursday" data-value="410" x="395" y="0" width="130" height="220" fill="transparent" />
+            <rect class="hover-area" data-day="Friday" data-value="370" x="485" y="0" width="130" height="220" fill="transparent" />
+            <rect class="hover-area" data-day="Saturday" data-value="480" x="575" y="0" width="130" height="220" fill="transparent" />
+            
+            <!-- Data points (hidden by default) -->
+            <g class="data-points">
+              <circle class="data-point" data-index="0" cx="80" cy="140" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+              <circle class="data-point" data-index="1" cx="170" cy="120" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+              <circle class="data-point" data-index="2" cx="260" cy="70" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+              <circle class="data-point" data-index="3" cx="350" cy="160" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+              <circle class="data-point" data-index="4" cx="440" cy="110" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+              <circle class="data-point" data-index="5" cx="530" cy="130" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+              <circle class="data-point" data-index="6" cx="620" cy="60" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+            </g>
+            
+            <!-- X-axis labels -->
+            <text x="80" y="250" text-anchor="middle" class="axis-label">Sunday</text>
+            <text x="170" y="250" text-anchor="middle" class="axis-label">Monday</text>
+            <text x="260" y="250" text-anchor="middle" class="axis-label">Tuesday</text>
+            <text x="350" y="250" text-anchor="middle" class="axis-label">Wednesday</text>
+            <text x="440" y="250" text-anchor="middle" class="axis-label">Thursday</text>
+            <text x="530" y="250" text-anchor="middle" class="axis-label">Friday</text>
+            <text x="620" y="250" text-anchor="middle" class="axis-label">Saturday</text>
+            
+            <!-- Gradient definition -->
+            <defs>
+              <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#42A5F5;stop-opacity:0.6" />
+                <stop offset="100%" style="stop-color:#42A5F5;stop-opacity:0" />
+              </linearGradient>
+            </defs>
+          </svg>
+          
+          <!-- Tooltip -->
+          <div class="chart-tooltip" style="display: none;">
+            <div class="tooltip-day"></div>
+            <div class="tooltip-value"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Monthly Revenue Chart -->
+    <section class="revenue-chart">
+      <h3 class="chart-title">Doanh thu theo tháng/năm</h3>
+      <div class="revenue-legend">
+        <span class="legend-item"><span class="dot blue"></span> Năm 2024</span>
+        <span class="legend-item"><span class="dot red"></span> Năm 2025</span>
+      </div>
+      <div class="revenue-chart-area">
+        <svg viewBox="0 0 1000 320" class="revenue-svg">
+          <!-- Grid lines -->
+          <line x1="40" y1="240" x2="960" y2="240" stroke="#E8EBF0" stroke-width="2"></line>
+          <line x1="40" y1="180" x2="960" y2="180" stroke="#E8EBF0" stroke-width="1" stroke-dasharray="5,5" opacity="0.5"></line>
+          <line x1="40" y1="120" x2="960" y2="120" stroke="#E8EBF0" stroke-width="1" stroke-dasharray="5,5" opacity="0.5"></line>
+          <line x1="40" y1="60" x2="960" y2="60" stroke="#E8EBF0" stroke-width="1" stroke-dasharray="5,5" opacity="0.5"></line>
+          
+          <!-- 2024 Smooth Line (Blue) -->
+          <path 
+            d="M 50,160 C 80,130 100,110 130,100 C 160,90 180,120 210,130 C 240,140 260,90 290,80 C 320,70 340,55 370,50 C 400,45 420,65 450,70 C 480,75 500,85 530,90 C 560,95 580,87 610,85 C 640,83 660,95 690,100 C 720,105 740,85 770,80 C 800,75 820,87 850,90 C 880,93 900,87 930,85"
+            fill="none" 
+            stroke="#42A5F5" 
+            stroke-width="3"
+            stroke-linecap="round">
+          </path>
+          
+          <!-- 2025 Smooth Line (Red) -->
+          <path 
+            d="M 50,140 C 80,145 100,148 130,150 C 160,152 180,90 210,70 C 240,50 260,115 290,130 C 320,145 340,50 370,40 C 400,30 420,75 450,85 C 480,95 500,105 530,110 C 560,115 580,70 610,60 C 640,50 660,90 690,95 C 720,100 740,75 770,70 C 800,65 820,120 850,130 C 880,140 900,90 930,80"
+            fill="none" 
+            stroke="#EF5350" 
+            stroke-width="3"
+            stroke-linecap="round">
+          </path>
+          
+          <!-- Hover areas for each month -->
+          <rect class="revenue-hover-area" data-month="1" data-value2024="4.200.000" data-value2025="5.000.000" x="10" y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="2" data-value2024="5.800.000" data-value2025="4.500.000" x="90" y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="3" data-value2024="4.500.000" data-value2025="6.800.000" x="170" y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="4" data-value2024="6.200.000" data-value2025="5.200.000" x="250" y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="5" data-value2024="7.000.000" data-value2025="7.500.000" x="330" y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="6" data-value2024="6.500.000" data-value2025="6.200.000" x="410" y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="7" data-value2024="5.800.000" data-value2025="5.500.000" x="490" y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="8" data-value2024="6.000.000" data-value2025="7.200.000" x="570" y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="9" data-value2024="5.500.000" data-value2025="6.000.000" x="650" y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="10" data-value2024="6.200.000" data-value2025="6.800.000" x="730" y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="11" data-value2024="5.900.000" data-value2025="5.200.000" x="810" y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="12" data-value2024="6.000.000" data-value2025="6.500.000" x="890" y="0" width="70" height="240" fill="transparent" />
+          
+          <!-- Data points 2024 (hidden by default) -->
+          <g class="revenue-data-points-2024">
+            <circle data-index="0" cx="50" cy="160" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+            <circle data-index="1" cx="130" cy="100" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+            <circle data-index="2" cx="210" cy="130" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+            <circle data-index="3" cx="290" cy="80" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+            <circle data-index="4" cx="370" cy="50" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+            <circle data-index="5" cx="450" cy="70" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+            <circle data-index="6" cx="530" cy="90" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+            <circle data-index="7" cx="610" cy="85" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+            <circle data-index="8" cx="690" cy="100" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+            <circle data-index="9" cx="770" cy="80" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+            <circle data-index="10" cx="850" cy="90" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+            <circle data-index="11" cx="930" cy="85" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+          </g>
+          
+          <!-- Data points 2025 (hidden by default) -->
+          <g class="revenue-data-points-2025">
+            <circle data-index="0" cx="50" cy="140" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
+            <circle data-index="1" cx="130" cy="150" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
+            <circle data-index="2" cx="210" cy="70" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
+            <circle data-index="3" cx="290" cy="130" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
+            <circle data-index="4" cx="370" cy="40" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
+            <circle data-index="5" cx="450" cy="85" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
+            <circle data-index="6" cx="530" cy="110" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
+            <circle data-index="7" cx="610" cy="60" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
+            <circle data-index="8" cx="690" cy="95" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
+            <circle data-index="9" cx="770" cy="70" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
+            <circle data-index="10" cx="850" cy="130" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
+            <circle data-index="11" cx="930" cy="80" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
+          </g>
+          
+          <!-- X-axis labels -->
+          <text x="50" y="270" text-anchor="middle" class="axis-label">1</text>
+          <text x="130" y="270" text-anchor="middle" class="axis-label">2</text>
+          <text x="210" y="270" text-anchor="middle" class="axis-label">3</text>
+          <text x="290" y="270" text-anchor="middle" class="axis-label">4</text>
+          <text x="370" y="270" text-anchor="middle" class="axis-label">5</text>
+          <text x="450" y="270" text-anchor="middle" class="axis-label">6</text>
+          <text x="530" y="270" text-anchor="middle" class="axis-label">7</text>
+          <text x="610" y="270" text-anchor="middle" class="axis-label">8</text>
+          <text x="690" y="270" text-anchor="middle" class="axis-label">9</text>
+          <text x="770" y="270" text-anchor="middle" class="axis-label">10</text>
+          <text x="850" y="270" text-anchor="middle" class="axis-label">11</text>
+          <text x="930" y="270" text-anchor="middle" class="axis-label">12</text>
+          
+          <!-- Y-axis labels -->
+          <text x="10" y="245" class="axis-label-y">2.000.000</text>
+          <text x="10" y="185" class="axis-label-y">4.000.000</text>
+          <text x="10" y="125" class="axis-label-y">6.000.000</text>
+          <text x="10" y="65" class="axis-label-y">8.000.000</text>
+        </svg>
+        
+        <!-- Tooltip for revenue chart -->
+        <div class="revenue-tooltip" style="display: none;">
+          <div class="revenue-tooltip-month"></div>
+          <div class="revenue-tooltip-values">
+            <div class="revenue-tooltip-2024">
+              <span class="dot-inline blue"></span>
+              <span class="year-label">2024:</span>
+              <span class="value-label value-2024"></span>
+            </div>
+            <div class="revenue-tooltip-2025">
+              <span class="dot-inline red"></span>
+              <span class="year-label">2025:</span>
+              <span class="value-label value-2025"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

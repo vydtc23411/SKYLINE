@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
@@ -17,7 +18,7 @@ interface Review {
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -25,6 +26,19 @@ export class HomeComponent implements OnInit {
   reviews: Review[] = [];
   displayedReviews: Review[] = [];
   reviewsToShow: number = 3;
+
+  // Flight search data
+  cities = [
+    { code: 'HAN', name: 'HAN (Hà Nội, Việt Nam)' },
+    { code: 'SGN', name: 'SGN (TP. Hồ Chí Minh, Việt Nam)' },
+    { code: 'DAD', name: 'DAD (Đà Nẵng, Việt Nam)' },
+    { code: 'CXR', name: 'CXR (Nha Trang, Việt Nam)' },
+    { code: 'PQC', name: 'PQC (Phú Quốc, Việt Nam)' }
+  ];
+
+  departureCity: string = '';
+  arrivalCity: string = '';
+  travelDate: string = '';
 
   constructor(
     private authService: AuthService, 
@@ -35,6 +49,45 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     // Load reviews from JSON
     this.loadReviews();
+  }
+
+  // Get available arrival cities (excluding selected departure)
+  getAvailableArrivalCities() {
+    return this.cities.filter(city => city.code !== this.departureCity);
+  }
+
+  // Get available departure cities (excluding selected arrival)
+  getAvailableDepartureCities() {
+    return this.cities.filter(city => city.code !== this.arrivalCity);
+  }
+
+  // Handle departure change
+  onDepartureChange() {
+    // If arrival city is the same as new departure, clear arrival
+    if (this.arrivalCity === this.departureCity) {
+      this.arrivalCity = '';
+    }
+  }
+
+  // Handle arrival change
+  onArrivalChange() {
+    // If departure city is the same as new arrival, clear departure
+    if (this.departureCity === this.arrivalCity) {
+      this.departureCity = '';
+    }
+  }
+
+  // Handle search
+  onSearch() {
+    if (this.departureCity && this.arrivalCity && this.travelDate) {
+      console.log('Searching flights:', {
+        from: this.departureCity,
+        to: this.arrivalCity,
+        date: this.travelDate
+      });
+      // Navigate to flight search results
+      // this.router.navigate(['/flight-search'], { ... });
+    }
   }
 
   loadReviews(): void {

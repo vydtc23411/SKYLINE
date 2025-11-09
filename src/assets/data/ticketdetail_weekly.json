@@ -1,0 +1,340 @@
+{
+  "weeks": [
+    {
+      "week_start": "2025-09-21",
+      "week_end": "2025-09-27",
+      "unit": "tickets",
+      "days": [
+        {
+          "date": "2025-09-21",
+          "weekday": "Sunday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-09-22",
+          "weekday": "Monday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-09-23",
+          "weekday": "Tuesday",
+          "tickets": 20
+        },
+        {
+          "date": "2025-09-24",
+          "weekday": "Wednesday",
+          "tickets": 28
+        },
+        {
+          "date": "2025-09-25",
+          "weekday": "Thursday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-09-26",
+          "weekday": "Friday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-09-27",
+          "weekday": "Saturday",
+          "tickets": 0
+        }
+      ]
+    },
+    {
+      "week_start": "2025-09-28",
+      "week_end": "2025-10-04",
+      "unit": "tickets",
+      "days": [
+        {
+          "date": "2025-09-28",
+          "weekday": "Sunday",
+          "tickets": 98
+        },
+        {
+          "date": "2025-09-29",
+          "weekday": "Monday",
+          "tickets": 101
+        },
+        {
+          "date": "2025-09-30",
+          "weekday": "Tuesday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-01",
+          "weekday": "Wednesday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-02",
+          "weekday": "Thursday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-03",
+          "weekday": "Friday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-04",
+          "weekday": "Saturday",
+          "tickets": 0
+        }
+      ]
+    },
+    {
+      "week_start": "2025-10-05",
+      "week_end": "2025-10-11",
+      "unit": "tickets",
+      "days": [
+        {
+          "date": "2025-10-05",
+          "weekday": "Sunday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-06",
+          "weekday": "Monday",
+          "tickets": 21
+        },
+        {
+          "date": "2025-10-07",
+          "weekday": "Tuesday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-08",
+          "weekday": "Wednesday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-09",
+          "weekday": "Thursday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-10",
+          "weekday": "Friday",
+          "tickets": 55
+        },
+        {
+          "date": "2025-10-11",
+          "weekday": "Saturday",
+          "tickets": 0
+        }
+      ]
+    },
+    {
+      "week_start": "2025-10-12",
+      "week_end": "2025-10-18",
+      "unit": "tickets",
+      "days": [
+        {
+          "date": "2025-10-12",
+          "weekday": "Sunday",
+          "tickets": 44
+        },
+        {
+          "date": "2025-10-13",
+          "weekday": "Monday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-14",
+          "weekday": "Tuesday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-15",
+          "weekday": "Wednesday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-16",
+          "weekday": "Thursday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-17",
+          "weekday": "Friday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-18",
+          "weekday": "Saturday",
+          "tickets": 0
+        }
+      ]
+    },
+    {
+      "week_start": "2025-10-19",
+      "week_end": "2025-10-25",
+      "unit": "tickets",
+      "days": [
+        {
+          "date": "2025-10-19",
+          "weekday": "Sunday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-20",
+          "weekday": "Monday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-21",
+          "weekday": "Tuesday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-22",
+          "weekday": "Wednesday",
+          "tickets": 114
+        },
+        {
+          "date": "2025-10-23",
+          "weekday": "Thursday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-24",
+          "weekday": "Friday",
+          "tickets": 42
+        },
+        {
+          "date": "2025-10-25",
+          "weekday": "Saturday",
+          "tickets": 103
+        }
+      ]
+    },
+    {
+      "week_start": "2025-10-26",
+      "week_end": "2025-11-01",
+      "unit": "tickets",
+      "days": [
+        {
+          "date": "2025-10-26",
+          "weekday": "Sunday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-10-27",
+          "weekday": "Monday",
+          "tickets": 101
+        },
+        {
+          "date": "2025-10-28",
+          "weekday": "Tuesday",
+          "tickets": 177
+        },
+        {
+          "date": "2025-10-29",
+          "weekday": "Wednesday",
+          "tickets": 185
+        },
+        {
+          "date": "2025-10-30",
+          "weekday": "Thursday",
+          "tickets": 400
+        },
+        {
+          "date": "2025-10-31",
+          "weekday": "Friday",
+          "tickets": 206
+        },
+        {
+          "date": "2025-11-01",
+          "weekday": "Saturday",
+          "tickets": 139
+        }
+      ]
+    },
+    {
+      "week_start": "2025-11-02",
+      "week_end": "2025-11-08",
+      "unit": "tickets",
+      "days": [
+        {
+          "date": "2025-11-02",
+          "weekday": "Sunday",
+          "tickets": 361
+        },
+        {
+          "date": "2025-11-03",
+          "weekday": "Monday",
+          "tickets": 345
+        },
+        {
+          "date": "2025-11-04",
+          "weekday": "Tuesday",
+          "tickets": 118
+        },
+        {
+          "date": "2025-11-05",
+          "weekday": "Wednesday",
+          "tickets": 331
+        },
+        {
+          "date": "2025-11-06",
+          "weekday": "Thursday",
+          "tickets": 250
+        },
+        {
+          "date": "2025-11-07",
+          "weekday": "Friday",
+          "tickets": 188
+        },
+        {
+          "date": "2025-11-08",
+          "weekday": "Saturday",
+          "tickets": 295
+        }
+      ]
+    },
+    {
+      "week_start": "2025-11-09",
+      "week_end": "2025-11-15",
+      "unit": "tickets",
+      "days": [
+        {
+          "date": "2025-11-09",
+          "weekday": "Sunday",
+          "tickets": 167
+        },
+        {
+          "date": "2025-11-10",
+          "weekday": "Monday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-11-11",
+          "weekday": "Tuesday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-11-12",
+          "weekday": "Wednesday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-11-13",
+          "weekday": "Thursday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-11-14",
+          "weekday": "Friday",
+          "tickets": 0
+        },
+        {
+          "date": "2025-11-15",
+          "weekday": "Saturday",
+          "tickets": 0
+        }
+      ]
+    }
+  ]
+}
