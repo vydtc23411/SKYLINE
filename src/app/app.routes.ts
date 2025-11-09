@@ -19,7 +19,7 @@ export const routes: Routes = [
   // Trang mặc định khi vào app
   { path: '', redirectTo: 'customer-sign-in', pathMatch: 'full' },
 
-  // Đăng nhập/đăng ký
+  // Đăng nhập/đăng ký Customer
   {
     path: 'customer-sign-in',
     loadComponent: () => import('./user/customer-sign-in/customer-sign-in').then(m => m.CustomerSignInComponent)
@@ -27,6 +27,16 @@ export const routes: Routes = [
   {
     path: 'customer-sign-up',
     loadComponent: () => import('./user/customer-sign-up/customer-sign-up').then(m => m.CustomerSignUpComponent)
+  },
+
+  // Đăng nhập Admin
+  {
+    path: 'admin-login',
+    loadComponent: () => import('./admin/admin-sign-in/admin-sign-in').then(m => m.AdminSignIn)
+  },
+  {
+    path: 'admin-home',
+    loadComponent: () => import('./admin/admin-home/admin-home').then(m => m.AdminHome)
   },
 
   // Trang chính
