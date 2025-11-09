@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { Routes } from '@angular/router';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Confirmation } from './user/confirmation/confirmation';
@@ -20,6 +20,7 @@ import { Contact } from './user/contact/contact';
   selector: 'app-root',
   imports: [
     RouterOutlet,
+    RouterModule,
     CommonModule,
     FormsModule,
     SeatSelection,
