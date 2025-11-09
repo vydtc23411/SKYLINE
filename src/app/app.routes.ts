@@ -42,7 +42,7 @@ export const routes: Routes = [
   // Trang chính
   {
     path: 'home',
-    loadComponent: () => import('./user/home/home').then(m => m.HomeComponent)
+    loadComponent: () => import('./user/home/home').then(m => m.Home)
   },
 
   {
@@ -68,12 +68,12 @@ export const routes: Routes = [
 
   //Trang tìm chuyến bay
   {
-    path: '',
+    path: 'tim-chuyen-bay',
     loadComponent: () =>
       import('./user/flight-search/flight-search')
         .then(m => m.FlightSearchComponent),
   },
-  
+
   //Trang chọn chuyến bay
   {
     path: 'chon-chuyen-bay/:id',

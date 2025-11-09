@@ -21,7 +21,7 @@
                             name="departureCity"
                             (change)="onDepartureChange()"
                             required>
-                            <option value="" disabled selected>Điểm Đi</option>
+                            <option value="" disabled selected>Chọn điểm đi...</option>
                             @for (city of getAvailableDepartureCities(); track city.code) {
                                 <option [value]="city.code">{{ city.name }}</option>
                             }
@@ -38,7 +38,7 @@
                             name="arrivalCity"
                             (change)="onArrivalChange()"
                             required>
-                            <option value="" disabled selected>Điểm Đến</option>
+                            <option value="" disabled selected>Chọn điểm đến...</option>
                             @for (city of getAvailableArrivalCities(); track city.code) {
                                 <option [value]="city.code">{{ city.name }}</option>
                             }

@@ -1,11 +1,14 @@
-<!-- ===== 2. FORM (đưa tabs vào trong thanh tìm kiếm) ===== -->
+<app-header></app-header>
+<!-- =====FORM (đưa tabs vào trong thanh tìm kiếm) ===== -->
 <form (ngSubmit)="search()" #frm="ngForm" class="mb-4 fs-form" [class.fs-form-emphasis]="!hasSearched()">
 
   <!-- Toolbar bên trong form: Tabs trip type -->
   <div class="d-flex justify-content-end mb-2">
     <div class="trip-tabs">
-      <button type="button" class="tab" [class.active]="tripType()==='oneway'" (click)="setTrip('oneway')">Một chiều</button>
-      <button type="button" class="tab" [class.active]="tripType()==='round'"   (click)="setTrip('round')">Khứ hồi</button>
+      <button type="button" class="tab" [class.active]="tripType()==='oneway'" (click)="setTrip('oneway')">Một
+        chiều</button>
+      <button type="button" class="tab" [class.active]="tripType()==='round'" (click)="setTrip('round')">Khứ
+        hồi</button>
     </div>
   </div>
 
@@ -17,9 +20,8 @@
         <div class="fs-label">From</div>
         <div class="d-flex align-items-center gap-2">
           <i class="bi bi-airplane-engines"></i>
-          <select class="form-select p-0 border-0 bg-transparent"
-                  [ngModel]="from()" (ngModelChange)="from.set($event)"
-                  name="from" required>
+          <select class="form-select p-0 border-0 bg-transparent" [ngModel]="from()" (ngModelChange)="from.set($event)"
+            name="from" required>
             <option value="" disabled>Chọn điểm đi…</option>
             <option *ngFor="let a of airports" [value]="a.code">{{a.code}} ({{a.name}})</option>
           </select>
@@ -40,9 +42,8 @@
         <div class="fs-label">To</div>
         <div class="d-flex align-items-center gap-2">
           <i class="bi bi-airplane plane-down"></i>
-          <select class="form-select p-0 border-0 bg-transparent"
-                  [ngModel]="to()" (ngModelChange)="to.set($event)"
-                  name="to" required>
+          <select class="form-select p-0 border-0 bg-transparent" [ngModel]="to()" (ngModelChange)="to.set($event)"
+            name="to" required>
             <option value="" disabled>Chọn điểm đến…</option>
             <option *ngFor="let a of airports" [value]="a.code">{{a.code}} ({{a.name}})</option>
           </select>
@@ -61,9 +62,13 @@
         </div>
       </div>
       <div class="fs-menu" *ngIf="showCabinOut()">
-        <button type="button" class="list-group-item list-group-item-action" [class.active]="cabinOut()==='Economy'" (click)="setCabinOut('Economy')">Phổ thông</button>
-        <button type="button" class="list-group-item list-group-item-action" [class.active]="cabinOut()==='Premium Economy'" (click)="setCabinOut('Premium Economy')">Phổ thông đặc biệt</button>
-        <button type="button" class="list-group-item list-group-item-action" [class.active]="cabinOut()==='Business'" (click)="setCabinOut('Business')">Thương gia</button>
+        <button type="button" class="list-group-item list-group-item-action" [class.active]="cabinOut()==='Economy'"
+          (click)="setCabinOut('Economy')">Phổ thông</button>
+        <button type="button" class="list-group-item list-group-item-action"
+          [class.active]="cabinOut()==='Premium Economy'" (click)="setCabinOut('Premium Economy')">Phổ thông đặc
+          biệt</button>
+        <button type="button" class="list-group-item list-group-item-action" [class.active]="cabinOut()==='Business'"
+          (click)="setCabinOut('Business')">Thương gia</button>
       </div>
     </div>
   </div>
@@ -76,9 +81,8 @@
         <div class="fs-label">From</div>
         <div class="d-flex align-items-center gap-2">
           <i class="bi bi-airplane-engines"></i>
-          <select class="form-select p-0 border-0 bg-transparent"
-                  [ngModel]="rtFrom()" (ngModelChange)="rtFrom.set($event)"
-                  name="rtFrom">
+          <select class="form-select p-0 border-0 bg-transparent" [ngModel]="rtFrom()"
+            (ngModelChange)="rtFrom.set($event)" name="rtFrom">
             <option value="" disabled>Chọn điểm đi…</option>
             <option *ngFor="let a of airports" [value]="a.code">{{a.code}} ({{a.name}})</option>
           </select>
@@ -98,9 +102,8 @@
         <div class="fs-label">To</div>
         <div class="d-flex align-items-center gap-2">
           <i class="bi bi-airplane"></i>
-          <select class="form-select p-0 border-0 bg-transparent"
-                  [ngModel]="rtTo()" (ngModelChange)="rtTo.set($event)"
-                  name="rtTo">
+          <select class="form-select p-0 border-0 bg-transparent" [ngModel]="rtTo()" (ngModelChange)="rtTo.set($event)"
+            name="rtTo">
             <option value="" disabled>Chọn điểm đến…</option>
             <option *ngFor="let a of airports" [value]="a.code">{{a.code}} ({{a.name}})</option>
           </select>
@@ -119,9 +122,13 @@
         </div>
       </div>
       <div class="fs-menu" *ngIf="showCabinBack()">
-        <button type="button" class="list-group-item list-group-item-action" [class.active]="cabinBack()==='Economy'" (click)="setCabinBack('Economy')">Phổ thông</button>
-        <button type="button" class="list-group-item list-group-item-action" [class.active]="cabinBack()==='Premium Economy'" (click)="setCabinBack('Premium Economy')">Phổ thông đặc biệt</button>
-        <button type="button" class="list-group-item list-group-item-action" [class.active]="cabinBack()==='Business'" (click)="setCabinBack('Business')">Thương gia</button>
+        <button type="button" class="list-group-item list-group-item-action" [class.active]="cabinBack()==='Economy'"
+          (click)="setCabinBack('Economy')">Phổ thông</button>
+        <button type="button" class="list-group-item list-group-item-action"
+          [class.active]="cabinBack()==='Premium Economy'" (click)="setCabinBack('Premium Economy')">Phổ thông đặc
+          biệt</button>
+        <button type="button" class="list-group-item list-group-item-action" [class.active]="cabinBack()==='Business'"
+          (click)="setCabinBack('Business')">Thương gia</button>
       </div>
     </div>
   </div>
@@ -133,9 +140,8 @@
         <div class="fs-label">Ngày khởi hành</div>
         <div class="d-flex align-items-center gap-2">
           <i class="bi bi-calendar3"></i>
-          <input class="form-control p-0 border-0 bg-transparent" type="date"
-                 [ngModel]="departDate()" (ngModelChange)="departDate.set($event)"
-                 name="departDate" required>
+          <input class="form-control p-0 border-0 bg-transparent" type="date" [ngModel]="departDate()"
+            (ngModelChange)="departDate.set($event)" name="departDate" required>
         </div>
       </div>
     </div>
@@ -147,13 +153,13 @@
         <div class="fs-label">Ngày khứ hồi</div>
         <div class="d-flex align-items-center gap-2">
           <i class="bi bi-calendar3"></i>
-          <input class="form-control p-0 border-0 bg-transparent" type="date"
-                 [min]="departDate()"
-                 [ngModel]="returnDate()" (ngModelChange)="returnDate.set($event)"
-                 name="returnDate">
+          <input class="form-control p-0 border-0 bg-transparent" type="date" [min]="departDate()"
+            [ngModel]="returnDate()" (ngModelChange)="returnDate.set($event)" name="returnDate">
         </div>
       </div>
-      <ng-template #toPlaceholder><div class="fs-tile fs-placeholder"></div></ng-template>
+      <ng-template #toPlaceholder>
+        <div class="fs-tile fs-placeholder"></div>
+      </ng-template>
     </div>
 
     <div class="fs-cell position-relative">
@@ -168,7 +174,10 @@
       <div class="fs-menu" *ngIf="showPax()">
         <!-- stepper ... -->
         <div class="d-flex align-items-center justify-content-between">
-          <div><div class="fw-semibold">Người lớn</div><div class="text-muted small">Từ 12 tuổi</div></div>
+          <div>
+            <div class="fw-semibold">Người lớn</div>
+            <div class="text-muted small">Từ 12 tuổi</div>
+          </div>
           <div class="fs-stepper">
             <button type="button" class="btn btn-outline-secondary btn-sm" (click)="dec('adults')">−</button>
             <span class="mx-2">{{ adults() }}</span>
@@ -176,7 +185,10 @@
           </div>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
-          <div><div class="fw-semibold">Trẻ em</div><div class="text-muted small">2–11 tuổi</div></div>
+          <div>
+            <div class="fw-semibold">Trẻ em</div>
+            <div class="text-muted small">2–11 tuổi</div>
+          </div>
           <div class="fs-stepper">
             <button type="button" class="btn btn-outline-secondary btn-sm" (click)="dec('children')">−</button>
             <span class="mx-2">{{ children() }}</span>
@@ -184,7 +196,10 @@
           </div>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
-          <div><div class="fw-semibold">Em bé</div><div class="text-muted small">&lt; 2 tuổi</div></div>
+          <div>
+            <div class="fw-semibold">Em bé</div>
+            <div class="text-muted small">&lt; 2 tuổi</div>
+          </div>
           <div class="fs-stepper">
             <button type="button" class="btn btn-outline-secondary btn-sm" (click)="dec('infants')">−</button>
             <span class="mx-2">{{ infants() }}</span>
@@ -200,13 +215,13 @@
 
   <!-- Nút -->
   <div class="d-flex justify-content-end mt-3 gap-2">
-    <button type="button" class="btn btn-outline-primary rounded-pill btn-clear-all"
-      (click)="from.set(''); to.set(''); departDate.set(''); returnDate.set('');
+    <button type="button" class="btn btn-outline-primary rounded-pill btn-clear-all" (click)="from.set(''); to.set(''); departDate.set(''); returnDate.set('');
                rtFrom.set(''); rtTo.set(''); cabinOut.set(''); cabinBack.set('');
                hasSearched.set(false); autoDateMsg.set(null); clearFilters();">
       Xoá tất cả
     </button>
-    <button type="submit" class="btn btn-lg rounded-pill px-4 fs-search-btn" [disabled]="frm.invalid">Tìm chuyến bay</button>
+    <button type="submit" class="btn btn-lg rounded-pill px-4 fs-search-btn" [disabled]="frm.invalid">Tìm chuyến
+      bay</button>
   </div>
 
   <!-- Banner tự điều chỉnh ngày (nếu có) -->
@@ -223,11 +238,7 @@
       <!-- Header: tiêu đề + nút Reset ở bên phải -->
       <div class="card-header d-flex align-items-center justify-content-between">
         <span class="fw-bold">BỘ LỌC</span>
-        <button
-          type="button"
-          class="filter-reset"
-          (click)="clearFilters()"
-          aria-label="Reset bộ lọc"
+        <button type="button" class="filter-reset" (click)="clearFilters()" aria-label="Reset bộ lọc"
           title="Reset bộ lọc">
           <i class="bi bi-arrow-counterclockwise"></i>
         </button>
@@ -239,8 +250,8 @@
           <div class="section-title">Hãng hàng không</div>
           <div class="chip-group">
             <ng-container *ngFor="let a of airlines; let i = index">
-              <input type="checkbox" class="btn-check" [id]="'al_'+i"
-                     [checked]="airlineSel().includes(a)" (change)="toggleAirline(a)">
+              <input type="checkbox" class="btn-check" [id]="'al_'+i" [checked]="airlineSel().includes(a)"
+                (change)="toggleAirline(a)">
               <label class="btn filter-chip" [for]="'al_'+i">{{ a }}</label>
             </ng-container>
           </div>
@@ -250,10 +261,14 @@
         <div class="filter-section">
           <div class="section-title">Mức giá (triệu VND)</div>
           <div class="chip-group">
-            <input type="checkbox" class="btn-check" id="p1" [checked]="priceSel().includes('p_u1500')" (change)="togglePrice('p_u1500')"><label class="btn filter-chip" for="p1">&lt; 1.5</label>
-            <input type="checkbox" class="btn-check" id="p2" [checked]="priceSel().includes('p_1500_2500')" (change)="togglePrice('p_1500_2500')"><label class="btn filter-chip" for="p2">1.5 – 2.5</label>
-            <input type="checkbox" class="btn-check" id="p3" [checked]="priceSel().includes('p_2500_4000')" (change)="togglePrice('p_2500_4000')"><label class="btn filter-chip" for="p3">2.5 – 4</label>
-            <input type="checkbox" class="btn-check" id="p4" [checked]="priceSel().includes('p_o4000')" (change)="togglePrice('p_o4000')"><label class="btn filter-chip" for="p4">&ge; 4</label>
+            <input type="checkbox" class="btn-check" id="p1" [checked]="priceSel().includes('p_u1500')"
+              (change)="togglePrice('p_u1500')"><label class="btn filter-chip" for="p1">&lt; 1.5</label>
+            <input type="checkbox" class="btn-check" id="p2" [checked]="priceSel().includes('p_1500_2500')"
+              (change)="togglePrice('p_1500_2500')"><label class="btn filter-chip" for="p2">1.5 – 2.5</label>
+            <input type="checkbox" class="btn-check" id="p3" [checked]="priceSel().includes('p_2500_4000')"
+              (change)="togglePrice('p_2500_4000')"><label class="btn filter-chip" for="p3">2.5 – 4</label>
+            <input type="checkbox" class="btn-check" id="p4" [checked]="priceSel().includes('p_o4000')"
+              (change)="togglePrice('p_o4000')"><label class="btn filter-chip" for="p4">&ge; 4</label>
           </div>
         </div>
 
@@ -261,9 +276,12 @@
         <div class="filter-section">
           <div class="section-title">Khung giờ cất cánh</div>
           <div class="chip-group">
-            <input type="checkbox" class="btn-check" id="t1" [checked]="timeSel().includes('t_morning')" (change)="toggleTime('t_morning')"><label class="btn filter-chip" for="t1">Sáng (00–10:59)</label>
-            <input type="checkbox" class="btn-check" id="t2" [checked]="timeSel().includes('t_noon')" (change)="toggleTime('t_noon')"><label class="btn filter-chip" for="t2">Trưa/Chiều (11–16:59)</label>
-            <input type="checkbox" class="btn-check" id="t3" [checked]="timeSel().includes('t_evening')" (change)="toggleTime('t_evening')"><label class="btn filter-chip" for="t3">Tối (17–23:59)</label>
+            <input type="checkbox" class="btn-check" id="t1" [checked]="timeSel().includes('t_morning')"
+              (change)="toggleTime('t_morning')"><label class="btn filter-chip" for="t1">Sáng (00–10:59)</label>
+            <input type="checkbox" class="btn-check" id="t2" [checked]="timeSel().includes('t_noon')"
+              (change)="toggleTime('t_noon')"><label class="btn filter-chip" for="t2">Trưa/Chiều (11–16:59)</label>
+            <input type="checkbox" class="btn-check" id="t3" [checked]="timeSel().includes('t_evening')"
+              (change)="toggleTime('t_evening')"><label class="btn filter-chip" for="t3">Tối (17–23:59)</label>
           </div>
         </div>
 
@@ -271,9 +289,12 @@
         <div class="filter-section">
           <div class="section-title">Thời lượng bay</div>
           <div class="chip-group">
-            <input type="checkbox" class="btn-check" id="d1" [checked]="durSel().includes('d_u60')" (change)="toggleDur('d_u60')"><label class="btn filter-chip" for="d1">&lt; 60'</label>
-            <input type="checkbox" class="btn-check" id="d2" [checked]="durSel().includes('d_60_120')" (change)="toggleDur('d_60_120')"><label class="btn filter-chip" for="d2">60 – 120'</label>
-            <input type="checkbox" class="btn-check" id="d3" [checked]="durSel().includes('d_o120')" (change)="toggleDur('d_o120')"><label class="btn filter-chip" for="d3">&gt; 120'</label>
+            <input type="checkbox" class="btn-check" id="d1" [checked]="durSel().includes('d_u60')"
+              (change)="toggleDur('d_u60')"><label class="btn filter-chip" for="d1">&lt; 60'</label>
+            <input type="checkbox" class="btn-check" id="d2" [checked]="durSel().includes('d_60_120')"
+              (change)="toggleDur('d_60_120')"><label class="btn filter-chip" for="d2">60 – 120'</label>
+            <input type="checkbox" class="btn-check" id="d3" [checked]="durSel().includes('d_o120')"
+              (change)="toggleDur('d_o120')"><label class="btn filter-chip" for="d3">&gt; 120'</label>
           </div>
         </div>
 
@@ -293,12 +314,10 @@
           <div class="d-flex align-items-center gap-2">
             <span class="text-muted small">Sắp xếp giá:</span>
             <div class="btn-group" role="group" aria-label="Sort price">
-              <button type="button" class="btn btn-outline-secondary btn-sm"
-                      [class.active]="sortOrder()==='price_desc'"
-                      (click)="setSort('price_desc')">Cao → Thấp</button>
-              <button type="button" class="btn btn-outline-secondary btn-sm"
-                      [class.active]="sortOrder()==='price_asc'"
-                      (click)="setSort('price_asc')">Thấp → Cao</button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" [class.active]="sortOrder()==='price_desc'"
+                (click)="setSort('price_desc')">Cao → Thấp</button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" [class.active]="sortOrder()==='price_asc'"
+                (click)="setSort('price_asc')">Thấp → Cao</button>
             </div>
           </div>
         </div>
@@ -307,15 +326,13 @@
         <div *ngFor="let f of othersOut()" class="card rc2-card border-0 mb-3">
           <div class="rc2-grid">
             <div class="rc2-logo">
-  <ng-container *ngIf="logoOf(f) as logo; else initials">
-    <img [src]="logo"
-         [alt]="f.airline || getCarrierCode(f)"
-         loading="lazy">
-  </ng-container>
-  <ng-template #initials>
-    <span class="logo-text">{{ getCarrierCode(f) }}</span>
-  </ng-template>
-</div>
+              <ng-container *ngIf="logoOf(f) as logo; else initials">
+                <img [src]="logo" [alt]="f.airline || getCarrierCode(f)" loading="lazy">
+              </ng-container>
+              <ng-template #initials>
+                <span class="logo-text">{{ getCarrierCode(f) }}</span>
+              </ng-template>
+            </div>
 
             <div class="rc2-mid">
               <div class="rc2-time-row">
@@ -329,8 +346,12 @@
                 <div class="rc2-time text-end">{{ timeHM(f.arriveTime) }}</div>
               </div>
               <div class="rc2-route">
-                <div><div class="rc2-code">{{ f.from }}</div></div>
-                <div class="text-end"><div class="rc2-code">{{ f.to }}</div></div>
+                <div>
+                  <div class="rc2-code">{{ f.from }}</div>
+                </div>
+                <div class="text-end">
+                  <div class="rc2-code">{{ f.to }}</div>
+                </div>
               </div>
               <div class="rc2-meta text-muted">
                 {{ f.airline }} • {{ f.flightNo }} • {{ dateVN(f.departTime) }}
@@ -346,9 +367,8 @@
               <div *ngIf="oldPrice(f) as op" class="rc2-old">{{ priceStr(op, f.currency, 'code') }}</div>
               <div class="rc2-now">{{ priceStr(f.price, f.currency, 'code') }}</div>
               <!-- THÊM state -->
-              <a class="btn rc2-cta"
-                 [routerLink]="['/chon-chuyen-bay', f.id]"
-                 [state]="{ search: snapshotSearch() }">Chọn</a>
+              <a class="btn rc2-cta" [routerLink]="['/chon-chuyen-bay', f.id]"
+                [state]="{ search: snapshotSearch() }">Chọn</a>
             </div>
           </div>
         </div>
@@ -374,12 +394,10 @@
           <div class="d-flex align-items-center gap-2">
             <span class="text-muted small">Sắp xếp giá:</span>
             <div class="btn-group" role="group" aria-label="Sort price">
-              <button type="button" class="btn btn-outline-secondary btn-sm"
-                      [class.active]="sortOrder()==='price_desc'"
-                      (click)="setSort('price_desc')">Cao → Thấp</button>
-              <button type="button" class="btn btn-outline-secondary btn-sm"
-                      [class.active]="sortOrder()==='price_asc'"
-                      (click)="setSort('price_asc')">Thấp → Cao</button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" [class.active]="sortOrder()==='price_desc'"
+                (click)="setSort('price_desc')">Cao → Thấp</button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" [class.active]="sortOrder()==='price_asc'"
+                (click)="setSort('price_asc')">Thấp → Cao</button>
             </div>
           </div>
         </div>
@@ -399,8 +417,12 @@
                 <div class="rc2-time text-end">{{ timeHM(f.arriveTime) }}</div>
               </div>
               <div class="rc2-route">
-                <div><div class="rc2-code">{{ f.from }}</div></div>
-                <div class="text-end"><div class="rc2-code">{{ f.to }}</div></div>
+                <div>
+                  <div class="rc2-code">{{ f.from }}</div>
+                </div>
+                <div class="text-end">
+                  <div class="rc2-code">{{ f.to }}</div>
+                </div>
               </div>
               <div class="rc2-meta text-muted">
                 {{ f.airline }} • {{ f.flightNo }} • {{ dateVN(f.departTime) }}
@@ -416,9 +438,8 @@
               <div *ngIf="oldPrice(f) as op" class="rc2-old">{{ priceStr(op, f.currency, 'code') }}</div>
               <div class="rc2-now">{{ priceStr(f.price, f.currency, 'code') }}</div>
               <!-- THÊM state -->
-              <a class="btn rc2-cta"
-                 [routerLink]="['/chon-chuyen-bay', f.id]"
-                 [state]="{ search: snapshotSearch() }">Chọn</a>
+              <a class="btn rc2-cta" [routerLink]="['/chon-chuyen-bay', f.id]"
+                [state]="{ search: snapshotSearch() }">Chọn</a>
             </div>
           </div>
         </div>
@@ -437,7 +458,8 @@
 
         <!-- CHẶNG VỀ (KHÔNG có thanh sắp xếp) -->
         <div class="d-flex justify-content-between align-items-center mb-2">
-          <div class="fw-bold">Chặng về: {{ rtFrom() || to() }} → {{ rtTo() || from() }} • {{ returnDate() || '—' }}</div>
+          <div class="fw-bold">Chặng về: {{ rtFrom() || to() }} → {{ rtTo() || from() }} • {{ returnDate() || '—' }}
+          </div>
         </div>
 
         <div *ngFor="let f of othersBack()" class="card rc2-card border-0 mb-3">
@@ -455,8 +477,12 @@
                 <div class="rc2-time text-end">{{ timeHM(f.arriveTime) }}</div>
               </div>
               <div class="rc2-route">
-                <div><div class="rc2-code">{{ f.from }}</div></div>
-                <div class="text-end"><div class="rc2-code">{{ f.to }}</div></div>
+                <div>
+                  <div class="rc2-code">{{ f.from }}</div>
+                </div>
+                <div class="text-end">
+                  <div class="rc2-code">{{ f.to }}</div>
+                </div>
               </div>
               <div class="rc2-meta text-muted">
                 {{ f.airline }} • {{ f.flightNo }} • {{ dateVN(f.departTime) }}
@@ -472,9 +498,8 @@
               <div *ngIf="oldPrice(f) as op" class="rc2-old">{{ priceStr(op, f.currency, 'code') }}</div>
               <div class="rc2-now">{{ priceStr(f.price, f.currency, 'code') }}</div>
               <!-- THÊM state -->
-              <a class="btn rc2-cta"
-                 [routerLink]="['/chon-chuyen-bay', f.id]"
-                 [state]="{ search: snapshotSearch() }">Chọn</a>
+              <a class="btn rc2-cta" [routerLink]="['/chon-chuyen-bay', f.id]"
+                [state]="{ search: snapshotSearch() }">Chọn</a>
             </div>
           </div>
         </div>
@@ -495,3 +520,4 @@
     </ng-container>
   </section>
 </div>
+<app-footer></app-footer>

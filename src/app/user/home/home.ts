@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router} from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { HeaderComponent } from '../shared/header/header';
 import { FooterComponent } from '../shared/footer/footer';
@@ -22,7 +22,7 @@ interface Review {
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
-export class HomeComponent implements OnInit {
+export class Home implements OnInit {
   reviews: Review[] = [];
   displayedReviews: Review[] = [];
   reviewsToShow: number = 3;
@@ -80,13 +80,18 @@ export class HomeComponent implements OnInit {
   // Handle search
   onSearch() {
     if (this.departureCity && this.arrivalCity && this.travelDate) {
-      console.log('Searching flights:', {
-        from: this.departureCity,
-        to: this.arrivalCity,
-        date: this.travelDate
-      });
+      // console.log('Searching flights:', {
+      //   from: this.departureCity,
+      //   to: this.arrivalCity,
+      //   date: this.travelDate
+      // });
       // Navigate to flight search results
-      // this.router.navigate(['/flight-search'], { ... });
+      this.router.navigate(['/tim-chuyen-bay'], {
+      queryParams: {
+        from: this.departureCity.toUpperCase(),
+        to: this.arrivalCity.toUpperCase(),
+        date: this.travelDate,}
+    });
     }
   }
 

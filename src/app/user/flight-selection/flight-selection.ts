@@ -28,35 +28,35 @@ export interface Flight {
 function normalizeFlights(data: any): Flight[] {
   const cur = data?.meta?.currency ?? 'VND';
   const list = Array.isArray(data) ? data : (data?.flights ?? []);
-  const pick = (o:any, keys:string[], def:any='') => {
+  const pick = (o: any, keys: string[], def: any = '') => {
     for (const k of keys) {
       try {
-        const v = k.includes('.') ? k.split('.').reduce((x:any,kk)=>x?.[kk], o) : o?.[k];
+        const v = k.includes('.') ? k.split('.').reduce((x: any, kk) => x?.[kk], o) : o?.[k];
         if (v !== undefined && v !== null && v !== '') return v;
-      } catch {}
+      } catch { }
     }
     return def;
   };
   return (list as any[]).map(x => {
-    const departISO = String(pick(x, ['departTime','depart_time','dep_time','depart','departISO','depart.time']));
-    const arriveISO = String(pick(x, ['arriveTime','arrive_time','arr_time','arrive','arriveISO','arrive.time']));
-    const date      = String(pick(x, ['date','flight_date'], departISO ? departISO.slice(0,10) : ''));
-    const from      = String(pick(x, ['from','origin','from_code','route.from'])).toUpperCase();
-    const to        = String(pick(x, ['to','destination','to_code','route.to'])).toUpperCase();
-    const price     = Number(pick(x, ['price','fare','amount','total','base_price'], 0));
-    const duration  = Number(pick(x, ['durationMin','duration_min','duration','mins'], 0));
+    const departISO = String(pick(x, ['departTime', 'depart_time', 'dep_time', 'depart', 'departISO', 'depart.time']));
+    const arriveISO = String(pick(x, ['arriveTime', 'arrive_time', 'arr_time', 'arrive', 'arriveISO', 'arrive.time']));
+    const date = String(pick(x, ['date', 'flight_date'], departISO ? departISO.slice(0, 10) : ''));
+    const from = String(pick(x, ['from', 'origin', 'from_code', 'route.from'])).toUpperCase();
+    const to = String(pick(x, ['to', 'destination', 'to_code', 'route.to'])).toUpperCase();
+    const price = Number(pick(x, ['price', 'fare', 'amount', 'total', 'base_price'], 0));
+    const duration = Number(pick(x, ['durationMin', 'duration_min', 'duration', 'mins'], 0));
     return {
-      id: String(pick(x, ['id'], `${pick(x,['flightNo','number','flight_no'],'XX000')}-${date}`)),
-      airline: String(pick(x, ['airline','carrier','airline_name'], 'Unknown')),
-      flightNo: String(pick(x, ['flightNo','number','flight_no'], 'XX000')),
+      id: String(pick(x, ['id'], `${pick(x, ['flightNo', 'number', 'flight_no'], 'XX000')}-${date}`)),
+      airline: String(pick(x, ['airline', 'carrier', 'airline_name'], 'Unknown')),
+      flightNo: String(pick(x, ['flightNo', 'number', 'flight_no'], 'XX000')),
       from, to, date,
       departTime: departISO,
       arriveTime: arriveISO,
       durationMin: duration,
       price,
-      currency: (String(pick(x, ['currency'], cur)) as 'VND'|'USD'),
-      seatsLeft: Number(pick(x, ['seatsLeft','seats_left','seats_remaining'], 0)),
-      cabin: (pick(x, ['cabin','class'], 'Economy') as Cabin),
+      currency: (String(pick(x, ['currency'], cur)) as 'VND' | 'USD'),
+      seatsLeft: Number(pick(x, ['seatsLeft', 'seats_left', 'seats_remaining'], 0)),
+      cabin: (pick(x, ['cabin', 'class'], 'Economy') as Cabin),
       details: x.details ?? x
     };
   });
@@ -70,14 +70,14 @@ function normalizeFlights(data: any): Flight[] {
   styleUrls: ['./flight-selection.css']
 })
 export class FlightSelectionComponent {
-  private http     = inject(HttpClient);
-  private route    = inject(ActivatedRoute);
-  private router   = inject(Router);
+  private http = inject(HttpClient);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private location = inject(Location);
 
   isLoading = signal(true);
-  loadError = signal<string|null>(null);
-  flight    = signal<Flight|null>(null);
+  loadError = signal<string | null>(null);
+  flight = signal<Flight | null>(null);
 
   // === GÁN SẴN HẠNG GHẾ (không lấy từ data) ===
   private readonly STATIC_CABINS = ['Phổ thông', 'Thương gia'];
@@ -87,7 +87,7 @@ export class FlightSelectionComponent {
     this.http.get('assets/flight-search-sampledata.json').subscribe({
       next: raw => {
         const all = normalizeFlights(raw);
-        const f   = all.find(x => String(x.id) === String(id)) ?? null;
+        const f = all.find(x => String(x.id) === String(id)) ?? null;
         this.flight.set(f);
         this.isLoading.set(false);
         if (!f) this.loadError.set('Không tìm thấy chuyến bay.');
@@ -115,32 +115,32 @@ export class FlightSelectionComponent {
   }
 
   /* ===== Helpers ===== */
-  getCarrierCode(f: Flight){
+  getCarrierCode(f: Flight) {
     const code = (f as any)?.details?.airline_code?.toUpperCase?.();
     if (code) return code;
-    const initials = (f.airline ?? '').split(/\s+/).filter(Boolean).map(w => w[0]).join('').slice(0,3).toUpperCase();
+    const initials = (f.airline ?? '').split(/\s+/).filter(Boolean).map(w => w[0]).join('').slice(0, 3).toUpperCase();
     return initials || '??';
   }
 
-  timeHM(iso?: string){
-    if(!iso) return '';
-    try { return new Date(iso).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',hour12:false}); }
+  timeHM(iso?: string) {
+    if (!iso) return '';
+    try { return new Date(iso).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', hour12: false }); }
     catch { return ''; }
   }
 
-  dateVN(iso?: string){
-    if(!iso) return '';
-    const d=new Date(iso);
-    const wd=['Chủ nhật','Thứ hai','Thứ ba','Thứ tư','Thứ năm','Thứ sáu','Thứ bảy'][d.getDay()];
-    const dd=String(d.getDate()).padStart(2,'0'); const mm=String(d.getMonth()+1).padStart(2,'0'); const yyyy=d.getFullYear();
+  dateVN(iso?: string) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    const wd = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'][d.getDay()];
+    const dd = String(d.getDate()).padStart(2, '0'); const mm = String(d.getMonth() + 1).padStart(2, '0'); const yyyy = d.getFullYear();
     return `${wd}, ${dd}/${mm}/${yyyy}`;
   }
 
-  durationStr(mins?: number){
-    if(mins==null) return '';
-    const h=Math.floor(mins/60), m=mins%60;
-    if(h&&m) return `${h}h${String(m).padStart(2,'0')}m`;
-    if(h) return `${h}h`;
+  durationStr(mins?: number) {
+    if (mins == null) return '';
+    const h = Math.floor(mins / 60), m = mins % 60;
+    if (h && m) return `${h}h${String(m).padStart(2, '0')}m`;
+    if (h) return `${h}h`;
     return `${m}m`;
   }
 
@@ -148,8 +148,8 @@ export class FlightSelectionComponent {
   timeRangeText(f: Flight | null): string {
     if (!f) return '—';
     const start = this.timeHM(f.departTime);
-    const end   = this.timeHM(f.arriveTime);
-    const dur   = this.durationStr(f.durationMin);
+    const end = this.timeHM(f.arriveTime);
+    const dur = this.durationStr(f.durationMin);
     return `${start} – ${end} (${dur})`;
   }
 
@@ -158,19 +158,19 @@ export class FlightSelectionComponent {
     return this.STATIC_CABINS.join(', ');
   }
 
-  priceStr(v?: number, cur='VND', style:'symbol'|'code'='code'){
-    if(v==null) return '';
-    try{
-      if(cur==='VND'){
-        return style==='symbol'
-          ? new Intl.NumberFormat('vi-VN',{style:'currency',currency:'VND',maximumFractionDigits:0}).format(v)
+  priceStr(v?: number, cur = 'VND', style: 'symbol' | 'code' = 'code') {
+    if (v == null) return '';
+    try {
+      if (cur === 'VND') {
+        return style === 'symbol'
+          ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(v)
           : `${v.toLocaleString('vi-VN')} VND`;
       }
-      return new Intl.NumberFormat('en-US',{style:'currency',currency:cur}).format(v);
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: cur }).format(v);
     } catch { return `${v.toLocaleString('vi-VN')} ${cur}`; }
   }
-  hasPromo(f: Flight){ return !!(f as any)?.details?.promo_code; }
-  oldPrice(f: Flight){ return this.hasPromo(f) ? Math.round((f.price*1.1)/1000)*1000 : null; }
+  hasPromo(f: Flight) { return !!(f as any)?.details?.promo_code; }
+  oldPrice(f: Flight) { return this.hasPromo(f) ? Math.round((f.price * 1.1) / 1000) * 1000 : null; }
 
   /* ===== Dữ liệu hiển thị ===== */
   promo = computed(() => this.flight()?.details?.promo_code ?? null);
@@ -189,8 +189,8 @@ export class FlightSelectionComponent {
     }];
   });
 
-  legDurationMin(a?: string, b?: string){
-    if(!a || !b) return 0;
+  legDurationMin(a?: string, b?: string) {
+    if (!a || !b) return 0;
     const t1 = new Date(a).getTime();
     const t2 = new Date(b).getTime();
     if (isNaN(t1) || isNaN(t2)) return 0;
@@ -213,14 +213,14 @@ export class FlightSelectionComponent {
   });
 
   terminalFrom = computed(() => this.flight()?.details?.terminalFrom ?? null);
-  terminalTo   = computed(() => this.flight()?.details?.terminalTo ?? null);
-  gate         = computed(() => this.flight()?.details?.gate ?? null);
-  aircraft     = computed(() => this.flight()?.details?.aircraft ?? null);
+  terminalTo = computed(() => this.flight()?.details?.terminalTo ?? null);
+  gate = computed(() => this.flight()?.details?.gate ?? null);
+  aircraft = computed(() => this.flight()?.details?.aircraft ?? null);
 
   perks = computed<string[]>(() => {
     const p = this.flight()?.details?.perks;
     if (Array.isArray(p)) return p;
-    return ['Hành lý xách tay 7kg','Miễn phí đổi lịch trong 24h (nếu có)','Chọn chỗ tiêu chuẩn'];
+    return ['Hành lý xách tay 7kg', 'Miễn phí đổi lịch trong 24h (nếu có)', 'Chọn chỗ tiêu chuẩn'];
   });
 
   // Map mã → tên sân bay
