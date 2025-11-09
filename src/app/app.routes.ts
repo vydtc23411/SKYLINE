@@ -66,6 +66,22 @@ export const routes: Routes = [
     ]
   },
 
+  //Trang tìm chuyến bay
+  {
+    path: '',
+    loadComponent: () =>
+      import('./user/flight-search/flight-search')
+        .then(m => m.FlightSearchComponent),
+  },
+  
+  //Trang chọn chuyến bay
+  {
+    path: 'chon-chuyen-bay/:id',
+    loadComponent: () =>
+      import('./user/flight-selection/flight-selection')
+        .then(m => m.FlightSelectionComponent),
+  },
+
   // Trang đặt vé / chuyến bay
   { path: 'seat-selection', component: SeatSelection },
   { path: 'baggage-selection', component: BaggageSelection },
