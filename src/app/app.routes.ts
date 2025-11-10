@@ -39,6 +39,28 @@ export const routes: Routes = [
     loadComponent: () => import('./admin/admin-home/admin-home').then(m => m.AdminHome)
   },
 
+  // Admin Management Pages
+  {
+    path: 'admin/ticket-management',
+    loadComponent: () => import('./admin/ticket-management/ticket-management').then(m => m.TicketManagement)
+  },
+  {
+    path: 'admin/flight-management',
+    loadComponent: () => import('./admin/flight-management/flight-management').then(m => m.FlightManagement)
+  },
+  {
+    path: 'admin/airline-management',
+    loadComponent: () => import('./admin/airline-management/airline-management').then(m => m.AirlineManagement)
+  },
+  {
+    path: 'admin/promotion-management',
+    loadComponent: () => import('./admin/promotion-management/promotion-management').then(m => m.PromotionManagement)
+  },
+  {
+    path: 'admin/user-management',
+    loadComponent: () => import('./admin/user-management/user-management').then(m => m.UserManagement)
+  },
+
   // Trang chính
   {
     path: 'home',

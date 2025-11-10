@@ -2,10 +2,11 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { AdminSidebarComponent } from '../shared/sidebar/sidebar';
 
 @Component({
   selector: 'app-admin-home',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, AdminSidebarComponent],
   templateUrl: './admin-home.html',
   styleUrl: './admin-home.css',
 })
