@@ -79,6 +79,26 @@
   transform: scale(1.1);
 }
 
+.logout-icon-btn {
+  background-color: #ffebee;
+  color: #EF5350;
+  transition: all 0.3s;
+}
+
+.logout-icon-btn:hover {
+  background-color: #EF5350;
+  color: white;
+  transform: scale(1.1);
+}
+
+.logout-icon-btn svg {
+  stroke: currentColor;
+}
+
+.user-info-wrapper {
+  position: relative;
+}
+
 .user-info {
   display: flex;
   align-items: center;
@@ -87,6 +107,12 @@
   padding: 8px 15px;
   border-radius: 25px;
   cursor: pointer;
+  transition: all 0.3s;
+}
+
+.user-info:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 
 .user-avatar {
@@ -109,6 +135,92 @@
   font-size: 14px;
   font-weight: 600;
   color: #333;
+}
+
+/* User Dropdown */
+.user-dropdown {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  min-width: 250px;
+  z-index: 1000;
+  animation: slideDown 0.3s ease;
+  overflow: hidden;
+}
+
+.user-dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  background: linear-gradient(135deg, #4a6fa5 0%, #375578 100%);
+  color: white;
+}
+
+.dropdown-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.dropdown-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dropdown-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+}
+
+.dropdown-email {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.user-dropdown-divider {
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 0;
+}
+
+.user-dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+}
+
+.user-dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+
+.user-dropdown-item.logout-item {
+  color: #EF5350;
+}
+
+.user-dropdown-item.logout-item:hover {
+  background-color: #ffebee;
+}
+
+.item-icon {
+  font-size: 18px;
+  width: 20px;
+  text-align: center;
 }
 
 /* Welcome Section */
@@ -190,6 +302,9 @@
 /* Date Dropdown */
 .date-filter {
   position: relative;
+  display: flex;
+  gap: 15px;
+  align-items: center;
 }
 
 .date-dropdown {
@@ -203,6 +318,33 @@
   min-width: 350px;
   z-index: 100;
   animation: slideDown 0.3s ease;
+}
+
+.unified-dropdown {
+  min-width: 400px;
+}
+
+.filter-step {
+  width: 100%;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #4a6fa5;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s;
+}
+
+.back-btn:hover {
+  color: #375578;
+  text-decoration: underline;
 }
 
 @keyframes slideDown {
@@ -226,6 +368,124 @@
   font-size: 16px;
   color: #333;
   margin: 0;
+}
+
+.month-selection {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding-right: 5px;
+}
+
+.month-selection::-webkit-scrollbar {
+  width: 6px;
+}
+
+.month-selection::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.month-selection::-webkit-scrollbar-thumb {
+  background: #4a6fa5;
+  border-radius: 3px;
+}
+
+.month-selection::-webkit-scrollbar-thumb:hover {
+  background: #3d5a8c;
+}
+
+.month-btn {
+  width: 100%;
+  padding: 12px 15px;
+  background-color: #f5f5f5;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: all 0.3s;
+  text-align: left;
+}
+
+.month-btn:hover {
+  background-color: #e3f2fd;
+  border-color: #4a6fa5;
+  transform: translateX(2px);
+}
+
+.month-btn.active {
+  background-color: #4a6fa5;
+  border-color: #4a6fa5;
+}
+
+.month-btn.active .month-info {
+  color: white;
+}
+
+.month-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: #333;
+}
+
+.month-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.month-stats {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.week-selection {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.week-btn {
+  width: 100%;
+  padding: 12px 15px;
+  background-color: #f5f5f5;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: all 0.3s;
+  text-align: left;
+}
+
+.week-btn:hover {
+  background-color: #e3f2fd;
+  border-color: #4a6fa5;
+}
+
+.week-btn.active {
+  background-color: #4a6fa5;
+  border-color: #4a6fa5;
+}
+
+.week-btn.active .week-info {
+  color: white;
+}
+
+.week-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: #333;
+}
+
+.week-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.week-dates {
+  font-size: 12px;
+  opacity: 0.8;
 }
 
 .quick-filters {
@@ -408,22 +668,30 @@
 }
 
 /* Donut Charts */
+.donut-charts {
+  background-color: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
 .donut-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 30px;
+  margin-top: 20px;
 }
 
 .donut-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 .donut-chart {
-  width: 100px;
-  height: 100px;
+  width: 140px;
+  height: 140px;
 }
 
 .donut-percentage {
@@ -432,11 +700,19 @@
   fill: #333;
 }
 
+.donut-percentage-symbol {
+  font-size: 10px;
+  font-weight: 500;
+  fill: #666;
+}
+
 .donut-label {
-  font-size: 11px;
+  font-size: 13px;
   color: #666;
   text-align: center;
-  line-height: 1.3;
+  line-height: 1.4;
+  max-width: 140px;
+  font-weight: 500;
 }
 
 /* Line Chart */

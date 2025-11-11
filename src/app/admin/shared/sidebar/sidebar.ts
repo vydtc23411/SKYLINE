@@ -52,12 +52,6 @@ export class AdminSidebarComponent {
       icon: '/assets/icons/customer.png', 
       label: 'Khách hàng',
       active: false 
-    },
-    { 
-      route: '/admin/settings', 
-      icon: '/assets/icons/settings.png', 
-      label: 'Cài đặt hệ thống',
-      active: false 
     }
   ];
 
