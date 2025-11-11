@@ -42,7 +42,7 @@ export class CheckTicket2 implements OnInit {
     },
     { 
       code: 'TRPM02', 
-      name: 'Nguyễn Văn B', 
+      name: 'Nguyễn Văn A', 
       seat: 'A16', 
       status: 'Chờ thanh toán', 
       route: 'Hà Nội - Đà Nẵng', 
