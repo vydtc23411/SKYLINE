@@ -64,9 +64,6 @@
       <div class="fs-menu" *ngIf="showCabinOut()">
         <button type="button" class="list-group-item list-group-item-action" [class.active]="cabinOut()==='Economy'"
           (click)="setCabinOut('Economy')">Phổ thông</button>
-        <button type="button" class="list-group-item list-group-item-action"
-          [class.active]="cabinOut()==='Premium Economy'" (click)="setCabinOut('Premium Economy')">Phổ thông đặc
-          biệt</button>
         <button type="button" class="list-group-item list-group-item-action" [class.active]="cabinOut()==='Business'"
           (click)="setCabinOut('Business')">Thương gia</button>
       </div>
@@ -124,9 +121,6 @@
       <div class="fs-menu" *ngIf="showCabinBack()">
         <button type="button" class="list-group-item list-group-item-action" [class.active]="cabinBack()==='Economy'"
           (click)="setCabinBack('Economy')">Phổ thông</button>
-        <button type="button" class="list-group-item list-group-item-action"
-          [class.active]="cabinBack()==='Premium Economy'" (click)="setCabinBack('Premium Economy')">Phổ thông đặc
-          biệt</button>
         <button type="button" class="list-group-item list-group-item-action" [class.active]="cabinBack()==='Business'"
           (click)="setCabinBack('Business')">Thương gia</button>
       </div>
@@ -404,7 +398,14 @@
 
         <div *ngFor="let f of othersOut()" class="card rc2-card border-0 mb-3">
           <div class="rc2-grid">
-            <div class="rc2-logo"><span class="logo-text">{{ getCarrierCode(f) }}</span></div>
+            <div class="rc2-logo">
+              <ng-container *ngIf="logoOf(f) as logo; else initials">
+                <img [src]="logo" [alt]="f.airline || getCarrierCode(f)" loading="lazy">
+              </ng-container>
+              <ng-template #initials>
+                <span class="logo-text">{{ getCarrierCode(f) }}</span>
+              </ng-template>
+            </div>
             <div class="rc2-mid">
               <div class="rc2-time-row">
                 <div class="rc2-time">{{ timeHM(f.departTime) }}</div>
@@ -464,7 +465,14 @@
 
         <div *ngFor="let f of othersBack()" class="card rc2-card border-0 mb-3">
           <div class="rc2-grid">
-            <div class="rc2-logo"><span class="logo-text">{{ getCarrierCode(f) }}</span></div>
+            <div class="rc2-logo">
+              <ng-container *ngIf="logoOf(f) as logo; else initials">
+                <img [src]="logo" [alt]="f.airline || getCarrierCode(f)" loading="lazy">
+              </ng-container>
+              <ng-template #initials>
+                <span class="logo-text">{{ getCarrierCode(f) }}</span>
+              </ng-template>
+            </div>
             <div class="rc2-mid">
               <div class="rc2-time-row">
                 <div class="rc2-time">{{ timeHM(f.departTime) }}</div>

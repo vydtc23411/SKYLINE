@@ -1,8 +1,10 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { HeaderComponent } from '../shared/header/header';
+import { FooterComponent } from '../shared/footer/footer';
 export { FlightSelectionComponent as FlightSelection } from './flight-selection';
 
 type Cabin = 'Economy' | 'Premium Economy' | 'Business';
@@ -65,7 +67,7 @@ function normalizeFlights(data: any): Flight[] {
 @Component({
   selector: 'app-flight-selection',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HeaderComponent, FooterComponent],
   templateUrl: './flight-selection.html',
   styleUrls: ['./flight-selection.css']
 })
@@ -99,15 +101,18 @@ export class FlightSelectionComponent {
   /* ===== Điều hướng cho 2 nút ===== */
   goBack() {
     const st = (history.state && (history.state as any).search) || null;
+
+    // Ưu tiên quay lại trang tìm kiếm và khôi phục trạng thái
     if (st) {
-      this.router.navigate(['/'], { state: { search: st } });
-    } else if (window.history.length > 1) {
-      this.location.back();
+      this.router.navigate(['/tim-chuyen-bay'], { state: { search: st } });
+      return;
+    }
+    if (window.history.length > 1) {
+      this.location.back();  // Nếu không có state (ví dụ truy cập trực tiếp), dùng back nếu có history
     } else {
-      this.router.navigate(['/']);
+      this.router.navigate(['/tim-chuyen-bay']); // Fallback về trang tìm kiếm trống
     }
   }
-
   goChooseCabin() {
     const id = this.flight()?.id;
     const st = (history.state && (history.state as any).search) || null;
@@ -239,5 +244,21 @@ export class FlightSelectionComponent {
   // Văn bản số điểm dừng (mặc định Bay thẳng)
   stopsText(): string {
     return this.flight()?.details?.stops || 'Bay thẳng';
+  }
+    private readonly logoByCode: Record<string, string> = {
+    VN: 'https://upload.wikimedia.org/wikipedia/vi/b/bc/Vietnam_Airlines_logo.svg',
+    VJ: 'https://upload.wikimedia.org/wikipedia/commons/1/19/VietJet_Air_logo.svg',
+    QH: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Bamboo_Airways_Logo.svg',
+    BL: 'https://upload.wikimedia.org/wikipedia/commons/5/5d/Logo_h%C3%A3ng_Pacific_Airlines.svg',
+    VU: 'https://upload.wikimedia.org/wikipedia/commons/e/ee/Vietravel_Airlines_Logo.png',
+  };
+
+  /** Trả về URL logo nếu có & không lỗi; nếu lỗi hoặc không có → null để rơi về ô xám + ký hiệu */
+  logoOf(f: any): string | null {
+    if ((f as any)?._logoError) return null; // ảnh đã báo lỗi
+    const byData = f?.details?.logo?.trim?.();
+    if (byData) return byData;
+    const code = (f?.details?.airline_code || f?.airline_code || '').toUpperCase();
+    return this.logoByCode[code] ?? null;
   }
 }

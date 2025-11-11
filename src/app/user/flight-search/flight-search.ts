@@ -1,35 +1,37 @@
 import { Component, computed, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router'; 
+import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../shared/header/header';
 import { FooterComponent } from '../shared/footer/footer';
 
+// Định nghĩa kiểu dữ liệu chuyến bay
 export interface Flight {
   id: string;
   airline: string;
   flightNo: string;
   from: string;
   to: string;
-  date: string;            // YYYY-MM-DD
-  departTime: string;      // ISO
-  arriveTime: string;      // ISO
+  date: string;         
+  departTime: string;     
+  arriveTime: string;      
   durationMin: number;
   price: number;
   currency: 'VND' | 'USD';
   seatsLeft: number;
   cabin: 'Economy' | 'Premium Economy' | 'Business';
-  details?: any;
+  details?: any; // Chứa dữ liệu chi tiết chuyến bay
 }
 
 type RawJson = { meta?: any; flights?: any[] } | any;
 
-/** Chuẩn hoá dữ liệu JSON nhiều biến thể key */
+// Chức năng chuẩn hoá dữ liệu JSON từ nhiều nguồn
 function normalizeFlights(data: RawJson): Flight[] {
-  const cur = data?.meta?.currency ?? 'VND';
+  const cur = data?.meta?.currency ?? 'VND';  // Lấy currency mặc định là 'VND' nếu không có thông tin
   const list = Array.isArray(data) ? data : (data?.flights ?? []);
 
+  // Lấy giá trị của một key bất kỳ, ưu tiên các key chính xác, trả về giá trị mặc định nếu không tìm thấy
   const pick = (obj: any, keys: string[], def: any = '') => {
     for (const k of keys) {
       try {
@@ -37,34 +39,35 @@ function normalizeFlights(data: RawJson): Flight[] {
           ? k.split('.').reduce((o, kk) => o?.[kk], obj)
           : obj?.[k];
         if (v !== undefined && v !== null && v !== '') return v;
-      } catch { }
+      } catch {}
     }
     return def;
   };
 
+   // Lọc và chuẩn hoá dữ liệu chuyến bay từ nguồn JSON
   return (list as any[]).map(x => {
-    const departISO = String(pick(x, ['departTime', 'depart_time', 'dep_time', 'depart', 'depart_at', 'departISO', 'depart_iso', 'depart.time']));
-    const arriveISO = String(pick(x, ['arriveTime', 'arrive_time', 'arr_time', 'arrive', 'arrive_at', 'arriveISO', 'arrive_iso', 'arrive.time']));
-    const date = String(pick(x, ['date', 'flight_date'], departISO ? departISO.slice(0, 10) : ''));
+    const departISO = String(pick(x, ['departTime','depart_time','dep_time','depart','depart_at','departISO','depart_iso','depart.time']));
+    const arriveISO = String(pick(x, ['arriveTime','arrive_time','arr_time','arrive','arrive_at','arriveISO','arrive_iso','arrive.time']));
+    const date = String(pick(x, ['date','flight_date'], departISO ? departISO.slice(0,10) : ''));
 
-    const from = String(pick(x, ['from', 'origin', 'from_code', 'origin_code', 'route.from'])).toUpperCase();
-    const to = String(pick(x, ['to', 'destination', 'to_code', 'destination_code', 'route.to'])).toUpperCase();
+    const from = String(pick(x, ['from','origin','from_code','origin_code','route.from'])).toUpperCase();
+    const to   = String(pick(x, ['to','destination','to_code','destination_code','route.to'])).toUpperCase();
 
-    const cabin = pick(x, ['cabin', 'class'], 'Economy');
-    const price = Number(pick(x, ['price', 'fare', 'amount', 'total', 'base_price'], 0));
+    const cabin = pick(x, ['cabin','class'], 'Economy');
+    const price = Number(pick(x, ['price','fare','amount','total','base_price'], 0));
 
     return {
-      id: String(pick(x, ['id'], `${pick(x, ['flightNo', 'number', 'flight_no'], 'XX000')}-${date}`)),
-      airline: String(pick(x, ['airline', 'carrier', 'airline_name'], 'Unknown')),
-      flightNo: String(pick(x, ['flightNo', 'number', 'flight_no'], 'XX000')),
+      id: String(pick(x, ['id'], `${pick(x, ['flightNo','number','flight_no'], 'XX000')}-${date}`)),
+      airline: String(pick(x, ['airline','carrier','airline_name'], 'Unknown')),
+      flightNo: String(pick(x, ['flightNo','number','flight_no'], 'XX000')),
       from, to,
       date,
       departTime: departISO,
       arriveTime: arriveISO,
-      durationMin: Number(pick(x, ['durationMin', 'duration_min', 'duration', 'mins'], 0)),
+      durationMin: Number(pick(x, ['durationMin','duration_min','duration','mins'], 0)),
       price,
-      currency: (String(pick(x, ['currency'], cur)) as 'VND' | 'USD'),
-      seatsLeft: Number(pick(x, ['seatsLeft', 'seats_left', 'seats_remaining'], 0)),
+      currency: (String(pick(x, ['currency'], cur)) as 'VND'|'USD'),
+      seatsLeft: Number(pick(x, ['seatsLeft','seats_left','seats_remaining'], 0)),
       cabin: (cabin as Flight['cabin']),
       details: x.details ?? x
     };
@@ -78,70 +81,72 @@ function normalizeFlights(data: RawJson): Flight[] {
   templateUrl: './flight-search.html',
   styleUrls: ['./flight-search.css'],
 })
+
+// Inject ActivatedRoute và Router để xử lý URL query params
 export class FlightSearchComponent {
-  // ⬇️ THÊM inject route/router để đọc query & update URL
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
   constructor(private http: HttpClient) {
-    // 1) KHÔI PHỤC trạng thái nếu được chuyển về từ flight-selection
+    // 1) Khôi phục state khi quay lại từ trang lựa chọn
     const st = (history.state as any)?.search;
-    if (st) this.applySearchState(st);
+    if (st) this.applySearchState(st);  // Ghi chú: Tải lại state tìm kiếm từ history khi quay lại trang này
 
-    // 2) ĐỌC QUERY từ Home (/tim-chuyen-bay?from=..&to=..&date=..&pax=..)
+    // 2) Đọc query từ URL (đi từ trang chủ)
     const p = this.route.snapshot.queryParamMap;
-    const qpFrom = (p.get('from') ?? '').toUpperCase();
-    const qpTo   = (p.get('to')   ?? '').toUpperCase();
-    const qpDate = p.get('date') ?? '';
-    const qpTrip = (p.get('trip') as 'oneway' | 'round' | null) ?? null;
+    const qpTrip  = (p.get('trip') as 'oneway'|'round'|null) ?? null;
+    const qpFrom  = (p.get('from') ?? '').toUpperCase();
+    const qpTo    = (p.get('to') ?? '').toUpperCase();
+    const qpDate  = p.get('date') ?? '';
 
+    // Cập nhật các giá trị form từ URL query params
     if (qpTrip) this.tripType.set(qpTrip);
     if (qpFrom) this.from.set(qpFrom);
     if (qpTo)   this.to.set(qpTo);
     if (qpDate) this.departDate.set(qpDate);
 
-    // 3) TẢI DỮ LIỆU, SAU ĐÓ nếu có đủ from/to/date thì auto search
-    this.fetchData(/*autoSearchAfterLoad=*/true);
+    // 3) Tải dữ liệu chuyến bay; nếu URL đủ từ/to/ngày thì tự động search
+    this.fetchData(true);
   }
 
   // ===== STATE CƠ BẢN =====
+  // Trạng thái tải dữ liệu chuyến bay
   private allFlights = signal<Flight[]>([]);
   isLoading = signal(false);
   loadError = signal<string | null>(null);
   hasSearched = signal(false);
   autoDateMsg = signal<string | null>(null);
 
-  // loại chuyến
+  // Lưu trữ thông tin chuyến bay, hành khách và các bộ lọc
   tripType = signal<'oneway' | 'round'>('oneway');
-
-  // form signals
   from = signal<string>(''); to = signal<string>('');
   departDate = signal<string>('');
-  // khứ hồi
   rtFrom = signal<string>(''); rtTo = signal<string>(''); returnDate = signal<string>('');
 
-  // hạng ghế (UI, KHÔNG lọc kết quả)
+  // Nhấn mạnh việc sử dụng signals trong component, dễ quản lý state và reactive
   cabinOut = signal<Flight['cabin'] | ''>(''); showCabinOut = signal(false);
   cabinBack = signal<Flight['cabin'] | ''>(''); showCabinBack = signal(false);
+
+  // Ghi chú: sử dụng signals để tạo sự thay đổi state trong UI.
   setCabinOut(c: Flight['cabin']) { this.cabinOut.set(c); this.showCabinOut.set(false); }
   setCabinBack(c: Flight['cabin']) { this.cabinBack.set(c); this.showCabinBack.set(false); }
 
-  // hành khách
+  // Các hàm xử lý cập nhật hành khách (adults, children, infants) 
   showPax = signal(false);
   adults = signal(1); children = signal(0); infants = signal(0);
   paxTotal = computed(() => this.adults() + this.children() + this.infants());
   paxLabel = computed(() => `${this.adults()} Người lớn, ${this.children()} Trẻ em, ${this.infants()} Em bé`);
-  inc(k: 'adults' | 'children' | 'infants') {
+  inc(k: 'adults'|'children'|'infants') {
     if (this.paxTotal() >= 9) return;
     if (k === 'infants' && this.infants() + 1 > this.adults()) return;
     const m = { adults: this.adults, children: this.children, infants: this.infants } as const;
-    m[k].set(m[k]() + 1);
+    m[k].set(m[k]()+1);
   }
-  dec(k: 'adults' | 'children' | 'infants') {
+  dec(k: 'adults'|'children'|'infants') {
     const m = { adults: this.adults, children: this.children, infants: this.infants } as const;
     const v = m[k]();
     if (k === 'adults') { if (v <= 1) return; if (this.infants() > v - 1) this.infants.set(v - 1); }
-    if (v <= 0) return; m[k].set(v - 1);
+    if (v <= 0) return; m[k].set(v-1);
   }
 
   airports = [
@@ -157,20 +162,22 @@ export class FlightSearchComponent {
   airlineSel = signal<string[]>([]);
   priceSel = signal<string[]>([]);
   timeSel = signal<string[]>([]);
-  durSel = signal<string[]>([]);
+  durSel  = signal<string[]>([]);
   private toggle(sigArr: ReturnType<typeof signal<string[]>>, k: string) {
     const s = new Set(sigArr()); s.has(k) ? s.delete(k) : s.add(k); sigArr.set([...s]);
   }
+
+  // Các hàm bộ lọc: hãng bay, giá, thời gian, thời gian bay, và xử lý các bộ lọc
   toggleAirline(a: string) { this.toggle(this.airlineSel, a); }
-  togglePrice(k: string) { this.toggle(this.priceSel, k); }
-  toggleTime(k: string) { this.toggle(this.timeSel, k); }
-  toggleDur(k: string) { this.toggle(this.durSel, k); }
+  togglePrice(k: string)   { this.toggle(this.priceSel, k); }
+  toggleTime(k: string)    { this.toggle(this.timeSel, k); }
+  toggleDur(k: string)     { this.toggle(this.durSel, k); }
   clearFilters() {
     this.airlineSel.set([]); this.priceSel.set([]); this.timeSel.set([]); this.durSel.set([]);
-    this.autoDateMsg.set(null); // xoá banner khi clear
+    this.autoDateMsg.set(null);
   }
 
-  // ⬇️ ĐỔI: nhận tham số autoSearchAfterLoad để tự chạy search khi có đủ query
+  /** Tải dữ liệu; autoSearchAfterLoad = true sẽ tự search nếu có đủ from/to/date */
   fetchData(autoSearchAfterLoad = false) {
     this.isLoading.set(true);
     this.loadError.set(null);
@@ -178,12 +185,8 @@ export class FlightSearchComponent {
       next: raw => {
         this.allFlights.set(normalizeFlights(raw));
         this.isLoading.set(false);
-
-        if (autoSearchAfterLoad) {
-          // Nếu đã có đủ tiêu chí từ URL thì auto chạy search để hiển thị ngay
-          if (this.from() && this.to() && this.departDate()) {
-            this.search(/*updateUrl=*/false); // chạy search nhưng chưa cập nhật URL
-          }
+        if (autoSearchAfterLoad && this.from() && this.to() && this.departDate()) {
+          this.search(false); // không update URL lần nữa
         }
       },
       error: err => {
@@ -196,7 +199,6 @@ export class FlightSearchComponent {
 
   setTrip(t: 'oneway' | 'round') {
     this.tripType.set(t);
-    // reset kết quả + banner mỗi khi đổi chế độ
     this.hasSearched.set(false);
     this.autoDateMsg.set(null);
     this.listLimitOut.set(3);
@@ -208,21 +210,21 @@ export class FlightSearchComponent {
       this.returnDate.set(''); this.rtFrom.set(''); this.rtTo.set('');
     }
   }
-  swap() { const f = this.from(); this.from.set(this.to()); this.to.set(f); }
+  swap()       { const f = this.from(); this.from.set(this.to()); this.to.set(f); }
   swapReturn() { const f = this.rtFrom(); this.rtFrom.set(this.rtTo()); this.rtTo.set(f); }
 
-  // ===== SẮP XẾP (chỉ dùng cho chặng đi & oneway) =====
+  // ===== SẮP XẾP =====
   sortOrder = signal<'price_desc' | 'price_asc'>('price_asc');
-  setSort(order: 'price_desc' | 'price_asc') { this.sortOrder.set(order); }
+  setSort(order: 'price_desc'|'price_asc') { this.sortOrder.set(order); }
 
-  // ===== PHÂN TRANG RIÊNG CHO 2 CHẶNG =====
+  // ===== PHÂN TRANG =====
   listLimitOut = signal(3);
   listLimitBack = signal(3);
-  showMoreOut() { const total = this.resultsOut().length; this.listLimitOut.set(Math.min(this.listLimitOut() + 3, total)); }
-  showMoreBack() { const total = this.resultsBack().length; this.listLimitBack.set(Math.min(this.listLimitBack() + 3, total)); }
+  showMoreOut()  { const total = this.resultsOut().length;  this.listLimitOut.set(Math.min(this.listLimitOut()+3, total)); }
+  showMoreBack() { const total = this.resultsBack().length; this.listLimitBack.set(Math.min(this.listLimitBack()+3, total)); }
 
   // ===== SEARCH =====
-  // ⬇️ THÊM tham số updateUrl để kiểm soát có cập nhật URL hay không
+  /** updateUrl = true để ghi tiêu chí lên URL (tiện refresh/share) */
   search(updateUrl = true) {
     this.autoDateMsg.set(null);
     if (this.tripType() === 'round' && this.returnDate() < this.departDate()) {
@@ -237,7 +239,7 @@ export class FlightSearchComponent {
       if (nearest) { this.departDate.set(nearest); this.autoDateMsg.set(`Không có chuyến ngày ${d}. Đã tự chọn ngày gần nhất: ${nearest}.`); }
     }
 
-    // Auto fill & nearest cho CHẶNG VỀ (nếu là round)
+    // Auto fill & nearest CHẶNG VỀ
     if (this.tripType() === 'round') {
       if (!this.rtFrom()) this.rtFrom.set(this.to());
       if (!this.rtTo()) this.rtTo.set(this.from());
@@ -261,7 +263,6 @@ export class FlightSearchComponent {
     this.listLimitOut.set(3);
     this.listLimitBack.set(3);
 
-    // ⬇️ Cập nhật URL để refresh/share vẫn giữ tiêu chí
     if (updateUrl) {
       this.router.navigate([], {
         relativeTo: this.route,
@@ -276,44 +277,40 @@ export class FlightSearchComponent {
     }
   }
 
-  // ===== BỘ LỌC & SORT CHUNG (KHÔNG LỌC THEO CABIN) =====
+  // ===== BỘ LỌC & SORT CHUNG =====
   private applyFiltersAndSort(arr: Flight[]) {
-    // price ranges
     const inPrice = (v: number) => {
       const s = new Set(this.priceSel()); if (!s.size) return true; const m = v / 1_000_000;
-      return (s.has('p_u1500') && m < 1.5) || (s.has('p_1500_2500') && m >= 1.5 && m < 2.5) || (s.has('p_2500_4000') && m >= 2.5 && m < 4.0) || (s.has('p_o4000') && m >= 4.0);
+      return (s.has('p_u1500') && m < 1.5) || (s.has('p_1500_2500') && m >= 1.5 && m < 2.5) ||
+             (s.has('p_2500_4000') && m >= 2.5 && m < 4.0) || (s.has('p_o4000') && m >= 4.0);
     };
-    // time ranges
     const inTime = (iso: string) => {
       const s = new Set(this.timeSel()); if (!s.size) return true; const h = new Date(iso).getHours();
-      return (s.has('t_morning') && h >= 5 && h < 11) || (s.has('t_noon') && h >= 11 && h < 17) || (s.has('t_evening') && h >= 17 && h <= 23);
+      return (s.has('t_morning') && h >= 5 && h < 11) || (s.has('t_noon') && h >= 11 && h < 17) ||
+             (s.has('t_evening') && h >= 17 && h <= 23);
     };
-    // duration ranges
     const inDur = (mins: number) => {
       const s = new Set(this.durSel()); if (!s.size) return true;
-      return (s.has('d_u60') && mins < 60) || (s.has('d_60_120') && mins >= 60 && mins <= 120) || (s.has('d_o120') && mins > 120);
+      return (s.has('d_u60') && mins < 60) || (s.has('d_60_120') && mins >= 60 && mins <= 120) ||
+             (s.has('d_o120') && mins > 120);
     };
-    // airline
     const inAirline = (name: string) => { const s = new Set(this.airlineSel()); return !s.size || s.has(name); };
 
     let out = arr.filter(x => inPrice(x.price) && inTime(x.departTime) && inDur(x.durationMin) && inAirline(x.airline));
-
-    // sort theo sortOrder chung
     const order = this.sortOrder();
-    out = [...out].sort((a, b) => order === 'price_desc' ? b.price - a.price : a.price - b.price);
+    out = [...out].sort((a,b) => order === 'price_desc' ? b.price - a.price : a.price - b.price);
     return out;
   }
 
-  // ===== KẾT QUẢ CHẶNG ĐI =====
+  // ===== KẾT QUẢ =====
   resultsOut = computed(() => {
     if (!this.hasSearched()) return [];
     const f = this.from().toUpperCase(), t = this.to().toUpperCase(), d = this.departDate();
     const base = this.allFlights().filter(x => x.from === f && x.to === t && x.date === d);
     return this.applyFiltersAndSort(base);
   });
-  othersOut = computed(() => this.resultsOut().slice(0, this.listLimitOut()));
+  othersOut  = computed(() => this.resultsOut().slice(0, this.listLimitOut()));
 
-  // ===== KẾT QUẢ CHẶNG VỀ =====
   resultsBack = computed(() => {
     if (!this.hasSearched() || this.tripType() !== 'round' || !this.returnDate()) return [];
     const f = (this.rtFrom() || this.to()).toUpperCase();
@@ -328,13 +325,12 @@ export class FlightSearchComponent {
   cabinLabel(c: Flight['cabin']) {
     switch (c) {
       case 'Economy': return 'Phổ thông';
-      case 'Premium Economy': return 'Phổ thông đặc biệt';
       case 'Business': return 'Thương gia';
       default: return c as string;
     }
   }
   cabinLabelOrPlaceholder(v: Flight['cabin'] | '') { return v ? this.cabinLabel(v as Flight['cabin']) : 'Chọn hạng (tuỳ chọn)'; }
-  getInitials(name: string) { return (name || '').split(/\s+/).map(w => w[0]).join('').slice(0, 3).toUpperCase() || '??'; }
+  getInitials(name: string) { return (name || '').split(/\s+/).map(w => w[0]).join('').slice(0,3).toUpperCase() || '??'; }
   getCarrierCode(f: Flight) { return (f as any)?.details?.airline_code?.toUpperCase?.() ?? this.getInitials(f.airline); }
 
   priceStr(v: number, cur = 'VND', style: 'symbol' | 'code' = 'code') {
@@ -353,15 +349,14 @@ export class FlightSearchComponent {
   timeHM(iso: string) { try { return new Date(iso).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', hour12: false }); } catch { return ''; } }
   dateVN(dateOrIso: string | Date, long = false) {
     const d = (dateOrIso instanceof Date) ? dateOrIso : new Date(dateOrIso);
-    const wd = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'][d.getDay()];
-    const dd = String(d.getDate()).padStart(2, '0'); const mm = String(d.getMonth() + 1).padStart(2, '0'); const yyyy = d.getFullYear();
+    const wd = ['Chủ nhật','Thứ hai','Thứ ba','Thứ tư','Thứ năm','Thứ sáu','Thứ bảy'][d.getDay()];
+    const dd = String(d.getDate()).padStart(2,'0'); const mm = String(d.getMonth()+1).padStart(2,'0'); const yyyy = d.getFullYear();
     return long ? `${wd}, ${dd} tháng ${mm} năm ${yyyy}` : `${wd}, ${dd}/${mm}/${yyyy}`;
   }
-  durationStr(mins: number) { const h = Math.floor(mins / 60), m = mins % 60; if (h && m) return `${h}h${String(m).padStart(2, '0')}m`; if (h) return `${h}h`; return `${m}m`; }
+  durationStr(mins: number) { const h = Math.floor(mins/60), m = mins%60; if (h && m) return `${h}h${String(m).padStart(2,'0')}m`; if (h) return `${h}h`; return `${m}m`; }
 
-  // tìm ngày gần nhất có chuyến cho tuyến
   private distinctDatesForRoute(from: string, to: string) {
-    const f = (from || '').toUpperCase(), t = (to || '').toUpperCase();
+    const f = (from||'').toUpperCase(), t = (to||'').toUpperCase();
     const set = new Set<string>();
     this.allFlights().forEach(x => { if (x.from === f && x.to === t) set.add(x.date); });
     return Array.from(set).sort();
@@ -418,7 +413,7 @@ export class FlightSearchComponent {
 
       this.hasSearched.set(!!st.hasSearched);
       this.autoDateMsg.set(null);
-    } catch { }
+    } catch {}
   }
 
   private readonly logoByCode: Record<string, string> = {
@@ -429,7 +424,9 @@ export class FlightSearchComponent {
     VU: 'https://upload.wikimedia.org/wikipedia/commons/e/ee/Vietravel_Airlines_Logo.png',
   };
 
+  /** Trả về URL logo nếu có & không lỗi; nếu lỗi hoặc không có → null để rơi về ô xám + ký hiệu */
   logoOf(f: any): string | null {
+    if ((f as any)?._logoError) return null; // ảnh đã báo lỗi
     const byData = f?.details?.logo?.trim?.();
     if (byData) return byData;
     const code = (f?.details?.airline_code || f?.airline_code || '').toUpperCase();

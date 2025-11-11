@@ -1,3 +1,4 @@
+<app-header></app-header>
 <div class="wrap" *ngIf="!isLoading(); else loading">
   <ng-container *ngIf="!loadError(); else err">
 
@@ -9,7 +10,12 @@
       <div class="rc2-grid rc2-no-price">
         <!-- Logo -->
         <div class="rc2-logo">
-          <span class="logo-text">{{ getCarrierCode(f) }}</span>
+              <ng-container *ngIf="logoOf(f) as logo; else initials">
+                <img [src]="logo" [alt]="f.airline || getCarrierCode(f)" loading="lazy">
+              </ng-container>
+              <ng-template #initials>
+                <span class="logo-text">{{ getCarrierCode(f) }}</span>
+              </ng-template>
         </div>
 
         <!-- Middle -->
@@ -136,3 +142,4 @@
 <ng-template #err>
   <div class="alert alert-danger mt-3">{{ loadError() }}</div>
 </ng-template>
+<app-footer></app-footer>

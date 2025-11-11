@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
-
 /* ========= THEME ========= */
 :host {
   --ink: #375578;
@@ -12,8 +10,8 @@
   --radius: 16px;
   --shadow: 0 10px 30px rgba(96, 109, 236, 0.12);
   --shadow-soft: 0 4px 16px rgba(55, 85, 120, 0.08);
-  font-family: 'Roboto', system-ui, Segoe UI, Arial, sans-serif;
   color: var(--ink);
+  font-size: 14px;
 }
 
 /* ========= FORM EMPHASIS & OVERLAY ========= */
@@ -90,6 +88,7 @@
 /* ========= Search Grid / Inputs ========= */
 .fs-grid {
   --gap: 18px;
+  align-items: center;
   display: grid;
   gap: var(--gap);
   grid-template-columns: minmax(280px, 1fr) 64px minmax(280px, 1fr) minmax(220px, 0.9fr);
@@ -97,6 +96,7 @@
 .fs-cell {
   min-width: 0;
 }
+
 .fs-swap-col {
   display: flex;
   align-items: center;
@@ -196,6 +196,8 @@
   border: 0;
   box-shadow: 0 8px 18px rgba(96, 109, 236, 0.28);
   transition: all 0.2s ease;
+  font-size: 16px;
+  font-weight: 15px;
 }
 .fs-search-btn:hover {
   filter: brightness(1.05);
@@ -235,7 +237,6 @@
   border-bottom: 1px dashed var(--primary-100);
   padding: 10px 14px;
   font-weight: 800;
-  /* header đã d-flex + justify-content-between trong HTML nên bỏ center */
   text-align: center;
 }
 
@@ -343,9 +344,13 @@
 
 /* Logo */
 .rc2-logo {
-  height: 84px;
+  position: relative;
+  overflow: hidden;
+  height: 50px;
+  width: 100px; /*Không bị tràn viền*/
+  padding: 4px;
   border-radius: 16px;
-  background: #eef2f8;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -353,7 +358,28 @@
   font-weight: 900;
   letter-spacing: 0.5px;
 }
+.rc2-logo img {
+  max-width: 100%;
+  height: auto;
+
+.rc2-logo img:not([src]) {
+    background-color: #f0f0f0; /* Hiển thị ô xám khi không có logo */
+    padding: 10px; /* Thêm khoảng đệm cho ô xám */
+    font-size: 1.2rem; /* Kích thước mã hãng bay lớn hơn */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+  .rc2-logo img:not([src])::after {
+    content: attr(data-airline-code); /* Hiển thị mã hãng bay khi không có logo */
+    color: #4a4a4a; /* Màu mã hãng bay */
+    font-weight: bold;
+  }
+}
 .logo-text {
+  font-size: 0.9rem;
   font-weight: 900;
   letter-spacing: 0.5px;
 }
@@ -399,6 +425,7 @@
   right: -1px;
 }
 .rc2-plane {
+  font-size: 1.2rem;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -534,8 +561,12 @@
   .fs-swap-col {
     display: none;
   }
+  .rc2-logo {
+    max-width: 100%;
+    height: auto;
+  }
   .rc2-grid {
-    grid-template-columns: 72px 1fr;
+    grid-template-columns: 1fr;
   }
   .rc2-price {
     grid-column: 1 / -1;
@@ -555,4 +586,5 @@
   .rc2-time-row {
     grid-template-columns: 70px 1fr 70px;
   }
+  
 }
