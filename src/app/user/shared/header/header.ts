@@ -28,19 +28,18 @@ export class HeaderComponent implements OnInit {
 
   toggleDropdown(): void {
     this.showDropdown = !this.showDropdown;
-    console.log('Dropdown toggled:', this.showDropdown); // Debug log
+    console.log('Dropdown state:', this.showDropdown);
   }
 
   @HostListener('document:click', ['$event'])
   closeDropdown(event: Event): void {
     const target = event.target as HTMLElement;
     const userMenu = target.closest('.user-menu');
-    const dropdownMenu = target.closest('.dropdown-menu');
     
-    // Nếu click outside cả user-menu và dropdown-menu
-    if (!userMenu && !dropdownMenu && this.showDropdown) {
+    // Chỉ đóng nếu click outside và dropdown đang mở
+    if (!userMenu && this.showDropdown) {
       this.showDropdown = false;
-      console.log('Dropdown closed by outside click');
+      console.log('Dropdown closed');
     }
   }
 
@@ -51,17 +50,9 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  // Prevent closing when clicking inside dropdown
-  @HostListener('click', ['$event'])
-  onClick(event: Event): void {
-    if ((event.target as HTMLElement).closest('.dropdown-menu')) {
-      event.stopPropagation();
-    }
-  }
-
   logout(): void {
     this.authService.logout();
-    localStorage.removeItem('fullUserData'); // Xóa thêm dữ liệu user đầy đủ
+    localStorage.removeItem('fullUserData');
     this.isLoggedIn = false;
     this.userName = 'Tài khoản';
     this.showDropdown = false;
@@ -69,9 +60,9 @@ export class HeaderComponent implements OnInit {
   }
 
   navigateToInformation(event: MouseEvent): void {
-    event.stopPropagation(); // chặn click lan ra ngoài
-    this.showDropdown = false; // đóng menu
-    this.router.navigate(['/information']); // điều hướng Angular
+    event.stopPropagation();
+    this.showDropdown = false;
+    this.router.navigate(['/information']);
   }
   
 }

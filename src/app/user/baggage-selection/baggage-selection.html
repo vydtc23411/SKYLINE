@@ -1,13 +1,49 @@
 <div class="main-container">
 
-    <div class="flight-info-header">
-        <div class="flight-info-content">
-            <h2>Tên chuyến bay</h2>
-            <p class="flight-data">{{ selectedFlight.name }}</p>
-            <h3 class="flight-date-label">Ngày đi</h3>
-            <p class="flight-data">{{ selectedFlight.date }}</p>
-        </div>
-    </div>
+    <header class="sidebar-header">
+        
+        <ng-container *ngIf="isLoading()">
+            <div class="header-box">
+                <div class="hightlight">Đang tải...</div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="selectedFlight() as flight">
+            <div class="header-box">
+                <div class="hightlight">{{ flight.from }}</div>
+            </div>
+
+            <div class="header-box">
+                <div class="hightlight">&rarr;</div>
+            </div>
+
+            <div class="header-box">
+                <div class="hightlight">{{ flight.to }}</div>
+            </div>
+
+            <div class="header-box">
+                <div>{{ dateVN(flight.departTime) }} | {{ timeHM(flight.departTime) }}</div>
+                <div>Departing</div>
+            </div>
+
+            <div class="header-box">
+                <div>{{ dateVN(flight.arriveTime) }} | {{ timeHM(flight.arriveTime) }}</div>
+                <div>Arriving</div>
+            </div>
+
+            <div class="header-box" *ngIf="selectedSeat">
+                <div class="hightlight">{{ selectedSeat }}</div>
+                <div>Ghế đã chọn</div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="!isLoading() && !selectedFlight()">
+            <div class="header-box">
+                <div class="hightlight" style="color: red;">Lỗi</div>
+                <div>Không tìm thấy chuyến bay.</div>
+            </div>
+        </ng-container>
+    </header>
 
     <div class="baggage-content">
 

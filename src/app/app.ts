@@ -15,6 +15,7 @@ import { Promotion } from './user/promotion/promotion';
 import { Rewards } from './user/rewards/rewards';
 import { Notifications } from './user/notifications/notifications';
 import { Contact } from './user/contact/contact';
+import { FlightSelection } from './user/flight-selection/flight-selection';
 
 @Component({
   selector: 'app-root',
@@ -32,8 +33,9 @@ import { Contact } from './user/contact/contact';
     Promotion,
     Rewards,
     Notifications,
-    Contact
+    Contact,
   ],
+  standalone: true,
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -47,5 +49,15 @@ export class App {
 export const routes: Routes = [
   { path: '', redirectTo: 'checkticket', pathMatch: 'full' },
   { path: 'checkticket', component: CheckTicket },
-  { path: 'checkticket2', component: CheckTicket2 }
+  { path: 'checkticket2', component: CheckTicket2 },
+  { path: 'flight-selection/:id', component: FlightSelection },
+  { path: 'seat-selection/:flightId', component: SeatSelection },
+  { path: 'baggage-selection', component: BaggageSelection },
+  { path: 'checkout', component: Checkout },
+  { path: 'confirmation', component: Confirmation },
+  { path: 'information', component: Information },
+  { path: 'promotion', component: Promotion },
+  { path: 'rewards', component: Rewards },
+  { path: 'notifications', component: Notifications },
+  { path: 'contact', component: Contact }
 ];

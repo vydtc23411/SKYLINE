@@ -1,6 +1,6 @@
 <div class="admin-container">
   <!-- Sidebar Component -->
-  <app-admin-sidebar></app-admin-sidebar>
+  <app-admin-sidebar [isOpen]="sidebarOpen"></app-admin-sidebar>
 
   <!-- Main Content -->
   <main class="main-content">
@@ -13,12 +13,20 @@
       
       <div class="header-actions">
         <button class="icon-btn"><img src="/assets/icons/notification.png" alt="Notification Icon"></button>
-        <button class="icon-btn"><img src="/assets/icons/Setting.png" alt="Settings Icon"></button>
-        <div class="user-info">
-          <img src="https://i.pravatar.cc/150?img=12" alt="User" class="user-avatar">
-          <div class="user-details">
-            <span class="user-name">Nhân viên</span>
-            <span class="user-role">Tường Vy</span>
+        <button class="icon-btn logout-icon-btn" (click)="logout()" title="Đăng xuất">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </button>
+        <div class="user-info-wrapper">
+          <div class="user-info">
+            <img src="https://i.pravatar.cc/150?img=12" alt="User" class="user-avatar">
+            <div class="user-details">
+              <span class="user-name">Nhân viên</span>
+              <span class="user-role">Tài khoản</span>
+            </div>
           </div>
         </div>
       </div>
@@ -31,44 +39,93 @@
         <p>Chào, Tường Vy, mừng bạn đến với trang admin!</p>
       </div>
       <div class="date-filter">
+        <!-- Single Filter Button -->
         <button class="filter-btn" (click)="toggleDateDropdown()">
             <img src="/assets/icons/Calendar1.png" alt="Calendar Icon">
             <div>
-              <span>Lọc theo thời gian</span>
+              <span>Lọc thời gian</span>
               <span class="date-range">{{ dateRange }}</span>
             </div>
         </button>
         
-        <!-- Dropdown Menu -->
-        <div class="date-dropdown" *ngIf="showDateDropdown">
-          <div class="dropdown-header">
-            <h4>Chọn khoảng thời gian</h4>
-          </div>
+        <!-- Unified Filter Dropdown -->
+        <div class="date-dropdown unified-dropdown" *ngIf="showFilterDropdown">
           
-          <!-- Quick Filters -->
-          <div class="quick-filters">
-            <button class="quick-filter-btn" (click)="selectQuickFilter(7)">7 ngày qua</button>
-            <button class="quick-filter-btn" (click)="selectQuickFilter(30)">30 ngày qua</button>
-            <button class="quick-filter-btn" (click)="selectQuickFilter(90)">90 ngày qua</button>
-          </div>
-          
-          <!-- Custom Date Range -->
-          <div class="custom-date-range">
-            <div class="date-input-group">
-              <label for="start-date">Từ ngày:</label>
-              <input type="date" id="start-date" [(ngModel)]="startDate" class="date-input">
+          <!-- Step 1: Year Selection -->
+          <div *ngIf="filterStep === 'year'" class="filter-step">
+            <div class="dropdown-header">
+              <h4>Chọn năm</h4>
             </div>
-            <div class="date-input-group">
-              <label for="end-date">Đến ngày:</label>
-              <input type="date" id="end-date" [(ngModel)]="endDate" class="date-input">
+            
+            <div class="month-selection">
+              <button 
+                *ngFor="let year of availableYears" 
+                class="month-btn"
+                [class.active]="selectedYear === year"
+                (click)="selectYear(year)">
+                <div class="month-info">
+                  <span class="month-label">Năm {{ year }}</span>
+                </div>
+              </button>
+            </div>
+            
+            <div class="dropdown-actions">
+              <button class="cancel-btn" (click)="toggleDateDropdown()">Hủy</button>
             </div>
           </div>
           
-          <!-- Apply Button -->
-          <div class="dropdown-actions">
-            <button class="cancel-btn" (click)="toggleDateDropdown()">Hủy</button>
-            <button class="apply-btn" (click)="applyDateFilter()">Áp dụng</button>
+          <!-- Step 2: Month Selection -->
+          <div *ngIf="filterStep === 'month'" class="filter-step">
+            <div class="dropdown-header">
+              <button class="back-btn" (click)="goBackToYear()">← Quay lại</button>
+              <h4>Chọn tháng ({{ selectedYear }})</h4>
+            </div>
+            
+            <div class="month-selection">
+              <button 
+                *ngFor="let month of availableMonths; let i = index" 
+                class="month-btn"
+                [class.active]="selectedMonthIndex === i"
+                (click)="selectMonth(i)">
+                <div class="month-info">
+                  <span class="month-label">Tháng {{ month.month }}/{{ month.year }}</span>
+                  <span class="month-stats">{{ month.ticketsSold }} vé - {{ formatRevenue(month.revenueActual) }}M VNĐ</span>
+                </div>
+              </button>
+            </div>
+            
+            <div class="dropdown-actions">
+              <button class="cancel-btn" (click)="toggleDateDropdown()">Hủy</button>
+              <button class="apply-btn" *ngIf="availableWeeks.length === 0" (click)="applyMonthFilter()">Áp dụng</button>
+            </div>
           </div>
+          
+          <!-- Step 3: Week Selection (Only for 2025) -->
+          <div *ngIf="filterStep === 'week'" class="filter-step">
+            <div class="dropdown-header">
+              <button class="back-btn" (click)="goBackToMonth()">← Quay lại</button>
+              <h4>Chọn tuần (Tháng {{ availableMonths[selectedMonthIndex]?.month }}/{{ selectedYear }})</h4>
+            </div>
+            
+            <div class="month-selection">
+              <button 
+                *ngFor="let week of availableWeeks; let i = index" 
+                class="month-btn"
+                [class.active]="selectedWeekIndex === i"
+                (click)="selectWeek(i)">
+                <div class="month-info">
+                  <span class="month-label">{{ formatWeekRange(week) }}</span>
+                  <span class="month-stats">{{ getTotalTicketsForWeek(week) }} vé</span>
+                </div>
+              </button>
+            </div>
+            
+            <div class="dropdown-actions">
+              <button class="cancel-btn" (click)="toggleDateDropdown()">Hủy</button>
+              <button class="apply-btn" (click)="applyWeekFilter()">Áp dụng</button>
+            </div>
+          </div>
+          
         </div>
       </div>
     </section>
@@ -94,19 +151,24 @@
         <div class="donut-grid">
           <div class="donut-item" *ngFor="let chart of chartData">
             <svg class="donut-chart" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="45" fill="none" stroke="#E0E0E0" stroke-width="10"></circle>
-              <circle 
-                cx="50" 
-                cy="50" 
-                r="45" 
-                fill="none" 
-                [attr.stroke]="chart.color" 
-                stroke-width="10"
-                [attr.stroke-dasharray]="getChartStrokeDasharray(chart.percentage)"
-                stroke-dashoffset="0"
-                transform="rotate(-90 50 50)">
-              </circle>
-              <text x="50" y="50" text-anchor="middle" dy="7" class="donut-percentage">{{ chart.percentage }}%</text>
+                <!-- Background circle with lighter shade -->
+                <circle cx="50" cy="50" [attr.r]="donutRadius" fill="none" [attr.stroke]="chart.color" stroke-width="18" opacity="0.15" [attr.stroke-dasharray]="donutCircumference()"></circle>
+                <!-- Filled circle -->
+                <circle 
+                  cx="50" 
+                  cy="50" 
+                  [attr.r]="donutRadius" 
+                  fill="none" 
+                  [attr.stroke]="chart.color" 
+                  stroke-width="18"
+                  [attr.stroke-dasharray]="getDonutStrokeDasharray(chart.percentage)"
+                  stroke-dashoffset="0"
+                  stroke-linecap="round"
+                  transform="rotate(-90 50 50)">
+                </circle>
+              <!-- Percentage text -->
+              <text x="50" y="48" text-anchor="middle" class="donut-percentage">{{ chart.percentage }}</text>
+              <text x="50" y="58" text-anchor="middle" class="donut-percentage-symbol">%</text>
             </svg>
             <p class="donut-label">{{ chart.label }}</p>
           </div>
@@ -132,41 +194,46 @@
             <!-- Grid line (bottom only) -->
             <line x1="40" y1="220" x2="680" y2="220" stroke="#E8EBF0" stroke-width="2"></line>
             
-            <!-- Smooth curve path -->
+            <!-- Smooth curve path (dynamic) -->
             <path 
-              d="M 80,140 C 120,130 130,125 170,120 C 210,115 220,85 260,70 C 300,55 310,145 350,160 C 390,175 400,115 440,110 C 480,105 490,125 530,130 C 570,135 580,70 620,60"
+              [attr.d]="generateWeeklyPath()"
               fill="none" 
               stroke="#42A5F5" 
               stroke-width="4"
               stroke-linecap="round"
               stroke-linejoin="round">
             </path>
-            
-            <!-- Area fill with smooth curve -->
+
+            <!-- Area fill with smooth curve (dynamic) -->
             <path 
-              d="M 80,140 C 120,130 130,125 170,120 C 210,115 220,85 260,70 C 300,55 310,145 350,160 C 390,175 400,115 440,110 C 480,105 490,125 530,130 C 570,135 580,70 620,60 L 620,220 L 80,220 Z"
+              [attr.d]="generateWeeklyAreaPath()"
               fill="url(#gradient)" 
               opacity="0.4">
             </path>
-            
-            <!-- Hover areas (invisible rectangles) -->
-            <rect class="hover-area" data-day="Sunday" data-value="320" x="35" y="0" width="130" height="220" fill="transparent" />
-            <rect class="hover-area" data-day="Monday" data-value="380" x="125" y="0" width="130" height="220" fill="transparent" />
-            <rect class="hover-area" data-day="Tuesday" data-value="456" x="215" y="0" width="130" height="220" fill="transparent" />
-            <rect class="hover-area" data-day="Wednesday" data-value="290" x="305" y="0" width="130" height="220" fill="transparent" />
-            <rect class="hover-area" data-day="Thursday" data-value="410" x="395" y="0" width="130" height="220" fill="transparent" />
-            <rect class="hover-area" data-day="Friday" data-value="370" x="485" y="0" width="130" height="220" fill="transparent" />
-            <rect class="hover-area" data-day="Saturday" data-value="480" x="575" y="0" width="130" height="220" fill="transparent" />
-            
-            <!-- Data points (hidden by default) -->
+
+            <!-- Hover areas (generated from weeklyData) -->
+            <rect *ngFor="let day of weeklyData; let i = index"
+                  class="hover-area"
+                  [attr.data-day]="day.day"
+                  [attr.data-value]="day.value"
+                  [attr.x]="getHoverRectX(i)"
+                  y="0"
+                  [attr.width]="getHoverRectWidth()"
+                  height="220"
+                  fill="transparent"></rect>
+
+            <!-- Data points (generated from weeklyData) -->
             <g class="data-points">
-              <circle class="data-point" data-index="0" cx="80" cy="140" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
-              <circle class="data-point" data-index="1" cx="170" cy="120" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
-              <circle class="data-point" data-index="2" cx="260" cy="70" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
-              <circle class="data-point" data-index="3" cx="350" cy="160" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
-              <circle class="data-point" data-index="4" cx="440" cy="110" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
-              <circle class="data-point" data-index="5" cx="530" cy="130" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
-              <circle class="data-point" data-index="6" cx="620" cy="60" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+              <circle *ngFor="let day of weeklyData; let i = index"
+                      class="data-point"
+                      [attr.data-index]="i"
+                      [attr.cx]="getDataPointCx(i)"
+                      [attr.cy]="getDataPointCy(i)"
+                      r="6"
+                      fill="white"
+                      stroke="#42A5F5"
+                      stroke-width="3"
+                      opacity="0"></circle>
             </g>
             
             <!-- X-axis labels -->

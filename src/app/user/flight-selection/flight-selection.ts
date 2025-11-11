@@ -15,9 +15,9 @@ export interface Flight {
   flightNo: string;
   from: string;
   to: string;
-  date: string;            // YYYY-MM-DD
-  departTime: string;      // ISO
-  arriveTime: string;      // ISO
+  date: string;
+  departTime: string;
+  arriveTime: string;
   durationMin: number;
   price: number;
   currency: 'VND' | 'USD';
@@ -26,7 +26,6 @@ export interface Flight {
   details?: any;
 }
 
-/* Chuẩn hoá JSON giống bên search */
 function normalizeFlights(data: any): Flight[] {
   const cur = data?.meta?.currency ?? 'VND';
   const list = Array.isArray(data) ? data : (data?.flights ?? []);
@@ -81,7 +80,6 @@ export class FlightSelectionComponent {
   loadError = signal<string | null>(null);
   flight = signal<Flight | null>(null);
 
-  // === GÁN SẴN HẠNG GHẾ (không lấy từ data) ===
   private readonly STATIC_CABINS = ['Phổ thông', 'Thương gia'];
 
   constructor() {
@@ -116,7 +114,8 @@ export class FlightSelectionComponent {
   goChooseCabin() {
     const id = this.flight()?.id;
     const st = (history.state && (history.state as any).search) || null;
-    this.router.navigate(['/chon-hang-ghe', id ?? ''], { state: { search: st } });
+
+    this.router.navigate(['/seat-selection', id ?? ''], { state: { search: st } });
   }
 
   /* ===== Helpers ===== */

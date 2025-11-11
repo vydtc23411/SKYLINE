@@ -1,5 +1,6 @@
 <main class="main-content">
 
+    <!-- ===== CỘT SƠ ĐỒ GHẾ ===== -->
     <div class="seat-map-column">
 
         <header>
@@ -7,9 +8,9 @@
         </header>
 
         <div class="seat-map-scroller">
-
             <div class="seat-container">
 
+                <!-- Ghế Hạng Thương gia -->
                 <div class="seat-business" (click)="selectSeat('A01', 'business')"
                     [class.selected]="selectedSeat === 'A01'" style="top: 495px; left: 38.5%;">A01</div>
                 <div class="seat-business" (click)="selectSeat('B01', 'business')"
@@ -40,6 +41,7 @@
                     [class.selected]="selectedSeat === 'B05'" style="top: 747px; left: 48.5%;">B05</div>
                 <div class="seat-business occupied" style="top: 747px; left: 58.5%;">C05</div>
 
+                <!-- Ghế Hạng Phổ thông -->
                 <div class="seat-economy" (click)="selectSeat('A06', 'economy')"
                     [class.selected]="selectedSeat === 'A06'" style="top: 826px; left: 38.5%;">A06</div>
                 <div class="seat-economy" (click)="selectSeat('B06', 'economy')"
@@ -208,39 +210,58 @@
                 <div class="seat-economy occupied" style="top: 2128px; left: 53.5%;">C29</div>
                 <div class="seat-economy occupied" style="top: 2128px; left: 59.5%;">D29</div>
             </div>
-
         </div>
     </div>
 
+    <!-- ===== CỘT THÔNG TIN (SIDEBAR) ===== -->
     <aside class="info-column">
 
+        <!-- ===== HEADER (ĐÃ CẬP NHẬT ĐỘNG) ===== -->
         <header class="sidebar-header">
 
-            <div class="header-box">
-                <div class="hightlight">SFO</div>
-                <div>California, US</div>
-            </div>
+            <!-- Hiển thị khi đang tải -->
+            <ng-container *ngIf="isLoading()">
+                <div class="header-box">
+                    <div class="hightlight">Đang tải...</div>
+                </div>
+            </ng-container>
 
-            <div class="header-box">
-                <div class="hightlight">&rarr;</div>
-            </div>
+            <!-- Hiển thị khi có dữ liệu chuyến bay -->
+            <ng-container *ngIf="selectedFlight() as f">
+                <div class="header-box">
+                    <div class="hightlight">{{ f.from }}</div>
+                </div>
 
-            <div class="header-box">
-                <div class="hightlight">NRT</div>
-                <div>Tokyo, Japan</div>
-            </div>
+                <div class="header-box">
+                    <div class="hightlight">&rarr;</div>
+                </div>
 
-            <div class="header-box">
-                <div>Feb 25 | 7:00AM</div>
-                <div>Departing</div>
-            </div>
+                <div class="header-box">
+                    <div class="hightlight">{{ f.to }}</div>
+                </div>
 
-            <div class="header-box">
-                <div>Mar 21 | 12:15PM</div>
-                <div>Arriving</div>
-            </div>
+                <div class="header-box">
+                    <div>{{ dateVN(f.departTime) }} | {{ timeHM(f.departTime) }}</div>
+                    <div>Departing</div>
+                </div>
+
+                <div class="header-box">
+                    <div>{{ dateVN(f.arriveTime) }} | {{ timeHM(f.arriveTime) }}</div>
+                    <div>Arriving</div>
+                </div>
+            </ng-container>
+
+            <!-- Hiển thị nếu không tìm thấy chuyến bay -->
+            <ng-container *ngIf="!isLoading() && !selectedFlight()">
+                <div class="header-box">
+                    <div class="hightlight" style="color: red;">Lỗi</div>
+                    <div>Không tìm thấy chuyến bay.</div>
+                </div>
+            </ng-container>
 
         </header>
+        <!-- ===== KẾT THÚC CẬP NHẬT HEADER ===== -->
+
 
         <main class="sidebar-main">
 
@@ -282,11 +303,17 @@
 
         </main>
 
+        <!-- ===== FOOTER (ĐÃ CẬP NHẬT ĐỘNG) ===== -->
         <footer class="sidebar-footer">
 
             <div class="footer-info-box">
                 <div>Hành khách</div>
-                <strong>Nguyễn Văn A</strong>
+                <ng-container *ngIf="currentUser; else guestUser">
+                    <strong>{{ currentUser.name }}</strong>
+                </ng-container>
+                <ng-template #guestUser>
+                    <strong>Khách</strong>
+                </ng-template>
             </div>
 
             <div class="footer-info-box">

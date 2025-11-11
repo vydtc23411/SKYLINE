@@ -23,7 +23,7 @@ export class CheckTicket {
 
   tickets: Ticket[] = [
     { code: 'TRPM01', name: 'Nguyễn Văn A', seat: 'A15', status: 'Đã thanh toán', route: 'Hà Nội - HCM' },
-    { code: 'TRPM02', name: 'Nguyễn Văn B', seat: 'A16', status: 'Chờ thanh toán', route: 'Hà Nội - Đà Nẵng' }
+    { code: 'TRPM02', name: 'Nguyễn Văn A', seat: 'A16', status: 'Chờ thanh toán', route: 'Hà Nội - Đà Nẵng' }
   ];
 
   filteredTickets: Ticket[] = [...this.tickets];

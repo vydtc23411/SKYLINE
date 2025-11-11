@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -10,6 +10,8 @@ import { RouterModule } from '@angular/router';
   styleUrl: './sidebar.css'
 })
 export class AdminSidebarComponent {
+  @Input() isOpen: boolean = false;
+  
   menuItems = [
     { 
       route: '/admin-home', 
@@ -51,12 +53,6 @@ export class AdminSidebarComponent {
       route: '/admin/user-management', 
       icon: '/assets/icons/customer.png', 
       label: 'Khách hàng',
-      active: false 
-    },
-    { 
-      route: '/admin/settings', 
-      icon: '/assets/icons/settings.png', 
-      label: 'Cài đặt hệ thống',
       active: false 
     }
   ];

@@ -1,14 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AuthService, UserWithoutPassword } from '../services/auth.service';
+
+type Cabin = 'Economy' | 'Premium Economy' | 'Business';
+export interface Flight {
+  id: string;
+  airline: string;
+  flightNo: string;
+  from: string;
+  to: string;
+  date: string;
+  departTime: string;
+  arriveTime: string;
+  durationMin: number;
+  price: number;
+  currency: 'VND' | 'USD';
+  seatsLeft: number;
+  cabin: Cabin;
+  details?: any;
+}
 
 @Component({
   selector: 'app-baggage-selection',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    HttpClientModule
   ],
   templateUrl: './baggage-selection.html',
   styleUrls: ['./baggage-selection.css']
@@ -18,12 +39,23 @@ export class BaggageSelection implements OnInit {
   passengerForm: FormGroup;
   baggageQuantity: number = 1;
 
-  selectedFlight = {
-    name: 'Hà Nội (HAN) - TP. Hồ Chí Minh (SGN)',
-    date: 'Thứ Sáu, 07/11/2025'
-  };
+  isLoading = signal(true);
+  selectedFlight = signal<Flight | null>(null);
+  currentUser: UserWithoutPassword | null = null;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  selectedFlightId: string | null = null;
+  selectedSeat: string | null = null;
+  selectedSeatType: string | null = null;
+
+
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private authService: AuthService
+  ) {
+
     this.passengerForm = this.fb.group({
       salutation: ['Quý Ông', Validators.required],
       fullName: ['', Validators.required],
@@ -36,7 +68,69 @@ export class BaggageSelection implements OnInit {
   }
 
   ngOnInit(): void {
+    this.selectedFlightId = this.route.snapshot.queryParams['flightId'];
+    this.selectedSeat = this.route.snapshot.queryParams['seat'];
+    this.selectedSeatType = this.route.snapshot.queryParams['type'];
+    this.currentUser = this.authService.getCurrentUser();
+
+
+    let fullUserData: any = null;
+    const fullUserRaw = localStorage.getItem('fullUserData');
+    if (fullUserRaw) {
+      fullUserData = JSON.parse(fullUserRaw);
+    }
+
+    if (this.currentUser) {
+      this.passengerForm.patchValue({
+        fullName: this.currentUser.name,
+        email: this.currentUser.email
+      });
+    }
+
+    if (fullUserData) {
+      this.passengerForm.patchValue({
+        phoneNumber: fullUserData.phone || '',
+        dob: this.formatDateForInput(fullUserData.birthday),
+        idNumber: fullUserData.passport || '',
+        address: fullUserData.address || '',
+        salutation: fullUserData.gender === 'Nữ' ? 'Quý Bà' : 'Quý Ông'
+      });
+    }
+
+    if (this.selectedFlightId) {
+      this.http.get('assets/flight-search-sampledata.json').subscribe({
+        next: (raw: any) => {
+          const all = this.normalizeFlights(raw);
+          const f = all.find(x => String(x.id) === String(this.selectedFlightId)) ?? null;
+          this.selectedFlight.set(f);
+          this.isLoading.set(false);
+          if (!f) console.error('Không tìm thấy chuyến bay!');
+        },
+        error: (err) => {
+          console.error('Lỗi tải dữ liệu chuyến bay:', err);
+          this.isLoading.set(false);
+        }
+      });
+    } else {
+      console.error('Không có ID chuyến bay!');
+      this.isLoading.set(false);
+    }
   }
+
+  private formatDateForInput(dateStr: string): string {
+    if (!dateStr || dateStr.split('/').length !== 3) {
+      return '';
+    }
+
+    const parts = dateStr.split('/');
+    const day = parts[0].padStart(2, '0');
+    const month = parts[1].padStart(2, '0');
+    const year = parts[2];
+
+    return `${year}-${month}-${day}`;
+  }
+
+
 
   get f() {
     return this.passengerForm.controls;
@@ -56,7 +150,18 @@ export class BaggageSelection implements OnInit {
     if (this.passengerForm.valid) {
       console.log('Form Data:', this.passengerForm.value);
       console.log('Baggage Quantity:', this.baggageQuantity);
-      this.router.navigate(['/confirmation']);
+
+      const navigationData = {
+        state: {
+          flight: this.selectedFlight(),
+          passenger: this.passengerForm.value,
+          baggage: this.baggageQuantity,
+          seat: this.selectedSeat,
+          seatType: this.selectedSeatType
+        }
+      };
+
+      this.router.navigate(['/confirmation'], navigationData);
     } else {
       this.passengerForm.markAllAsTouched();
       console.error('Form không hợp lệ.');
@@ -64,6 +169,65 @@ export class BaggageSelection implements OnInit {
   }
 
   quayLai(): void {
-    this.router.navigate(['/seat-selection']);
+    if (this.selectedFlightId) {
+      this.router.navigate(['/seat-selection', this.selectedFlightId]);
+    } else {
+      this.router.navigate(['/tim-chuyen-bay']);
+    }
+  }
+
+
+  private normalizeFlights(data: any): Flight[] {
+    const cur = data?.meta?.currency ?? 'VND';
+    const list = Array.isArray(data) ? data : (data?.flights ?? []);
+    const pick = (o: any, keys: string[], def: any = '') => {
+      for (const k of keys) {
+        try {
+          const v = k.includes('.') ? k.split('.').reduce((x: any, kk) => x?.[kk], o) : o?.[k];
+          if (v !== undefined && v !== null && v !== '') return v;
+        } catch { }
+      }
+      return def;
+    };
+    return (list as any[]).map(x => {
+      const departISO = String(pick(x, ['departTime', 'depart_time', 'dep_time', 'depart', 'departISO', 'depart.time']));
+      const arriveISO = String(pick(x, ['arriveTime', 'arrive_time', 'arr_time', 'arrive', 'arriveISO', 'arrive.time']));
+      const date = String(pick(x, ['date', 'flight_date'], departISO ? departISO.slice(0, 10) : ''));
+      const from = String(pick(x, ['from', 'origin', 'from_code', 'route.from'])).toUpperCase();
+      const to = String(pick(x, ['to', 'destination', 'to_code', 'route.to'])).toUpperCase();
+      const price = Number(pick(x, ['price', 'fare', 'amount', 'total', 'base_price'], 0));
+      const duration = Number(pick(x, ['durationMin', 'duration_min', 'duration', 'mins'], 0));
+      return {
+        id: String(pick(x, ['id'], `${pick(x, ['flightNo', 'number', 'flight_no'], 'XX000')}-${date}`)),
+        airline: String(pick(x, ['airline', 'carrier', 'airline_name'], 'Unknown')),
+        flightNo: String(pick(x, ['flightNo', 'number', 'flight_no'], 'XX000')),
+        from, to, date,
+        departTime: departISO,
+        arriveTime: arriveISO,
+        durationMin: duration,
+        price,
+        currency: (String(pick(x, ['currency'], cur)) as 'VND' | 'USD'),
+        seatsLeft: Number(pick(x, ['seatsLeft', 'seats_left', 'seats_remaining'], 0)),
+        cabin: (pick(x, ['cabin', 'class'], 'Economy') as Cabin),
+        details: x.details ?? x
+      };
+    });
+  }
+
+  timeHM(iso?: string) {
+    if (!iso) return '';
+    try { return new Date(iso).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', hour12: false }); }
+    catch { return ''; }
+  }
+
+  dateVN(iso?: string) {
+    if (!iso) return '';
+    try {
+      const d = new Date(iso);
+      const wd = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'][d.getDay()];
+      const dd = String(d.getDate()).padStart(2, '0');
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      return `${wd}, ${dd}/${mm}/${d.getFullYear()}`;
+    } catch { return ''; }
   }
 }

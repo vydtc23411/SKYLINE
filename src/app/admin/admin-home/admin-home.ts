@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { AdminSidebarComponent } from '../shared/sidebar/sidebar';
 
 @Component({
@@ -13,31 +14,39 @@ import { AdminSidebarComponent } from '../shared/sidebar/sidebar';
 export class AdminHome implements OnInit {
   currentUser: any = null;
   currentDate: string = '';
-  showDateDropdown: boolean = false;
-  startDate: string = '';
-  endDate: string = '';
-  dateRange: string = '17/09/25 - 17/10/25';
+  showFilterDropdown: boolean = false;
+  sidebarOpen: boolean = false; // For mobile sidebar toggle
+  filterStep: 'year' | 'month' | 'week' = 'year'; // Current step in filter
+  dateRange: string = 'Tháng mới nhất';
+  selectedYear: number = 2025;
+  availableYears: number[] = [2024, 2025];
+  availableMonths: any[] = [];
+  allMonthlyData: any[] = []; // Store all monthly data
+  availableWeeks: any[] = []; // Weeks in selected month
+  selectedMonthIndex: number = -1;
+  selectedWeekIndex: number = -1;
+  weeklyTicketData: any[] = []; // Store all weeks data
   
   // Statistics data
   stats = [
     { 
       image: '/assets/icons/revenue.png', 
       label: 'Tổng doanh thu', 
-      value: '75.000.000', 
+      value: '0', 
       unit: 'VNĐ',
       bgColor: '#E3F2FD'
     },
     { 
       image: '/assets/icons/ticket1.png', 
       label: 'Tổng vé đã bán', 
-      value: '600', 
+      value: '0', 
       unit: '',
       bgColor: '#E0F2F1'
     },
     { 
       image: '/assets/icons/flight1.png', 
       label: 'Tổng chuyến bay', 
-      value: '120', 
+      value: '0', 
       unit: '',
       bgColor: '#E1F5FE'
     },
@@ -52,30 +61,33 @@ export class AdminHome implements OnInit {
 
   // Chart data for donut charts
   chartData = [
-    { label: 'Tỷ lệ ghế được đặt', percentage: 81, color: '#EF5350' },
-    { label: 'Tăng trưởng doanh thu tháng này', percentage: 22, color: '#66BB6A' },
-    { label: 'Mức doanh thu đạt so với kế hoạch', percentage: 62, color: '#42A5F5' }
+    { label: 'Tỷ lệ ghế được đặt', percentage: 0, color: '#EF5350' },
+    { label: 'Tăng trưởng doanh thu tháng này', percentage: 0, color: '#66BB6A' },
+    { label: 'Mức doanh thu đạt so với kế hoạch', percentage: 0, color: '#42A5F5' }
   ];
+
+  // Donut chart configuration
+  donutRadius: number = 40; // keep in sync with SVG r attribute
 
   // Weekly ticket data
   weeklyData = [
-    { day: 'Sunday', value: 320 },
-    { day: 'Monday', value: 380 },
-    { day: 'Tuesday', value: 456 },
-    { day: 'Wednesday', value: 290 },
-    { day: 'Thursday', value: 410 },
-    { day: 'Friday', value: 370 },
-    { day: 'Saturday', value: 480 }
+    { day: 'Sunday', value: 0 },
+    { day: 'Monday', value: 0 },
+    { day: 'Tuesday', value: 0 },
+    { day: 'Wednesday', value: 0 },
+    { day: 'Thursday', value: 0 },
+    { day: 'Friday', value: 0 },
+    { day: 'Saturday', value: 0 }
   ];
 
   // Monthly revenue data
   monthlyRevenue = {
-    labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-    data2024: [4200000, 5800000, 4500000, 6200000, 7000000, 6500000, 5800000, 6000000, 5500000, 6200000, 5900000, 6000000],
-    data2025: [5000000, 4500000, 6800000, 5200000, 7500000, 6200000, 5500000, 7200000, 6000000, 6800000, 5200000, 6500000]
+    labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+    data2024: [] as number[],
+    data2025: [] as number[]
   };
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit() {
     // Get current user
@@ -88,8 +100,329 @@ export class AdminHome implements OnInit {
     const now = new Date();
     this.currentDate = now.toLocaleDateString('vi-VN');
     
+    // Load data from JSON files
+    this.loadTicketsData();
+    this.loadFlightsData();
+    this.loadRevenueData();
+    this.loadWeeklyTicketData();
+    
     // Setup chart hover effects
-    setTimeout(() => this.setupChartHover(), 100);
+    setTimeout(() => this.setupChartHover(), 500);
+  }
+
+  loadTicketsData() {
+    this.http.get<any[]>('assets/data/tickets.json').subscribe({
+      next: (data) => {
+        // Filter tickets by selected year
+        const ticketsOfYear = data.filter(ticket => {
+          const ticketYear = new Date(ticket.date).getFullYear();
+          return ticketYear === this.selectedYear;
+        });
+        
+        // Calculate total revenue from tickets of selected year
+        const totalRevenue = ticketsOfYear.reduce((sum, ticket) => sum + ticket.revenueTotal, 0);
+        this.stats[0].value = (totalRevenue / 1000000).toFixed(1) + 'M';
+        
+        // Calculate total seats booked and total seats max from tickets data of selected year
+        const totalSeatsBooked = ticketsOfYear.reduce((sum, ticket) => sum + (ticket.seatsBookedTotal || 0), 0);
+        const totalSeatsMax = ticketsOfYear.reduce((sum, ticket) => sum + (ticket.seatsMax || 0), 0);
+        
+        // Update total tickets sold stat
+        this.stats[1].value = totalSeatsBooked.toLocaleString('vi-VN');
+        
+        // Calculate booking rate percentage for donut chart
+        if (totalSeatsMax > 0) {
+          const bookingRate = (totalSeatsBooked / totalSeatsMax) * 100;
+          this.chartData[0].percentage = Math.min(100, Math.round(bookingRate));
+        } else {
+          this.chartData[0].percentage = 0;
+        }
+        
+        console.log('Year:', this.selectedYear, 'Total revenue:', totalRevenue, 'Total seats booked:', totalSeatsBooked, 'Total seats max:', totalSeatsMax, 'Booking rate:', this.chartData[0].percentage + '%');
+      },
+      error: (error) => console.error('Error loading tickets:', error)
+    });
+  }
+
+  loadFlightsData() {
+    this.http.get<any[]>('assets/data/flights.json').subscribe({
+      next: (data) => {
+        // Filter flights by selected year
+        const flightsOfYear = data.filter(flight => {
+          const flightYear = new Date(flight.date).getFullYear();
+          return flightYear === this.selectedYear;
+        });
+        
+        // Calculate total flights of selected year
+        const totalFlights = flightsOfYear ? flightsOfYear.length : 0;
+        this.stats[2].value = totalFlights.toString();
+        
+        console.log('Year:', this.selectedYear, 'Total flights:', totalFlights);
+      },
+      error: (error) => console.error('Error loading flights:', error)
+    });
+  }
+
+  loadRevenueData() {
+    this.http.get<any>('assets/data/revenue.json').subscribe({
+      next: (data) => {
+        if (data.monthly) {
+          // Store all monthly data
+          this.allMonthlyData = data.monthly;
+          
+          // Filter data by year
+          const monthly2024 = data.monthly.filter((m: any) => m.year === 2024);
+          const monthly2025 = data.monthly.filter((m: any) => m.year === 2025);
+          
+          // Show all months for both years
+          if (this.selectedYear === 2025) {
+            this.availableMonths = monthly2025;
+          } else {
+            this.availableMonths = monthly2024;
+          }
+          
+          // Populate revenue arrays for chart
+          this.monthlyRevenue.data2024 = monthly2024.map((m: any) => m.revenueActual);
+          this.monthlyRevenue.data2025 = monthly2025.map((m: any) => m.revenueActual);
+          
+          // Get latest month with data
+          const latestMonthIndex = this.availableMonths.length - 1;
+          this.selectedMonthIndex = latestMonthIndex;
+          const latestMonth = this.availableMonths[latestMonthIndex];
+          
+          // Update date range display
+          this.updateMonthRange(latestMonth);
+          
+          // Calculate growth rate for donut chart (tăng trưởng tháng này)
+          if (latestMonth && latestMonth.growthMoMPct !== null) {
+            // Use absolute value and round
+            this.chartData[1].percentage = Math.round(Math.abs(latestMonth.growthMoMPct));
+          }
+          
+          // Calculate plan attainment for donut chart (mức đạt kế hoạch)
+          if (latestMonth && latestMonth.planAttainmentPct) {
+            this.chartData[2].percentage = Math.round(latestMonth.planAttainmentPct);
+          }
+          
+          // Load weeks for latest month and update weekly chart (for both 2024 and 2025)
+          this.loadWeeksForMonth(latestMonth);
+          if (this.availableWeeks.length > 0) {
+            const lastWeek = this.availableWeeks[this.availableWeeks.length - 1];
+            this.updateWeeklyChart(lastWeek);
+          }
+          
+          console.log('Latest month:', latestMonth.month + '/' + latestMonth.year);
+          console.log('Growth rate:', this.chartData[1].percentage + '%');
+          console.log('Plan attainment:', this.chartData[2].percentage + '%');
+        }
+      },
+      error: (error) => console.error('Error loading revenue:', error)
+    });
+  }
+
+  loadWeeklyTicketData() {
+    this.http.get<any>('assets/data/ticketdetail_weekly.json').subscribe({
+      next: (data) => {
+        if (data.weeks && data.weeks.length > 0) {
+          // Store all weeks data
+          this.weeklyTicketData = data.weeks;
+          
+          // Get the latest week as default
+          const latestWeek = data.weeks[data.weeks.length - 1];
+          
+          // Update weekly data - map từ ticketdetail_weekly.json
+          this.weeklyData = latestWeek.days.map((day: any) => ({
+            day: day.weekday,
+            value: day.tickets
+          }));
+          
+          console.log('Weekly ticket data loaded from ticketdetail_weekly.json');
+          console.log('Latest week:', latestWeek.week_start, 'to', latestWeek.week_end);
+          console.log('Weekly data:', this.weeklyData);
+        }
+      },
+      error: (error) => console.error('Error loading weekly ticket data:', error)
+    });
+  }
+
+  selectMonth(monthIndex: number) {
+    this.selectedMonthIndex = monthIndex;
+    const selectedMonth = this.availableMonths[monthIndex];
+    
+    // Load weeks for this month (for both 2024 and 2025)
+    this.loadWeeksForMonth(selectedMonth);
+    
+    if (this.availableWeeks.length > 0) {
+      // Move to week selection step
+      this.filterStep = 'week';
+    } else {
+      // No weekly data, apply month filter directly
+      this.applyMonthFilter();
+    }
+  }
+
+  selectYear(year: number) {
+    this.selectedYear = year;
+    
+    // Update available months based on selected year - show all months
+    this.availableMonths = this.allMonthlyData.filter((m: any) => m.year === year);
+    
+    // Reload tickets and flights data for the selected year
+    this.loadTicketsData();
+    this.loadFlightsData();
+    
+    // Reset to latest month of selected year
+    if (this.availableMonths.length > 0) {
+      this.selectedMonthIndex = this.availableMonths.length - 1;
+    }
+    
+    // Move to month selection step
+    this.filterStep = 'month';
+  }
+
+  applyYearFilter() {
+    // Update available months based on selected year - show all months
+    if (this.selectedYear === 2025) {
+      this.availableMonths = this.allMonthlyData.filter((m: any) => m.year === 2025);
+    } else {
+      this.availableMonths = this.allMonthlyData.filter((m: any) => m.year === this.selectedYear);
+    }
+    
+    // Reload tickets and flights data for the selected year
+    this.loadTicketsData();
+    this.loadFlightsData();
+    
+    // Reset to latest month of selected year
+    if (this.availableMonths.length > 0) {
+      this.selectedMonthIndex = this.availableMonths.length - 1;
+      const latestMonth = this.availableMonths[this.selectedMonthIndex];
+      
+      // Update date range display
+      this.updateMonthRange(latestMonth);
+      
+      // Update donut charts
+      if (latestMonth.growthMoMPct !== null) {
+        this.chartData[1].percentage = Math.round(Math.abs(latestMonth.growthMoMPct));
+      }
+      
+      if (latestMonth.planAttainmentPct) {
+        this.chartData[2].percentage = Math.round(latestMonth.planAttainmentPct);
+      }
+      
+      // Load weeks for both 2024 and 2025
+      this.loadWeeksForMonth(latestMonth);
+      if (this.availableWeeks.length > 0) {
+        const lastWeek = this.availableWeeks[this.availableWeeks.length - 1];
+        this.updateWeeklyChart(lastWeek);
+      } else {
+        // Clear weekly data if no weeks found
+        this.weeklyData = [
+          { day: 'Sunday', value: 0 },
+          { day: 'Monday', value: 0 },
+          { day: 'Tuesday', value: 0 },
+          { day: 'Wednesday', value: 0 },
+          { day: 'Thursday', value: 0 },
+          { day: 'Friday', value: 0 },
+          { day: 'Saturday', value: 0 }
+        ];
+      }
+    }
+    
+    // Close dropdown and reset to year step
+    this.showFilterDropdown = false;
+    this.filterStep = 'year';
+    
+    console.log('Applied year filter:', this.selectedYear);
+  }
+
+  loadWeeksForMonth(selectedMonth: any) {
+    if (this.weeklyTicketData.length === 0) return;
+    
+    const year = selectedMonth.year;
+    const month = selectedMonth.month;
+    
+    // Find all weeks that belong to this month
+    // A week belongs to a month if its week_end date is in that month
+    this.availableWeeks = this.weeklyTicketData.filter((week: any) => {
+      const weekEndDate = new Date(week.week_end);
+      return weekEndDate.getFullYear() === year && (weekEndDate.getMonth() + 1) === month;
+    });
+    
+    // Select the last week by default
+    if (this.availableWeeks.length > 0) {
+      this.selectedWeekIndex = this.availableWeeks.length - 1;
+    }
+    
+    console.log('Available weeks for month', month + '/' + year, ':', this.availableWeeks.length);
+  }
+
+  selectWeek(weekIndex: number) {
+    this.selectedWeekIndex = weekIndex;
+  }
+
+  applyMonthFilter() {
+    if (this.selectedMonthIndex >= 0 && this.selectedMonthIndex < this.availableMonths.length) {
+      const selectedMonth = this.availableMonths[this.selectedMonthIndex];
+      
+      // Update date range display
+      this.updateMonthRange(selectedMonth);
+      
+      // Update donut charts with selected month data
+      if (selectedMonth.growthMoMPct !== null) {
+        this.chartData[1].percentage = Math.round(Math.abs(selectedMonth.growthMoMPct));
+      }
+      
+      if (selectedMonth.planAttainmentPct) {
+        this.chartData[2].percentage = Math.round(selectedMonth.planAttainmentPct);
+      }
+      
+      // Update weekly chart with selected week (last week by default)
+      if (this.selectedWeekIndex >= 0 && this.selectedWeekIndex < this.availableWeeks.length) {
+        this.updateWeeklyChart(this.availableWeeks[this.selectedWeekIndex]);
+      }
+      
+      // Close dropdown and reset to year step
+      this.showFilterDropdown = false;
+      this.filterStep = 'year';
+      
+      console.log('Applied month filter:', selectedMonth.month + '/' + selectedMonth.year);
+    }
+  }
+
+  applyWeekFilter() {
+    if (this.selectedWeekIndex >= 0 && this.selectedWeekIndex < this.availableWeeks.length) {
+      const selectedWeek = this.availableWeeks[this.selectedWeekIndex];
+      const selectedMonth = this.availableMonths[this.selectedMonthIndex];
+      
+      // Update date range display to show week and month
+      this.dateRange = `${this.formatWeekRange(selectedWeek)} - Tháng ${selectedMonth.month}/${selectedMonth.year}`;
+      
+      // Update weekly chart with selected week
+      this.updateWeeklyChart(selectedWeek);
+      
+      // Close dropdown and reset to year step
+      this.showFilterDropdown = false;
+      this.filterStep = 'year';
+      
+      console.log('Applied week filter:', selectedWeek.week_start, 'to', selectedWeek.week_end);
+    }
+  }
+
+  updateWeeklyChart(week: any) {
+    if (!week) return;
+    
+    // Update weekly data with the selected week
+    this.weeklyData = week.days.map((day: any) => ({
+      day: day.weekday,
+      value: day.tickets
+    }));
+    
+    console.log('Updated weekly chart:', week.week_start, 'to', week.week_end);
+    console.log('Weekly data:', this.weeklyData);
+  }
+
+  updateMonthRange(month: any) {
+    this.dateRange = `Tháng ${month.month}/${month.year}`;
   }
 
   setupChartHover() {
@@ -100,15 +433,12 @@ export class AdminHome implements OnInit {
     const tooltipValue = document.querySelector('.tooltip-value') as HTMLElement;
 
     if (tooltip && tooltipDay && tooltipValue) {
-      hoverAreas.forEach((area) => {
+      hoverAreas.forEach((area, index) => {
         area.addEventListener('mouseenter', (e: Event) => {
-          const target = e.target as SVGElement;
-          const day = target.getAttribute('data-day');
-          const value = target.getAttribute('data-value');
-          
-          if (day && value) {
-            tooltipDay.textContent = day;
-            tooltipValue.textContent = `${value} vé`;
+          if (index < this.weeklyData.length) {
+            const dayData = this.weeklyData[index];
+            tooltipDay.textContent = dayData.day;
+            tooltipValue.textContent = `${dayData.value} vé`;
             tooltip.style.display = 'block';
           }
         });
@@ -138,18 +468,14 @@ export class AdminHome implements OnInit {
     const value2025 = document.querySelector('.value-2025') as HTMLElement;
 
     if (revenueTooltip && tooltipMonth && value2024 && value2025) {
-      revenueHoverAreas.forEach((area) => {
+      revenueHoverAreas.forEach((area, index) => {
         area.addEventListener('mouseenter', (e: Event) => {
-          const target = e.target as SVGElement;
-          const month = target.getAttribute('data-month');
-          const val2024 = target.getAttribute('data-value2024');
-          const val2025 = target.getAttribute('data-value2025');
-          
-          if (month && val2024 && val2025) {
-            const monthIndex = parseInt(month) - 1;
-            tooltipMonth.textContent = this.monthlyRevenue.labels[monthIndex];
-            value2024.textContent = `${val2024}M VND`;
-            value2025.textContent = `${val2025}M VND`;
+          if (index < this.monthlyRevenue.labels.length) {
+            tooltipMonth.textContent = this.monthlyRevenue.labels[index];
+            const val2024 = this.monthlyRevenue.data2024[index] || 0;
+            const val2025 = this.monthlyRevenue.data2025[index] || 0;
+            value2024.textContent = `${this.formatRevenue(val2024)}M VND`;
+            value2025.textContent = `${this.formatRevenue(val2025)}M VND`;
             revenueTooltip.style.display = 'block';
           }
         });
@@ -172,42 +498,192 @@ export class AdminHome implements OnInit {
     }
   }
 
+  getChartStrokeDasharray(percentage: number): string {
+    // Backwards-compatible wrapper to new donut helpers
+    return this.getDonutStrokeDasharray(percentage);
+  }
+
+  // Donut helpers
+  donutCircumference(): number {
+    return 2 * Math.PI * this.donutRadius;
+  }
+
+  getDonutStrokeDasharray(percentage: number): string {
+    const circumference = this.donutCircumference();
+    const filled = (percentage / 100) * circumference;
+    // return filled + remaining to show the filled arc followed by gap
+    const remaining = Math.max(0, circumference - filled);
+    return `${filled} ${remaining}`;
+  }
+
+  // Optional: return stroke-dashoffset if you want to animate from 0 (not used now)
+  getDonutStrokeDashoffset(_percentage: number): string {
+    return '0';
+  }
+
+  toggleDateDropdown() {
+    this.showFilterDropdown = !this.showFilterDropdown;
+    if (!this.showFilterDropdown) {
+      this.filterStep = 'year'; // Reset to year step when closing
+    }
+  }
+
+  goBackToYear() {
+    this.filterStep = 'year';
+  }
+
+  goBackToMonth() {
+    this.filterStep = 'month';
+  }
+
+  formatWeekRange(week: any): string {
+    const startDate = new Date(week.week_start);
+    const endDate = new Date(week.week_end);
+    
+    const formatDate = (date: Date) => {
+      return `${date.getDate()}/${date.getMonth() + 1}`;
+    };
+    
+    return `${formatDate(startDate)} - ${formatDate(endDate)}`;
+  }
+
+  getTotalTicketsForWeek(week: any): number {
+    if (!week || !week.days) return 0;
+    return week.days.reduce((sum: number, day: any) => sum + day.tickets, 0);
+  }
+
   logout() {
     localStorage.removeItem('currentUser');
     this.router.navigate(['/admin-login']);
   }
 
-  getChartStrokeDasharray(percentage: number): string {
-    const circumference = 2 * Math.PI * 45;
-    const filled = (percentage / 100) * circumference;
-    return `${filled} ${circumference}`;
-  }
+  // Generate smooth SVG path for weekly data
+  generateWeeklyPath(): string {
+    const points = this.computeWeeklyPoints();
 
-  toggleDateDropdown() {
-    this.showDateDropdown = !this.showDateDropdown;
-  }
+    if (points.length === 0) return '';
 
-  applyDateFilter() {
-    if (this.startDate && this.endDate) {
-      const start = new Date(this.startDate).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: '2-digit' });
-      const end = new Date(this.endDate).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: '2-digit' });
-      this.dateRange = `${start} - ${end}`;
-      this.showDateDropdown = false;
-      // Here you can add logic to filter data based on date range
+    let path = `M ${points[0].x},${points[0].y}`;
+
+    for (let i = 0; i < points.length - 1; i++) {
+      const current = points[i];
+      const next = points[i + 1];
+      const controlX1 = current.x + (next.x - current.x) * 0.4;
+      const controlY1 = current.y;
+      const controlX2 = current.x + (next.x - current.x) * 0.6;
+      const controlY2 = next.y;
+      path += ` C ${controlX1},${controlY1} ${controlX2},${controlY2} ${next.x},${next.y}`;
     }
+
+    return path;
   }
 
-  selectQuickFilter(days: number) {
-    const end = new Date();
-    const start = new Date();
-    start.setDate(end.getDate() - days);
+  // Generate area fill path for weekly data
+  generateWeeklyAreaPath(): string {
+    const points = this.computeWeeklyPoints();
+    if (points.length === 0) return '';
+
+    const path = this.generateWeeklyPath();
+    const width = 700;
+    const height = 220;
+    const padding = 80;
+    // use the left and right extremes based on padding
+    return `${path} L ${width - padding},${height} L ${padding},${height} Z`;
+  }
+
+  // Compute point coordinates used by path, points and hover areas
+  computeWeeklyPoints(): { x: number; y: number }[] {
+    const width = 700;
+    const height = 220;
+    const padding = 80;
+    const maxValue = Math.max(...this.weeklyData.map(d => d.value), 100);
+
+    return this.weeklyData.map((d, i) => {
+      const step = (width - padding * 2) / Math.max(this.weeklyData.length - 1, 1);
+      const x = padding + (i * step);
+      const y = height - ((d.value / maxValue) * (height - 40));
+      return { x, y };
+    });
+  }
+
+  // Helpers for template bindings
+  getHoverRectX(i: number): number {
+    const points = this.computeWeeklyPoints();
+    const width = 700;
+    const padding = 80;
+    const step = (width - padding * 2) / Math.max(this.weeklyData.length - 1, 1);
+    const x = (points[i]?.x ?? (padding + i * step)) - step / 2;
+    return Math.max(0, x);
+  }
+
+  getHoverRectWidth(): number {
+    const width = 700;
+    const padding = 80;
+    const step = (width - padding * 2) / Math.max(this.weeklyData.length - 1, 1);
+    return step;
+  }
+
+  getDataPointCx(i: number): number {
+    const points = this.computeWeeklyPoints();
+    return points[i]?.x ?? 0;
+  }
+
+  getDataPointCy(i: number): number {
+    const points = this.computeWeeklyPoints();
+    return points[i]?.y ?? 0;
+  }
+
+  // Format revenue value for display
+  formatRevenue(value: number): string {
+    return (value / 1000000).toFixed(1);
+  }
+
+  // Generate smooth SVG path for monthly revenue
+  generateRevenuePath(data: number[]): string {
+    const width = 1000;
+    const height = 240;
+    const paddingX = 50;
+    const maxValue = Math.max(...this.monthlyRevenue.data2024, ...this.monthlyRevenue.data2025, 1000000);
     
-    this.startDate = start.toISOString().split('T')[0];
-    this.endDate = end.toISOString().split('T')[0];
+    const points = data.map((value, i) => {
+      const x = paddingX + (i * (width - paddingX * 2) / 11);
+      const y = height - ((value / maxValue) * (height - 40));
+      return { x, y };
+    });
+
+    if (points.length === 0) return '';
     
-    const startFormatted = start.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: '2-digit' });
-    const endFormatted = end.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: '2-digit' });
-    this.dateRange = `${startFormatted} - ${endFormatted}`;
-    this.showDateDropdown = false;
+    let path = `M ${points[0].x},${points[0].y}`;
+    
+    for (let i = 0; i < points.length - 1; i++) {
+      const current = points[i];
+      const next = points[i + 1];
+      const controlX1 = current.x + (next.x - current.x) * 0.4;
+      const controlY1 = current.y;
+      const controlX2 = current.x + (next.x - current.x) * 0.6;
+      const controlY2 = next.y;
+      path += ` C ${controlX1},${controlY1} ${controlX2},${controlY2} ${next.x},${next.y}`;
+    }
+    
+    return path;
+  }
+
+  // Toggle sidebar on mobile
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  // Close sidebar when clicking outside (on mobile)
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const sidebar = document.querySelector('.sidebar');
+    const menuToggle = document.querySelector('.menu-toggle');
+    
+    if (this.sidebarOpen && sidebar && menuToggle) {
+      if (!sidebar.contains(target) && !menuToggle.contains(target)) {
+        this.sidebarOpen = false;
+      }
+    }
   }
 }

@@ -45,6 +45,7 @@
     gap: 10px;
     color: #ffffff;
     cursor: pointer;
+    transition: background-color 0.3s;
   }
   
   .menu li.active {
@@ -55,4 +56,96 @@
   .menu li:hover {
     background-color: #99BBFF;
   }
+
+  .menu li i {
+    font-size: 16px;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .avatar {
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
+
+    .avatar-img {
+      width: 80px;
+      height: 80px;
+    }
+
+    .avatar h3 {
+      font-size: 16px;
+    }
+
+    .menu li {
+      padding: 12px 15px;
+      font-size: 13px;
+    }
+
+    .menu li i {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .avatar {
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
+
+    .avatar-img {
+      width: 60px;
+      height: 60px;
+      border: 2px solid white;
+    }
+
+    .avatar h3 {
+      font-size: 14px;
+    }
+
+    .menu li {
+      padding: 10px 12px;
+      font-size: 12px;
+      gap: 8px;
+    }
+
+    .menu li i {
+      font-size: 13px;
+      min-width: 18px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    :host, .sidebar {
+      min-width: 200px;
+    }
+
+    .avatar {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    .avatar-img {
+      width: 50px;
+      height: 50px;
+    }
+
+    .avatar h3 {
+      font-size: 12px;
+    }
+
+    .menu li {
+      padding: 8px 10px;
+      font-size: 11px;
+      gap: 6px;
+    }
+
+    .menu li i {
+      font-size: 12px;
+      min-width: 16px;
+    }
+  }
+  
   
