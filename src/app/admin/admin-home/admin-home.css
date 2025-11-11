@@ -21,6 +21,7 @@
   overflow-y: auto;
   background-color: #375578;
   margin-left: 250px;
+  transition: margin-left 0.3s ease;
 }
 
 /* Header */
@@ -1101,25 +1102,485 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .main-content {
+    margin-left: 220px;
+  }
+
+  .header {
+    padding: 15px 20px;
+  }
+
+  .search-bar {
+    width: 350px;
+  }
+
+  .welcome-section {
+    padding: 20px;
+  }
+
+  .welcome-text h1 {
+    font-size: 24px;
+  }
+
+  .filter-btn {
+    min-width: 200px;
+    font-size: 14px;
+  }
+
+  .stats-grid {
+    padding: 15px 20px;
+    gap: 15px;
+  }
+
+  .stat-card {
+    padding: 20px;
+  }
+
+  .stat-icon img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .stat-value {
+    font-size: 20px;
+  }
+
+  .charts-section {
+    padding: 0 20px 15px;
+    gap: 15px;
+  }
+
+  .chart-container {
+    padding: 20px;
+  }
+
+  .revenue-chart {
+    margin: 0 20px 20px;
+    padding: 20px;
+  }
+}
+
 @media (max-width: 768px) {
   .admin-container {
     flex-direction: column;
   }
   
   .main-content {
-    margin-left: 0;
-  }
-  
-  .stats-grid {
-    grid-template-columns: 1fr;
+    margin-left: 200px;
   }
   
   .header {
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
+    padding: 12px 15px;
   }
   
   .search-bar {
     width: 100%;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .user-info {
+    padding: 6px 12px;
+  }
+
+  .user-avatar {
+    width: 30px;
+    height: 30px;
+  }
+
+  .user-name {
+    font-size: 11px;
+  }
+
+  .user-role {
+    font-size: 12px;
+  }
+
+  .user-dropdown {
+    top: 55px;
+    min-width: 220px;
+  }
+
+  .welcome-section {
+    padding: 15px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .welcome-text h1 {
+    font-size: 20px;
+  }
+
+  .welcome-text p {
+    font-size: 13px;
+  }
+
+  .date-filter {
+    width: 100%;
+  }
+
+  .filter-btn {
+    width: 100%;
+    min-width: auto;
+    padding: 8px 15px;
+  }
+
+  .filter-btn img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .date-dropdown {
+    top: 70px;
+    right: 0;
+    left: 0;
+    margin: 0 15px;
+    min-width: auto;
+    padding: 15px;
+  }
+
+  .unified-dropdown {
+    min-width: auto;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    padding: 12px 15px;
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 18px;
+    gap: 15px;
+  }
+
+  .stat-icon img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+  }
+
+  .stat-value {
+    font-size: 18px;
+  }
+
+  .stat-unit {
+    font-size: 14px;
+  }
+
+  .charts-section {
+    padding: 0 15px 12px;
+    gap: 12px;
+  }
+
+  .chart-container {
+    padding: 18px;
+  }
+
+  .chart-title {
+    font-size: 14px;
+  }
+
+  .donut-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .donut-chart {
+    width: 120px;
+    height: 120px;
+  }
+
+  .donut-label {
+    font-size: 12px;
+  }
+
+  .chart-header-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .chart-subtitle {
+    font-size: 11px;
+  }
+
+  .download-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 8px 15px;
+    font-size: 12px;
+  }
+
+  .line-svg,
+  .revenue-svg {
+    height: 250px;
+  }
+
+  .axis-label {
+    font-size: 10px;
+  }
+
+  .revenue-chart {
+    margin: 0 15px 15px;
+    padding: 18px;
+  }
+
+  .revenue-legend {
+    gap: 15px;
+    font-size: 12px;
+  }
+
+  .axis-label-y {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    margin-left: 180px;
+  }
+
+  .header {
+    padding: 10px 12px;
+  }
+
+  .search-bar {
+    padding: 6px 15px;
+  }
+
+  .search-bar input {
+    font-size: 13px;
+  }
+
+  .search-btn {
+    font-size: 16px;
+  }
+
+  .header-actions {
+    gap: 10px;
+  }
+
+  .icon-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .user-info {
+    padding: 5px 10px;
+  }
+
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+  }
+
+  .user-name {
+    font-size: 10px;
+  }
+
+  .user-role {
+    font-size: 11px;
+  }
+
+  .welcome-section {
+    padding: 12px;
+  }
+
+  .welcome-text h1 {
+    font-size: 18px;
+  }
+
+  .welcome-text p {
+    font-size: 12px;
+  }
+
+  .filter-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .filter-btn img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .date-range {
+    font-size: 11px;
+  }
+
+  .date-dropdown {
+    margin: 0 12px;
+    padding: 12px;
+  }
+
+  .dropdown-header h4 {
+    font-size: 14px;
+  }
+
+  .month-btn,
+  .week-btn {
+    padding: 10px 12px;
+  }
+
+  .month-label,
+  .week-label {
+    font-size: 12px;
+  }
+
+  .month-stats,
+  .week-dates {
+    font-size: 11px;
+  }
+
+  .cancel-btn,
+  .apply-btn {
+    padding: 7px 15px;
+    font-size: 12px;
+  }
+
+  .stats-grid {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 15px;
+    gap: 12px;
+  }
+
+  .stat-icon img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+  }
+
+  .stat-value {
+    font-size: 16px;
+  }
+
+  .stat-unit {
+    font-size: 12px;
+  }
+
+  .charts-section {
+    padding: 0 12px 10px;
+    gap: 10px;
+  }
+
+  .chart-container {
+    padding: 15px;
+  }
+
+  .chart-title {
+    font-size: 13px;
+  }
+
+  .donut-chart {
+    width: 100px;
+    height: 100px;
+  }
+
+  .donut-percentage {
+    font-size: 16px;
+  }
+
+  .donut-percentage-symbol {
+    font-size: 9px;
+  }
+
+  .donut-label {
+    font-size: 11px;
+  }
+
+  .chart-subtitle {
+    font-size: 10px;
+  }
+
+  .download-btn {
+    padding: 7px 12px;
+    font-size: 11px;
+  }
+
+  .download-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .line-svg,
+  .revenue-svg {
+    height: 220px;
+  }
+
+  .axis-label {
+    font-size: 9px;
+  }
+
+  .chart-tooltip,
+  .revenue-tooltip {
+    padding: 10px 12px;
+    min-width: 140px;
+  }
+
+  .tooltip-day {
+    font-size: 11px;
+  }
+
+  .tooltip-value {
+    font-size: 14px;
+  }
+
+  .revenue-chart {
+    margin: 0 12px 12px;
+    padding: 15px;
+  }
+
+  .revenue-legend {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    font-size: 11px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .axis-label-y {
+    font-size: 8px;
+  }
+
+  .revenue-tooltip-month {
+    font-size: 12px;
+  }
+
+  .year-label {
+    font-size: 11px;
+  }
+
+  .value-label {
+    font-size: 12px;
   }
 }

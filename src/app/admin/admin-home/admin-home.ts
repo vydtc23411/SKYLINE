@@ -15,6 +15,7 @@ export class AdminHome implements OnInit {
   currentUser: any = null;
   currentDate: string = '';
   showFilterDropdown: boolean = false;
+  sidebarOpen: boolean = false; // For mobile sidebar toggle
   filterStep: 'year' | 'month' | 'week' = 'year'; // Current step in filter
   dateRange: string = 'Tháng mới nhất';
   selectedYear: number = 2025;
@@ -665,5 +666,24 @@ export class AdminHome implements OnInit {
     }
     
     return path;
+  }
+
+  // Toggle sidebar on mobile
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  // Close sidebar when clicking outside (on mobile)
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const sidebar = document.querySelector('.sidebar');
+    const menuToggle = document.querySelector('.menu-toggle');
+    
+    if (this.sidebarOpen && sidebar && menuToggle) {
+      if (!sidebar.contains(target) && !menuToggle.contains(target)) {
+        this.sidebarOpen = false;
+      }
+    }
   }
 }
