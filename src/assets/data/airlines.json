@@ -1,0 +1,42 @@
+[
+    {
+        "airlineCode": "VN",
+        "airlineName": "Vietnam Airlines",
+        "country": "Vietnam",
+        "hotline": "1900 1100",
+        "commissionRate": 5.00,
+        "status": "Active"
+    },
+    {
+        "airlineCode": "VJ",
+        "airlineName": "Vietjet Air",
+        "country": "Vietnam",
+        "hotline": "1900 1886",
+        "commissionRate": 5.00,
+        "status": "Active"
+    },
+    {
+        "airlineCode": "QH",
+        "airlineName": "Bamboo Airways",
+        "country": "Vietnam",
+        "hotline": "19001166",
+        "commissionRate": 10.00,
+        "status": "Active"
+    },
+    {
+        "airlineCode": "BL",
+        "airlineName": "Pacific Airlines",
+        "country": "Vietnam",
+        "hotline": "1900 1550",
+        "commissionRate": 6.50,
+        "status": "Active"
+    },
+    {
+        "airlineCode": "VU",
+        "airlineName": "Vietravel Airlines",
+        "country": "Vietnam",
+        "hotline": "1900 6686",
+        "commissionRate": 7.00,
+        "status": "Active"
+    }
+]
