@@ -82,8 +82,8 @@ export const routes: Routes = [
       { path: 'notifications', component: Notifications },
       { path: 'checkticket', component: CheckTicket },
       { path: 'checkticket2', component: CheckTicket2 },
-      { path: '', redirectTo: 'checkticket', pathMatch: 'full' }, 
-      { path: 'contact', component: Contact }, 
+      { path: '', redirectTo: 'checkticket', pathMatch: 'full' },
+      { path: 'contact', component: Contact },
       { path: '', redirectTo: 'checkticket', pathMatch: 'full' },
     ]
   },
@@ -96,16 +96,16 @@ export const routes: Routes = [
         .then(m => m.FlightSearchComponent),
   },
 
-  //Trang chọn chuyến bay
+  //Trang chọn chuyến bay (Sửa đường dẫn import)
   {
     path: 'chon-chuyen-bay/:id',
     loadComponent: () =>
-      import('./user/flight-selection/flight-selection')
+      import('./user/flight-selection/flight-selection') // <-- SỬA: Thêm .component
         .then(m => m.FlightSelectionComponent),
   },
 
-  // Trang đặt vé / chuyến bay
-  { path: 'seat-selection', component: SeatSelection },
+  // Trang đặt vé / chuyến bay (SỬA LỖI CHÍNH)
+  { path: 'seat-selection/:flightId', component: SeatSelection }, // <-- SỬA: Thêm :flightId
   { path: 'baggage-selection', component: BaggageSelection },
   { path: 'checkout', component: Checkout },
 
