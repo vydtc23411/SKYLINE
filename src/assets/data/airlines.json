@@ -1,11 +1,11 @@
 [
     {
-        "airlineCode": "VN",
-        "airlineName": "Vietnam Airlines",
-        "country": "Vietnam",
-        "hotline": "1900 1100",
-        "commissionRate": 5.00,
-        "status": "Active"
+        "airlineCode": "SU",
+        "airlineName": "Aeroflot",
+        "country": "Russia",
+        "hotline": "+7 495 223 5555",
+        "commissionRate": 4.50,
+        "status": "Ngừng hợp tác"
     },
     {
         "airlineCode": "VJ",
@@ -13,23 +13,47 @@
         "country": "Vietnam",
         "hotline": "1900 1886",
         "commissionRate": 5.00,
-        "status": "Active"
+        "status": "Đang hợp tác"
     },
     {
-        "airlineCode": "QH",
-        "airlineName": "Bamboo Airways",
-        "country": "Vietnam",
-        "hotline": "19001166",
-        "commissionRate": 10.00,
-        "status": "Active"
+        "airlineCode": "BA",
+        "airlineName": "British Airways",
+        "country": "United Kingdom",
+        "hotline": "0344 493 0787",
+        "commissionRate": 4.50,
+        "status": "Ngừng hợp tác"
     },
     {
-        "airlineCode": "BL",
-        "airlineName": "Pacific Airlines",
+        "airlineCode": "EK",
+        "airlineName": "Emirates",
+        "country": "United Arab Emirates",
+        "hotline": "800 123 66",
+        "commissionRate": 8.00,
+        "status": "Ngừng hợp tác"
+    },
+    {
+        "airlineCode": "VN",
+        "airlineName": "Vietnam Airlines",
         "country": "Vietnam",
-        "hotline": "1900 1550",
-        "commissionRate": 6.50,
-        "status": "Active"
+        "hotline": "1900 1100",
+        "commissionRate": 5.00,
+        "status": "Đang hợp tác"
+    },
+    {
+        "airlineCode": "AF",
+        "airlineName": "Air France",
+        "country": "France",
+        "hotline": "3654",
+        "commissionRate": 7.50,
+        "status": "Ngừng hợp tác"
+    },
+    {
+        "airlineCode": "QF",
+        "airlineName": "Qantas Airways",
+        "country": "Australia",
+        "hotline": "13 13 13",
+        "commissionRate": 5.50,
+        "status": "Ngừng hợp tác"
     },
     {
         "airlineCode": "VU",
@@ -37,6 +61,78 @@
         "country": "Vietnam",
         "hotline": "1900 6686",
         "commissionRate": 7.00,
-        "status": "Active"
+        "status": "Đang hợp tác"
+    },
+    {
+        "airlineCode": "CX",
+        "airlineName": "Cathay Pacific Airways",
+        "country": "Hong Kong",
+        "hotline": "2747 1747",
+        "commissionRate": 7.00,
+        "status": "Ngừng hợp tác"
+    },
+    {
+        "airlineCode": "DL",
+        "airlineName": "Delta Air Lines",
+        "country": "United States",
+        "hotline": "800-221-1212",
+        "commissionRate": 6.00,
+        "status": "Ngừng hợp tác"
+    },
+    {
+        "airlineCode": "BL",
+        "airlineName": "Pacific Airlines",
+        "country": "Vietnam",
+        "hotline": "1900 1550",
+        "commissionRate": 6.50,
+        "status": "Đang hợp tác"
+    },
+    {
+        "airlineCode": "LH",
+        "airlineName": "Lufthansa",
+        "country": "Germany",
+        "hotline": "0800 664 7672",
+        "commissionRate": 5.50,
+        "status": "Ngừng hợp tác"
+    },
+    {
+        "airlineCode": "SK",
+        "airlineName": "SAS Scandinavian Airlines",
+        "country": "Sweden",
+        "hotline": "+46 8 797 4000",
+        "commissionRate": 5.00,
+        "status": "Ngừng hợp tác"
+    },
+    {
+        "airlineCode": "JL",
+        "airlineName": "Japan Airlines",
+        "country": "Japan",
+        "hotline": "0120-25-5971",
+        "commissionRate": 6.50,
+        "status": "Ngừng hợp tác"
+    },
+    {
+        "airlineCode": "KL",
+        "airlineName": "KLM Royal Dutch Airlines",
+        "country": "Netherlands",
+        "hotline": "020-474 7747",
+        "commissionRate": 5.50,
+        "status": "Ngừng hợp tác"
+    },
+    {
+        "airlineCode": "AA",
+        "airlineName": "American Airlines",
+        "country": "United States",
+        "hotline": "800-433-7300",
+        "commissionRate": 6.00,
+        "status": "Ngừng hợp tác"
+    },
+    {
+        "airlineCode": "QH",
+        "airlineName": "Bamboo Airways",
+        "country": "Vietnam",
+        "hotline": "19001166",
+        "commissionRate": 10.00,
+        "status": "Đang hợp tác"
     }
 ]

@@ -181,7 +181,7 @@ export class FlightSearchComponent {
   fetchData(autoSearchAfterLoad = false) {
     this.isLoading.set(true);
     this.loadError.set(null);
-    this.http.get('assets/flight-search-sampledata.json').subscribe({
+    this.http.get('assets/data/flight-search-sampledata.json').subscribe({
       next: raw => {
         this.allFlights.set(normalizeFlights(raw));
         this.isLoading.set(false);
