@@ -3,6 +3,7 @@ import { Component, OnInit, signal, computed } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService, UserWithoutPassword } from '../services/auth.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { BookingService } from '../services/booking.service';
 
 type Cabin = 'Economy' | 'Premium Economy' | 'Business';
 export interface Flight {
@@ -47,7 +48,8 @@ export class SeatSelection implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private http: HttpClient
+    private http: HttpClient,
+    private bookingService: BookingService,
   ) { }
 
   ngOnInit(): void {
@@ -160,5 +162,11 @@ export class SeatSelection implements OnInit {
       return `${dd} Thg ${mm}`;
     } catch { return ''; }
   }
+  // ở seat-selection.ts
+chooseFlight(flight: any, selectedSeat: string) {
+  this.bookingService.setData('flight', flight);
+  this.bookingService.setData('seat', selectedSeat);
+  this.router.navigate(['/confirmation']);
+}
 
 }

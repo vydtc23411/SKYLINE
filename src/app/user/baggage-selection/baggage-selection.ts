@@ -151,6 +151,11 @@ export class BaggageSelection implements OnInit {
       console.log('Form Data:', this.passengerForm.value);
       console.log('Baggage Quantity:', this.baggageQuantity);
 
+      // Điều hướng sang trang Confirmation và truyền dữ liệu chuyến bay
+      this.router.navigate(['/confirmation'], {
+        state: { flight: this.selectedFlight }
+      });
+
       const navigationData = {
         state: {
           flight: this.selectedFlight(),

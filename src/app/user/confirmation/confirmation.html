@@ -17,10 +17,10 @@
 
 
       <div class="method-group">
-        <button class="method-btn" [class.active]="paymentMethod === 'credit'" (click)="selectMethod('credit')">VISA</button>
-        <button class="method-btn" [class.active]="paymentMethod === 'google'" (click)="selectMethod('google')">Google Pay</button>
-        <button class="method-btn" [class.active]="paymentMethod === 'apple'" (click)="selectMethod('apple')">Apple Pay</button>
-        <button class="method-btn" [class.active]="paymentMethod === 'paypal'" (click)="selectMethod('paypal')">Paypal</button>
+        <button class="method-btn" [class.active]="paymentMethod() === 'credit'" (click)="selectMethod('credit')">VISA</button>
+<button class="method-btn" [class.active]="paymentMethod() === 'google'" (click)="selectMethod('google')">Google Pay</button>
+<button class="method-btn" [class.active]="paymentMethod() === 'apple'" (click)="selectMethod('apple')">Apple Pay</button>
+<button class="method-btn" [class.active]="paymentMethod() === 'paypal'" (click)="selectMethod('paypal')">Paypal</button>
       </div>
 
 

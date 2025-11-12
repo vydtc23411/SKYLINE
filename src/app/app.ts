@@ -16,6 +16,8 @@ import { Rewards } from './user/rewards/rewards';
 import { Notifications } from './user/notifications/notifications';
 import { Contact } from './user/contact/contact';
 import { FlightSelection } from './user/flight-selection/flight-selection';
+import { TicketManagement } from './admin/ticket-management/ticket-management';
+import { FlightManagement } from './admin/flight-management/flight-management';
 
 @Component({
   selector: 'app-root',
@@ -34,6 +36,8 @@ import { FlightSelection } from './user/flight-selection/flight-selection';
     Rewards,
     Notifications,
     Contact,
+    FlightManagement,
+    TicketManagement
   ],
   standalone: true,
   templateUrl: './app.html',
