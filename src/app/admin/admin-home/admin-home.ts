@@ -87,6 +87,10 @@ export class AdminHome implements OnInit {
     data2025: [] as number[]
   };
 
+  // SVG paths for revenue chart (generated dynamically)
+  revenuePath2024: string = '';
+  revenuePath2025: string = '';
+
   constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit() {
@@ -184,6 +188,10 @@ export class AdminHome implements OnInit {
           // Populate revenue arrays for chart
           this.monthlyRevenue.data2024 = monthly2024.map((m: any) => m.revenueActual);
           this.monthlyRevenue.data2025 = monthly2025.map((m: any) => m.revenueActual);
+          
+          // Generate SVG paths for both years
+          this.revenuePath2024 = this.generateRevenuePath(this.monthlyRevenue.data2024);
+          this.revenuePath2025 = this.generateRevenuePath(this.monthlyRevenue.data2025);
           
           // Get latest month with data
           const latestMonthIndex = this.availableMonths.length - 1;
@@ -666,6 +674,67 @@ export class AdminHome implements OnInit {
     }
     
     return path;
+  }
+
+  // Get revenue data point coordinates
+  getRevenueDataPoint(monthIndex: number, year: 2024 | 2025): { cx: number, cy: number } {
+    const width = 1000;
+    const height = 240;
+    const paddingX = 50;
+    const maxValue = Math.max(...this.monthlyRevenue.data2024, ...this.monthlyRevenue.data2025, 1000000);
+    
+    const data = year === 2024 ? this.monthlyRevenue.data2024 : this.monthlyRevenue.data2025;
+    
+    // If data doesn't exist for this month (e.g., 2025 only has 11 months), return off-screen
+    if (monthIndex >= data.length) {
+      return { cx: -100, cy: -100 }; // Off-screen
+    }
+    
+    const value = data[monthIndex] || 0;
+    
+    const cx = paddingX + (monthIndex * (width - paddingX * 2) / 11);
+    const cy = height - ((value / maxValue) * (height - 40));
+    
+    return { cx, cy };
+  }
+
+  // Get revenue hover area x position
+  getRevenueHoverX(monthIndex: number): number {
+    const width = 1000;
+    const paddingX = 50;
+    const step = (width - paddingX * 2) / 11;
+    return paddingX + (monthIndex * step) - step / 2;
+  }
+
+  // Get revenue hover area width
+  getRevenueHoverWidth(): number {
+    const width = 1000;
+    const paddingX = 50;
+    return (width - paddingX * 2) / 11;
+  }
+
+  // Get revenue x-axis label position
+  getRevenueLabelX(monthIndex: number): number {
+    const width = 1000;
+    const paddingX = 50;
+    return paddingX + (monthIndex * (width - paddingX * 2) / 11);
+  }
+
+  // Get max value for revenue chart scaling
+  getRevenueMaxValue(): number {
+    return Math.max(...this.monthlyRevenue.data2024, ...this.monthlyRevenue.data2025, 1000000);
+  }
+
+  // Get Y-axis labels for revenue chart
+  getRevenueYAxisLabels(): string[] {
+    const maxValue = this.getRevenueMaxValue();
+    const step = maxValue / 4;
+    return [
+      this.formatRevenue(step) + 'M',
+      this.formatRevenue(step * 2) + 'M',
+      this.formatRevenue(step * 3) + 'M',
+      this.formatRevenue(step * 4) + 'M'
+    ];
   }
 
   // Toggle sidebar on mobile
