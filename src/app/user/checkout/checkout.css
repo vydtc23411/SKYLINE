@@ -1,4 +1,9 @@
+.content {
+    background-color: #375578;
+}
+
 .checkout-container {
+    background-color: #ffffff;
     max-width: 800px;
     margin: 0 auto;
     padding: 50px 100px;

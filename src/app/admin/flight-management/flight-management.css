@@ -484,14 +484,6 @@
     gap: 15px;
 }
 
-.flight-form {
-    grid-template-columns: 1fr;
-}
-
-.time-inputs {
-    grid-template-columns: 1fr;
-}
-
 .table-wrapper th:nth-child(3),
 .table-wrapper td:nth-child(3),
 .table-wrapper th:nth-child(4),
