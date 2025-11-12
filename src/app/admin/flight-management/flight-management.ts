@@ -133,6 +133,7 @@ export class FlightManagement implements OnInit {
     this.startDate = this.tempStartDate;
     this.endDate = this.tempEndDate;
     this.isDatePopoverOpen = false;
+    this.currentPage = 1;
   }
 
   setQuickRange(days: number) {
@@ -204,6 +205,13 @@ export class FlightManagement implements OnInit {
   confirmDelete() {
     if (this.flightToDeleteId !== null) {
       this.flights = this.flights.filter(f => f.id !== this.flightToDeleteId);
+      const newTotalPages = this.totalPages;
+      if (this.currentPage > newTotalPages) {
+        this.currentPage = newTotalPages;
+      }
+      if (this.currentPage === 0 && newTotalPages > 0) {
+        this.currentPage = 1;
+      }
     }
     this.cancelDelete();
   }
@@ -218,6 +226,7 @@ export class FlightManagement implements OnInit {
     this.flights.push({ ...this.formFlight });
     this.sortFlightsByDate();
     this.cancelForm();
+    this.currentPage = 1;
   }
 
   updateFlight() {
@@ -234,5 +243,48 @@ export class FlightManagement implements OnInit {
   cancelForm() {
     this.formFlight = { ...this.emptyFormFlight };
     this.activeTab = 'list';
+  }
+
+  // THÊM: Thuộc tính phân trang
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+
+  // THÊM: Getter cho các chuyến bay đã phân trang
+  get paginatedFlights(): Flight[] {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    return this.filteredFlights.slice(start, end);
+  }
+
+  // THÊM: Getter tính tổng số trang
+  get totalPages(): number {
+    return Math.ceil(this.filteredFlights.length / this.itemsPerPage);
+  }
+
+  // THÊM: Hàm reset trang khi tìm kiếm
+  onSearchChange(newValue: string): void {
+    this.searchTerm = newValue;
+    this.currentPage = 1;
+  }
+
+  // THÊM: Hàm reset trang khi lọc
+  onAirlineChange(newValue: string): void {
+    this.selectedAirline = newValue;
+    this.currentPage = 1;
+  }
+
+  // THÊM: Các hàm điều khiển trang
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  nextPage(): void {
+    this.goToPage(this.currentPage + 1);
+  }
+
+  prevPage(): void {
+    this.goToPage(this.currentPage - 1);
   }
 }

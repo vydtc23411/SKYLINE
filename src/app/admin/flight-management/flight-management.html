@@ -29,11 +29,12 @@
               <circle cx="11" cy="11" r="8" stroke-width="2"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2"></line>
             </svg>
-            <input type="text" placeholder="Tìm theo mã, sân bay..." [(ngModel)]="searchTerm" />
+            <input type="text" placeholder="Tìm theo mã, sân bay..." [ngModel]="searchTerm"
+              (ngModelChange)="onSearchChange($event)" />
           </div>
 
           <div class="filter-wrap">
-            <select [(ngModel)]="selectedAirline">
+            <select [ngModel]="selectedAirline" (ngModelChange)="onAirlineChange($event)">
               <option value="all">Tất cả hãng bay</option>
               <option *ngFor="let airline of uniqueAirlines" [value]="airline">{{ airline }}</option>
             </select>
@@ -112,7 +113,7 @@
               <tr *ngIf="filteredFlights.length === 0">
                 <td colspan="7" class="no-data">Không tìm thấy chuyến bay nào.</td>
               </tr>
-              <tr *ngFor="let flight of filteredFlights">
+              <tr *ngFor="let flight of paginatedFlights">
                 <td>{{ flight.flightCode }}</td>
                 <td>{{ flight.airline }}</td>
                 <td>{{ flight.departure }}</td>
@@ -149,6 +150,19 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="pagination-controls" *ngIf="totalPages > 1">
+          <button class="btn btn-page" (click)="prevPage()" [disabled]="currentPage === 1">
+            &lt;&lt;
+          </button>
+
+          <span class="page-info">
+            Trang {{ currentPage }} / {{ totalPages }}
+          </span>
+
+          <button class="btn btn-page" (click)="nextPage()" [disabled]="currentPage === totalPages">
+            &gt;&gt;
+          </button>
         </div>
       </div>
 

@@ -9,8 +9,7 @@
 }
 
 .header {
-    margin-bottom: 30px;
-    padding: 20px 20px 0 20px;
+    padding: 30px 30px 0 30px;
 }
 
 .header h1 {
@@ -26,7 +25,7 @@
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    margin: 20px;
+    margin: 30px;
 }
 
 .tab-header-row {
@@ -673,4 +672,41 @@
 
 .popover-actions .btn {
     min-width: 90px;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 15px;
+    gap: 10px;
+    border-top: 1px solid #eee;
+    margin-top: 15px;
+}
+
+.page-info {
+    color: #375578;
+    font-weight: bold;
+}
+
+.btn-page {
+    border: 1px solid transparent;
+    background-color: #375578;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s;
+    min-width: auto;
+}
+
+.btn-page:hover:not(:disabled) {
+    background-color: #99BBFF;
+}
+
+.btn-page:disabled {
+    background-color: #99BBFF;
+    color: #ffffff;
+    cursor: not-allowed;
+    border-color: #E5E7EB;
 }
