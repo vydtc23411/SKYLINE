@@ -1,3 +1,359 @@
 <div class="admin-container">
-  <!-- Sidebar Component -->
   <app-admin-sidebar></app-admin-sidebar>
+
+  <main class="content">
+    <!-- Header -->
+    <app-admin-header></app-admin-header>
+
+    <div class="header">
+      <h1>Khuyến mãi</h1>
+      <p class="subtitle">Chào Tường Vy, mừng bạn đến với trang quản lý chuyến bay!</p>
+    </div>
+
+    <div class="main-content-panel">
+
+      <div class="tab-header-row main-tabs">
+        <div class="tabs">
+          <button [class.active]="activeMainTab === 'create'" (click)="switchMainTab('create')">
+            Tạo chương trình khuyến mãi
+          </button>
+          <button [class.active]="activeMainTab === 'manage'" (click)="switchMainTab('manage')">
+            Quản lý khuyến mãi
+          </button>
+        </div>
+        
+        <div *ngIf="activeMainTab === 'manage'" class="list-toolbar">
+            <div class="search-wrap">
+                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999">
+                    <circle cx="11" cy="11" r="8" stroke-width="2"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2"></line>
+                </svg>
+                <input type="text" placeholder="Tìm theo tên, mã..." [(ngModel)]="searchTerm" />
+            </div>
+            <div class="filter-wrap">
+                <select [(ngModel)]="selectedStatusFilter">
+                    <option *ngFor="let option of statusOptions" [value]="option.value">{{ option.label }}</option>
+                </select>
+            </div>
+            <div class="filter-wrap">
+                <select [(ngModel)]="selectedTypeFilter">
+                    <option *ngFor="let option of typeOptions" [value]="option.value">{{ option.label }}</option>
+                </select>
+            </div>
+        </div>
+      </div>
+      
+      <div *ngIf="activeMainTab === 'create'" class="form-container promo-form">
+          
+          <div class="tab-header-row step-tabs">
+            <div class="tabs">
+              <button [class.active]="activeStep === 'info'" (click)="switchStep('info')">
+                Thông tin
+              </button>
+              <button [class.active]="activeStep === 'apply'" [disabled]="activeStep === 'info'">
+                Phạm vi áp dụng
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="activeStep === 'info'">
+              
+              <div class="form-row three-cols">
+                  <div class="form-group">
+                    <label for="promoName">Tên chương trình</label>
+                    <input id="promoName" type="text" [(ngModel)]="currentPromotion.promoName" (ngModelChange)="updateFormValidity()" placeholder="Tên chương trình" />
+                  </div>
+                  <div class="form-group">
+                    <label for="promoCode">Mã chương trình</label>
+                    <input id="promoCode" type="text" [(ngModel)]="currentPromotion.promoCode" (ngModelChange)="updateFormValidity()" placeholder="Mã chương trình" />
+                  </div>
+                  <div class="form-group">
+                    <label for="description">Mô tả</label>
+                    <input id="description" type="text" [(ngModel)]="currentPromotion.descriptionPlaceholder" placeholder="Mô tả" />
+                  </div>
+              </div>
+
+              <div class="form-row promo-main-row">
+                  <div class="form-col-left">
+                    <div class="form-row three-cols">
+                      <div class="form-group">
+                        <label>Hình thức khuyến mãi</label>
+                        <select [(ngModel)]="currentPromotion.promoType" (change)="onDiscountTypeChange(currentPromotion.promoType)">
+                            <option value="percent">Phần trăm (%)</option>
+                            <option value="amount">Số tiền (VNĐ)</option>
+                            <option value="freeship">Miễn phí vận chuyển</option>
+                        </select>
+                      </div>
+                      <div class="form-group" *ngIf="currentPromotion.promoType !== 'freeship'">
+                        <label>Giá trị giảm</label>
+                        <input type="number" [(ngModel)]="currentPromotion.discountValue" (ngModelChange)="updateFormValidity()" placeholder="Giá trị giảm" />
+                      </div>
+                       <div class="form-group" *ngIf="currentPromotion.promoType === 'percent'">
+                        <label>Giảm tối đa</label>
+                        <input type="number" [(ngModel)]="currentPromotion.maxDiscountAmount" placeholder="Giảm tối đa" />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="form-col-right status-col">
+                      <div class="form-group">
+                          <label>Trạng thái</label>
+                          <div class="radio-group radio-status">
+                              <label><input type="radio" name="status" [value]="'active'" [(ngModel)]="currentPromotion.status" /> Đang kích hoạt</label>
+                              <label><input type="radio" name="status" [value]="'inactive'" [(ngModel)]="currentPromotion.status" /> Chưa kích hoạt</label>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="form-row three-cols time-group">
+                  <div class="form-group">
+                      <label for="limitedTime">Thời gian áp dụng</label>
+                      <select id="limitedTime" [(ngModel)]="isLimitedTime" (ngModelChange)="updateFormValidity()">
+                          <option [ngValue]="false">Hiệu lực vô thời hạn</option>
+                          <option [ngValue]="true">Hiệu lực đến</option>
+                      </select>
+                  </div>
+                  <div class="form-group time-detail-group" *ngIf="isLimitedTime">
+                      <label for="endDate">đến</label>
+                      <input id="endDate" type="text" [(ngModel)]="currentPromotion.endDate" (ngModelChange)="updateFormValidity()" placeholder="DD/MM/YYYY" />
+                  </div>
+                  <div class="form-group time-detail-group" *ngIf="isLimitedTime">
+                      <label for="endTime">Khung giờ</label>
+                      <input id="endTime" type="text" [(ngModel)]="currentPromotion.endTime" placeholder="HH:mm:ss" />
+                  </div>
+              </div>
+              
+              <div class="form-group calendar-group">
+                  <label>Lịch áp dụng chi tiết:</label>
+                  <div class="form-row time-detail-group seven-cols">
+                      <div class="form-group">
+                        <select [(ngModel)]="currentPromotion.applyHour">
+                            <option [ngValue]="'any'">Giờ</option>
+                            <option *ngFor="let h of hours" [value]="h">{{ h }}</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <select [(ngModel)]="currentPromotion.applyDayOfWeek">
+                            <option [ngValue]="'any'">Thứ</option>
+                            <option *ngFor="let day of daysOfWeek" [value]="day">{{ day }}</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <select [(ngModel)]="currentPromotion.applyDayOfMonth">
+                            <option [ngValue]="'any'">Ngày</option>
+                            <option *ngFor="let day of daysOfMonth" [value]="day">{{ day }}</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <select [(ngModel)]="currentPromotion.applyMonth">
+                            <option [ngValue]="'any'">Tháng</option>
+                            <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <select [(ngModel)]="currentPromotion.applyYear">
+                            <option [ngValue]="'any'">Năm</option>
+                            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <select [(ngModel)]="currentPromotion.applyTimeframe">
+                            <option [ngValue]="'any'">Khung giờ</option>
+                            <option *ngFor="let tf of timeframes" [value]="tf">{{ tf }}</option>
+                        </select>
+                      </div>
+                      <button class="btn btn-add-time" (click)="addTimeDetail()">Thêm</button>
+                  </div>
+              </div>
+
+              <div class="form-row condition-group">
+                  <div class="form-col-left two-cols">
+                      <div class="form-group">
+                          <label>Đường bay áp dụng</label>
+                          <input type="text" placeholder="Đường bay" />
+                      </div>
+                      <div class="form-group">
+                          <label>Hạng vé</label>
+                          <input type="text" placeholder="Hạng vé" />
+                      </div>
+                      <div class="form-group">
+                          <label>Sân bay đi/đến</label>
+                          <input type="text" placeholder="Sân bay" />
+                      </div>
+                      <div class="form-group">
+                          <label>Hạng xe</label>
+                          <input type="text" placeholder="Hạng xe" />
+                      </div>
+                      <div class="form-group">
+                          <label>Số vé tối thiểu</label>
+                          <input type="number" placeholder="Số vé" />
+                      </div>
+                      <div class="form-group">
+                          <label>Giá trị tối thiểu</label>
+                          <input type="number" placeholder="Giá trị" />
+                      </div>
+                      <div class="form-group">
+                          <label>Khu vực</label>
+                          <input type="text" placeholder="Khu vực" />
+                      </div>
+                      <div class="form-group">
+                          <label>Hành trình</label>
+                          <input type="text" placeholder="Hành trình" />
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="form-row three-cols rule-group">
+                  <div class="form-group">
+                      <label>Quy tắc khuyến mãi</label>
+                      <select>
+                          <option>Khuyến mãi theo</option>
+                      </select>
+                  </div>
+                   <div class="form-group">
+                      <label>Điều kiện bổ sung</label>
+                      <input type="text" placeholder="Điều kiện bổ sung" />
+                  </div>
+              </div>
+
+              <div class="form-group apply-count-group">
+                  <label>Số lần áp dụng</label>
+                  <div class="radio-group radio-col">
+                      <label><input type="radio" name="applyCount" value="1" /> Chỉ chấp nhận áp dụng 1 lần</label>
+                      <label><input type="radio" name="applyCount" value="multiple" /> Cho phép áp dụng nhiều lần</label>
+                  </div>
+                  <p class="form-note">Cảnh báo nếu đã áp dụng nhiều lần trước đó</p>
+              </div>
+
+              <div class="form-group notes-end-group">
+                  <label>Ghi chú</label>
+                  <textarea [(ngModel)]="currentPromotion.notes" placeholder="Ghi chú"></textarea>
+              </div>
+
+          </div>
+
+          <div *ngIf="activeStep === 'apply'">
+              
+              <div class="form-section">
+                <h3 class="section-title">Kênh áp dụng</h3>
+                <div class="form-group">
+                    <div class="radio-group radio-col">
+                      <label><input type="radio" name="channel" value="all" /> Toàn bộ hệ thống</label>
+                      <label><input type="radio" name="channel" value="specific" /> Hãng bay cụ thể</label>
+                    </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h3 class="section-title">Đối tượng khách hàng</h3>
+                <div class="form-group">
+                  <div class="radio-group radio-col">
+                    <label><input type="radio" name="customer" value="all" /> Tất cả khách hàng</label>
+                    <label><input type="radio" name="customer" value="gold" /> Thành viên hạng Vàng</label>
+                    <label><input type="radio" name="customer" value="silver" /> Thành viên hạng Bạc</label>
+                    <label><input type="radio" name="customer" value="new" /> Khách hàng mới (lần đầu tiên)</label>
+                    <label><input type="radio" name="customer" value="returning" /> Khách hàng quay lại</label>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-section">
+                <h3 class="section-title">Đối tượng giao dịch</h3>
+                <div class="form-group">
+                  <div class="radio-group radio-col">
+                    <label><input type="radio" name="transaction" value="unlimited" /> Không giới hạn</label>
+                    <label><input type="radio" name="transaction" value="employee" /> Nhân viên nội bộ</label>
+                    <label><input type="radio" name="transaction" value="partner" /> Đại lý đối tác</label>
+                  </div>
+                </div>
+              </div>
+              
+              <p class="form-note warning-note">⚠️ Lưu ý: Ưu đãi chỉ áp dụng cho đối tượng được chọn.</p>
+              
+          </div>
+
+          <div class="form-buttons">
+              <button class="btn form-btn-cancel" (click)="promptAction('cancel')">Hủy</button>
+              
+              <button class="btn form-btn-draft" (click)="promptAction('draft')" [disabled]="isDraftInvalid">Lưu bản nháp</button>
+              
+              <button *ngIf="activeStep === 'info'" class="btn form-btn-continue" (click)="saveAndContinue()" [disabled]="isFormInvalid">Lưu & Tiếp tục</button>
+              <button *ngIf="activeStep === 'apply'" class="btn form-btn-activate" (click)="promptAction('activate')" [disabled]="isFormInvalid">Lưu & Kích hoạt</button>
+          </div>
+
+      </div>
+      
+      <div *ngIf="activeMainTab === 'manage'" class="list-container table-management">
+          <div class="table-wrapper">
+              <table>
+                  <thead>
+                      <tr>
+                          <th>Tên chương trình</th>
+                          <th>Từ ngày</th>
+                          <th>Đến ngày</th>
+                          <th>Hình thức khuyến mãi</th>
+                          <th>Áp dụng cho</th>
+                          <th>Trạng thái</th>
+                          <th>Hành động</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngIf="filteredPromos.length === 0">
+                          <td colspan="7" class="no-data">Không tìm thấy mã khuyến mãi nào.</td>
+                      </tr>
+                      <tr *ngFor="let promo of filteredPromos" class="promo-item-row">
+                          <td class="name-col">**{{ promo.name }}**</td>
+                          <td>{{ promo.startDate }}</td>
+                          <td>{{ promo.endDate }}</td>
+                          <td>{{ promo.type }}</td>
+                          <td>{{ promo.applyTarget }}</td>
+                          <td class="status-col">
+                              <span [class]="'promo-status status-' + promo.status">
+                                  {{ promo.status === 'active' ? 'Đang chạy' : 
+                                     promo.status === 'upcoming' ? 'Sắp diễn ra' : 
+                                     promo.status === 'expired' ? 'Hết hạn' : 'Nháp' }}
+                              </span>
+                          </td>
+                          <td class="actions">
+                            <button title="Sửa" class="action-btn edit" (click)="editPromo(promo.id)">
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="1.5"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="1.5"></path>
+                              </svg>
+                            </button>
+                            <button title="Xóa" class="action-btn delete" (click)="deletePromo(promo.id)">
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <polyline points="3 6 5 6 21 6" stroke-width="1.5"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                                  stroke-width="1.5"></path>
+                              </svg>
+                            </button>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+      
+    </div>
+
+    <div *ngIf="showModalType !== null" class="modal-overlay">
+      <div class="modal-content">
+        <h4 *ngIf="showModalType === 'cancel'">Xác nhận Hủy bỏ</h4>
+        <h4 *ngIf="showModalType === 'draft'">Xác nhận Lưu Bản nháp</h4>
+        <h4 *ngIf="showModalType === 'activate'">Xác nhận Lưu & Kích hoạt</h4>
+        
+        <p *ngIf="showModalType === 'cancel'">Bạn có chắc chắn muốn **Hủy bỏ**? Mọi thay đổi chưa lưu sẽ bị mất.</p>
+        <p *ngIf="showModalType === 'draft'">Bạn có chắc chắn muốn **Lưu bản nháp**? Khuyến mãi sẽ chưa được áp dụng.</p>
+        <p *ngIf="showModalType === 'activate'">Bạn có chắc chắn muốn **Lưu & Kích hoạt**? Khuyến mãi sẽ được áp dụng ngay.</p>
+        
+        <div class="modal-buttons">
+          <button class="btn btn-modal-cancel" (click)="closeModal()">Quay lại</button>
+          <button class="btn btn-modal-delete" (click)="confirmAction()">
+            {{ showModalType === 'cancel' ? 'Xác nhận Hủy' : (showModalType === 'draft' ? 'Xác nhận Lưu nháp' : 'Xác nhận Kích hoạt') }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>

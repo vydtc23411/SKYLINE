@@ -10,16 +10,17 @@
 
 .header {
     padding: 30px 30px 0 30px;
+    flex-direction: column;
+    gap: 15px;
 }
-
 .header h1 {
     font-size: 28px;
     margin: 0;
 }
-
 .subtitle {
     font-style: italic;
 }
+
 
 .main-content-panel {
     background: #fff;

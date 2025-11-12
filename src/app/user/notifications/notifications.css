@@ -12,10 +12,11 @@
   }
   
   .content h2 {
-    font-size: 22px;
-    margin-bottom: 30px;
-    color: #375578;
-  }
+      flex: 1;
+      padding: 30px 5px;
+      background-color: #fff;
+      color: #375578;
+    }
   
   .notification-settings {
     background: white;
