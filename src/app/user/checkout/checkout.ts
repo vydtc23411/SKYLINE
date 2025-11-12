@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { QRCodeComponent } from 'angularx-qrcode';
+import { HeaderComponent } from '../shared/header/header';
+import { FooterComponent } from '../shared/footer/footer';
 
 @Component({
   selector: 'app-checkout',
@@ -9,7 +11,9 @@ import { QRCodeComponent } from 'angularx-qrcode';
   imports: [
     CommonModule,
     HttpClientModule,
-    QRCodeComponent
+    QRCodeComponent,
+    HeaderComponent,
+    FooterComponent
   ],
 
   templateUrl: './checkout.html',

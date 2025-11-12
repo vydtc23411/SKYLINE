@@ -228,12 +228,12 @@
 }
 
 .btn-primary {
-    background-color: #007bff;
+    background-color: #606DEC;
     color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-    background-color: #0069d9;
+    background-color: #737ee6;
 }
 
 .btn-primary:disabled,
@@ -268,25 +268,4 @@
 
 .selected-badge.green {
     background-color: #22C3A6;
-}
-
-.btn-continue:disabled {
-    background-color: #b0c4de;
-    cursor: not-allowed;
-}
-
-.btn-continue {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn-continue:hover:not(:disabled) {
-    background-color: #0069d9;
 }

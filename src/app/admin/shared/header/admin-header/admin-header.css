@@ -111,3 +111,14 @@
   font-weight: 600;
   color: #333;
 }
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .search-bar {
+    width: 250px;
+  }
+}

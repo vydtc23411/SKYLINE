@@ -148,7 +148,7 @@
 }
 
 .btn-add-new:hover {
-    background: #99BBFF;
+    background: #2c445e;
 }
 
 .list-container {
@@ -323,11 +323,11 @@
 }
 
 .form-btn-edit {
-    background: #F59E0B;
+    background: #22C3A6;
 }
 
 .form-btn-edit:hover:not(:disabled) {
-    background: #d98e0a;
+    background: #1B9781;
 }
 
 .form-btn-edit:disabled {
@@ -451,6 +451,10 @@
 
 
 @media (max-width: 900px) {
+    .content {
+        margin-left: 200px;
+    }
+
     .tab-header-row {
         flex-direction: column;
         align-items: stretch;
@@ -473,32 +477,31 @@
     }
 }
 
-@media (max-width: 768px) {
-    .flight-form {
-        grid-template-columns: 1fr;
-    }
+.header {
+    flex-direction: column;
+    gap: 15px;
+}
 
-    .time-inputs {
-        grid-template-columns: 1fr;
-    }
+.flight-form {
+    grid-template-columns: 1fr;
+}
 
-    .table-wrapper th:nth-child(3),
-    .table-wrapper td:nth-child(3),
-    .table-wrapper th:nth-child(4),
-    .table-wrapper td:nth-child(4) {
-        display: none;
-    }
+.time-inputs {
+    grid-template-columns: 1fr;
+}
 
-    .form-buttons {
-        justify-content: center;
-    }
+.table-wrapper th:nth-child(3),
+.table-wrapper td:nth-child(3),
+.table-wrapper th:nth-child(4),
+.table-wrapper td:nth-child(4) {
+    display: none;
+}
+
+.form-buttons {
+    justify-content: center;
 }
 
 @media (max-width: 500px) {
-    .content {
-        padding: 10px;
-    }
-
     .header {
         padding: 0 10px;
         margin-bottom: 20px;
@@ -701,7 +704,7 @@
 }
 
 .btn-page:hover:not(:disabled) {
-    background-color: #99BBFF;
+    background-color: #2c445e;
 }
 
 .btn-page:disabled {
