@@ -25,17 +25,9 @@
 }
 
 .footer-logo-img {
-    width: 120px;
+    width: 150px;
     height: auto;
     object-fit: contain;
-}
-
-.footer-tagline {
-    font-size: 11px;
-    font-weight: 600;
-    color: #666;
-    letter-spacing: 0.5px;
-    margin: 0;
 }
 
 .footer-column h4 {
@@ -153,15 +145,15 @@
         grid-template-columns: repeat(3, 1fr);
         gap: 30px;
     }
-    
+
     .footer-brand {
         grid-column: span 3;
     }
-    
+
     .footer-column h4 {
         font-size: 13px;
     }
-    
+
     .footer-column ul li a {
         font-size: 12px;
     }
@@ -171,69 +163,73 @@
     .footer {
         padding: 40px 0 20px;
     }
-    
+
     .footer-content {
         grid-template-columns: repeat(2, 1fr);
         gap: 25px;
         font-size: 12px;
+        text-align: center;
     }
-    
+
     .footer-brand {
         grid-column: span 2;
         align-items: center;
         text-align: center;
     }
-    
+
     .footer-logo-img {
-        width: 100px;
+        width: 125px;
     }
-    
+
     .footer-column h4 {
         font-size: 12px;
         margin-bottom: 15px;
     }
-    
+
     .footer-column ul li {
         margin-bottom: 10px;
     }
-    
+
     .footer-column ul li a {
         font-size: 11px;
     }
-    
+
     .app-buttons {
         margin-top: 10px;
         gap: 5px;
     }
-    
+
     .app-btn.app-store,
     .app-btn.google-play {
         height: 40px;
         width: 125px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
     }
-    
+
     .app-btn.app-store img,
     .app-btn.google-play img {
         width: 125px;
         height: 40px;
     }
-    
+
     .footer-bottom {
         flex-direction: column;
         gap: 15px;
         text-align: center;
         padding-top: 20px;
     }
-    
+
     .footer-bottom p {
         font-size: 11px;
     }
-    
+
     .social-links a {
         width: 32px;
         height: 32px;
     }
-    
+
     .social-links a svg {
         width: 16px;
         height: 16px;
@@ -245,15 +241,15 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
     }
-    
+
     .footer-brand {
         grid-column: span 2;
     }
-    
+
     .footer-column h4 {
         font-size: 11px;
     }
-    
+
     .footer-column ul li a {
         font-size: 10px;
     }
