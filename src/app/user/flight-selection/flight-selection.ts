@@ -84,7 +84,7 @@ export class FlightSelectionComponent {
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id')!;
-    this.http.get('assets/flight-search-sampledata.json').subscribe({
+    this.http.get('assets/data/flight-search-sampledata.json').subscribe({
       next: raw => {
         const all = normalizeFlights(raw);
         const f = all.find(x => String(x.id) === String(id)) ?? null;

@@ -13,10 +13,12 @@
     flex-direction: column;
     gap: 15px;
 }
+
 .header h1 {
     font-size: 28px;
     margin: 0;
 }
+
 .subtitle {
     font-style: italic;
 }
@@ -175,6 +177,7 @@
     text-align: center;
     vertical-align: middle;
     white-space: nowrap;
+
 }
 
 .table-wrapper th {
@@ -233,7 +236,6 @@
     color: #EF4444;
 }
 
-
 .form-container {
     padding: 20px;
 }
@@ -242,6 +244,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px 30px;
+    width: 100%;
 }
 
 .form-column {
@@ -250,9 +253,7 @@
     gap: 20px;
 }
 
-.flight-form label,
-.notes-field label,
-.time-fields-wrapper label {
+.flight-form label {
     display: block;
     font-weight: bold;
     margin-bottom: 6px;
@@ -261,9 +262,7 @@
 
 .flight-form input[type="text"],
 .flight-form input[type="number"],
-.flight-form select,
-.notes-field input[type="text"],
-.time-fields-wrapper select {
+.flight-form select {
     width: 100%;
     padding: 8px 12px;
     border: 1px solid #D1D5DB;
@@ -273,28 +272,10 @@
 }
 
 .flight-form input:focus,
-.flight-form select:focus,
-.notes-field input:focus,
-.time-fields-wrapper select:focus {
+.flight-form select:focus {
     border-color: #375578;
     outline: none;
     box-shadow: 0 0 0 2px rgba(55, 85, 120, 0.2);
-}
-
-.time-inputs {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-}
-
-@media (min-width: 1024px) {
-    .time-inputs {
-        grid-template-columns: repeat(5, 1fr);
-    }
-}
-
-.notes-field {
-    margin-top: 20px;
 }
 
 .form-buttons {
@@ -484,11 +465,7 @@
     gap: 15px;
 }
 
-.table-wrapper th:nth-child(3),
-.table-wrapper td:nth-child(3),
-.table-wrapper th:nth-child(4),
-.table-wrapper td:nth-child(4) {
-    display: table-cell;}
+
 
 .form-buttons {
     justify-content: center;
@@ -528,146 +505,10 @@
     }
 }
 
-.time-fields-wrapper {
-    margin-top: 20px;
-    border-top: 1px solid #E5E7EB;
-    padding-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
 .flight-form input::placeholder {
     color: #BBB;
     font-style: italic;
     font-size: 13px;
-}
-
-.date-range-popover-wrapper {
-    position: relative;
-    display: inline-block;
-}
-
-.date-range-trigger {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #f8fafc;
-    border: 1px solid #D1D5DB;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: left;
-}
-
-.date-range-trigger:hover {
-    background: #f1f5f9;
-}
-
-.date-range-trigger .trigger-text {
-    flex-grow: 1;
-}
-
-.date-range-trigger .trigger-text span {
-    display: block;
-    font-weight: bold;
-    color: #375578;
-}
-
-.date-range-trigger .trigger-text small {
-    color: #6B7280;
-}
-
-.date-range-trigger .trigger-arrow {
-    margin-left: auto;
-}
-
-.date-popover {
-    position: absolute;
-    top: calc(100% + 5px);
-    right: 0;
-    width: 360px;
-    background: #fff;
-    border-radius: 10px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    z-index: 100;
-    padding: 15px;
-    color: #375578;
-}
-
-.popover-header {
-    font-weight: bold;
-    margin: 0 0 15px 0;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #E5E7EB;
-}
-
-.quick-buttons {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.quick-buttons button {
-    flex: 1;
-    padding: 5px;
-    font-size: 13px;
-    font-weight: bold;
-    border: 1px solid #D1D5DB;
-    background: #f9fafb;
-    color: #375578;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.quick-buttons button:hover {
-    background: #f0f4f8;
-    border-color: #99BBFF;
-}
-
-.date-fields {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.field-group {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-}
-
-.field-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #375578;
-}
-
-.field-group input[type="date"] {
-    width: 100%;
-    padding: 5px 10px;
-    border: 1px solid #D1D5DB;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-.field-group input[type="date"]:focus {
-    border-color: #375578;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(55, 85, 120, 0.2);
-}
-
-.popover-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    padding-top: 15px;
-    border-top: 1px solid #E5E7EB;
-}
-
-.popover-actions .btn {
-    min-width: 90px;
 }
 
 .pagination-controls {
