@@ -36,7 +36,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin-home',
-    loadComponent: () => import('./admin/admin-home/admin-home').then(m => m.AdminHome)
+    loadComponent: () => import('./admin/admin-home/admin-home').then(m => m.AdminHomeComponent)
   },
 
   // Admin Management Pages

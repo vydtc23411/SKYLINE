@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminSidebarComponent } from '../shared/sidebar/sidebar';
 import { FlightService } from '../services/flight';
+import { AdminHeader } from '../shared/header/admin-header/admin-header';
 
 interface Flight {
   id: number;
@@ -21,7 +22,8 @@ interface Flight {
   imports: [
     CommonModule,
     FormsModule,
-    AdminSidebarComponent
+    AdminSidebarComponent,
+    AdminHeader
   ],
   templateUrl: './flight-management.html',
   styleUrls: ['./flight-management.css']

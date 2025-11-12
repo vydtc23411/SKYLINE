@@ -5,32 +5,7 @@
   <!-- Main Content -->
   <main class="main-content">
     <!-- Header -->
-    <header class="header">
-      <div class="search-bar">
-        <input type="text" placeholder="Tìm kiếm">
-        <button class="search-btn">🔍</button>
-      </div>
-      
-      <div class="header-actions">
-        <button class="icon-btn"><img src="/assets/icons/notification.png" alt="Notification Icon"></button>
-        <button class="icon-btn logout-icon-btn" (click)="logout()" title="Đăng xuất">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-            <polyline points="16 17 21 12 16 7"></polyline>
-            <line x1="21" y1="12" x2="9" y2="12"></line>
-          </svg>
-        </button>
-        <div class="user-info-wrapper">
-          <div class="user-info">
-            <img src="https://i.pravatar.cc/150?img=12" alt="User" class="user-avatar">
-            <div class="user-details">
-              <span class="user-name">Nhân viên</span>
-              <span class="user-role">Tài khoản</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
+    <app-admin-header></app-admin-header>
 
     <!-- Welcome Section -->
     <section class="welcome-section">
@@ -41,91 +16,84 @@
       <div class="date-filter">
         <!-- Single Filter Button -->
         <button class="filter-btn" (click)="toggleDateDropdown()">
-            <img src="/assets/icons/Calendar1.png" alt="Calendar Icon">
-            <div>
-              <span>Lọc thời gian</span>
-              <span class="date-range">{{ dateRange }}</span>
-            </div>
+          <img src="/assets/icons/Calendar1.png" alt="Calendar Icon">
+          <div>
+            <span>Lọc thời gian</span>
+            <span class="date-range">{{ dateRange }}</span>
+          </div>
         </button>
-        
+
         <!-- Unified Filter Dropdown -->
         <div class="date-dropdown unified-dropdown" *ngIf="showFilterDropdown">
-          
+
           <!-- Step 1: Year Selection -->
           <div *ngIf="filterStep === 'year'" class="filter-step">
             <div class="dropdown-header">
               <h4>Chọn năm</h4>
             </div>
-            
+
             <div class="month-selection">
-              <button 
-                *ngFor="let year of availableYears" 
-                class="month-btn"
-                [class.active]="selectedYear === year"
+              <button *ngFor="let year of availableYears" class="month-btn" [class.active]="selectedYear === year"
                 (click)="selectYear(year)">
                 <div class="month-info">
                   <span class="month-label">Năm {{ year }}</span>
                 </div>
               </button>
             </div>
-            
+
             <div class="dropdown-actions">
               <button class="cancel-btn" (click)="toggleDateDropdown()">Hủy</button>
             </div>
           </div>
-          
+
           <!-- Step 2: Month Selection -->
           <div *ngIf="filterStep === 'month'" class="filter-step">
             <div class="dropdown-header">
               <button class="back-btn" (click)="goBackToYear()">← Quay lại</button>
               <h4>Chọn tháng ({{ selectedYear }})</h4>
             </div>
-            
+
             <div class="month-selection">
-              <button 
-                *ngFor="let month of availableMonths; let i = index" 
-                class="month-btn"
-                [class.active]="selectedMonthIndex === i"
-                (click)="selectMonth(i)">
+              <button *ngFor="let month of availableMonths; let i = index" class="month-btn"
+                [class.active]="selectedMonthIndex === i" (click)="selectMonth(i)">
                 <div class="month-info">
                   <span class="month-label">Tháng {{ month.month }}/{{ month.year }}</span>
-                  <span class="month-stats">{{ month.ticketsSold }} vé - {{ formatRevenue(month.revenueActual) }}M VNĐ</span>
+                  <span class="month-stats">{{ month.ticketsSold }} vé - {{ formatRevenue(month.revenueActual) }}M
+                    VNĐ</span>
                 </div>
               </button>
             </div>
-            
+
             <div class="dropdown-actions">
               <button class="cancel-btn" (click)="toggleDateDropdown()">Hủy</button>
-              <button class="apply-btn" *ngIf="availableWeeks.length === 0" (click)="applyMonthFilter()">Áp dụng</button>
+              <button class="apply-btn" *ngIf="availableWeeks.length === 0" (click)="applyMonthFilter()">Áp
+                dụng</button>
             </div>
           </div>
-          
+
           <!-- Step 3: Week Selection (Only for 2025) -->
           <div *ngIf="filterStep === 'week'" class="filter-step">
             <div class="dropdown-header">
               <button class="back-btn" (click)="goBackToMonth()">← Quay lại</button>
               <h4>Chọn tuần (Tháng {{ availableMonths[selectedMonthIndex]?.month }}/{{ selectedYear }})</h4>
             </div>
-            
+
             <div class="month-selection">
-              <button 
-                *ngFor="let week of availableWeeks; let i = index" 
-                class="month-btn"
-                [class.active]="selectedWeekIndex === i"
-                (click)="selectWeek(i)">
+              <button *ngFor="let week of availableWeeks; let i = index" class="month-btn"
+                [class.active]="selectedWeekIndex === i" (click)="selectWeek(i)">
                 <div class="month-info">
                   <span class="month-label">{{ formatWeekRange(week) }}</span>
                   <span class="month-stats">{{ getTotalTicketsForWeek(week) }} vé</span>
                 </div>
               </button>
             </div>
-            
+
             <div class="dropdown-actions">
               <button class="cancel-btn" (click)="toggleDateDropdown()">Hủy</button>
               <button class="apply-btn" (click)="applyWeekFilter()">Áp dụng</button>
             </div>
           </div>
-          
+
         </div>
       </div>
     </section>
@@ -151,21 +119,14 @@
         <div class="donut-grid">
           <div class="donut-item" *ngFor="let chart of chartData">
             <svg class="donut-chart" viewBox="0 0 100 100">
-                <!-- Background circle with lighter shade -->
-                <circle cx="50" cy="50" [attr.r]="donutRadius" fill="none" [attr.stroke]="chart.color" stroke-width="18" opacity="0.15" [attr.stroke-dasharray]="donutCircumference()"></circle>
-                <!-- Filled circle -->
-                <circle 
-                  cx="50" 
-                  cy="50" 
-                  [attr.r]="donutRadius" 
-                  fill="none" 
-                  [attr.stroke]="chart.color" 
-                  stroke-width="18"
-                  [attr.stroke-dasharray]="getDonutStrokeDasharray(chart.percentage)"
-                  stroke-dashoffset="0"
-                  stroke-linecap="round"
-                  transform="rotate(-90 50 50)">
-                </circle>
+              <!-- Background circle with lighter shade -->
+              <circle cx="50" cy="50" [attr.r]="donutRadius" fill="none" [attr.stroke]="chart.color" stroke-width="18"
+                opacity="0.15" [attr.stroke-dasharray]="donutCircumference()"></circle>
+              <!-- Filled circle -->
+              <circle cx="50" cy="50" [attr.r]="donutRadius" fill="none" [attr.stroke]="chart.color" stroke-width="18"
+                [attr.stroke-dasharray]="getDonutStrokeDasharray(chart.percentage)" stroke-dashoffset="0"
+                stroke-linecap="round" transform="rotate(-90 50 50)">
+              </circle>
               <!-- Percentage text -->
               <text x="50" y="48" text-anchor="middle" class="donut-percentage">{{ chart.percentage }}</text>
               <text x="50" y="58" text-anchor="middle" class="donut-percentage-symbol">%</text>
@@ -187,55 +148,34 @@
             Lưu báo cáo
           </button>
         </div>
-        
+
         <div class="line-chart-area">
-          
+
           <svg viewBox="0 0 700 280" class="line-svg">
             <!-- Grid line (bottom only) -->
             <line x1="40" y1="220" x2="680" y2="220" stroke="#E8EBF0" stroke-width="2"></line>
-            
+
             <!-- Smooth curve path (dynamic) -->
-            <path 
-              [attr.d]="generateWeeklyPath()"
-              fill="none" 
-              stroke="#42A5F5" 
-              stroke-width="4"
-              stroke-linecap="round"
+            <path [attr.d]="generateWeeklyPath()" fill="none" stroke="#42A5F5" stroke-width="4" stroke-linecap="round"
               stroke-linejoin="round">
             </path>
 
             <!-- Area fill with smooth curve (dynamic) -->
-            <path 
-              [attr.d]="generateWeeklyAreaPath()"
-              fill="url(#gradient)" 
-              opacity="0.4">
+            <path [attr.d]="generateWeeklyAreaPath()" fill="url(#gradient)" opacity="0.4">
             </path>
 
             <!-- Hover areas (generated from weeklyData) -->
-            <rect *ngFor="let day of weeklyData; let i = index"
-                  class="hover-area"
-                  [attr.data-day]="day.day"
-                  [attr.data-value]="day.value"
-                  [attr.x]="getHoverRectX(i)"
-                  y="0"
-                  [attr.width]="getHoverRectWidth()"
-                  height="220"
-                  fill="transparent"></rect>
+            <rect *ngFor="let day of weeklyData; let i = index" class="hover-area" [attr.data-day]="day.day"
+              [attr.data-value]="day.value" [attr.x]="getHoverRectX(i)" y="0" [attr.width]="getHoverRectWidth()"
+              height="220" fill="transparent"></rect>
 
             <!-- Data points (generated from weeklyData) -->
             <g class="data-points">
-              <circle *ngFor="let day of weeklyData; let i = index"
-                      class="data-point"
-                      [attr.data-index]="i"
-                      [attr.cx]="getDataPointCx(i)"
-                      [attr.cy]="getDataPointCy(i)"
-                      r="6"
-                      fill="white"
-                      stroke="#42A5F5"
-                      stroke-width="3"
-                      opacity="0"></circle>
+              <circle *ngFor="let day of weeklyData; let i = index" class="data-point" [attr.data-index]="i"
+                [attr.cx]="getDataPointCx(i)" [attr.cy]="getDataPointCy(i)" r="6" fill="white" stroke="#42A5F5"
+                stroke-width="3" opacity="0"></circle>
             </g>
-            
+
             <!-- X-axis labels -->
             <text x="80" y="250" text-anchor="middle" class="axis-label">Sunday</text>
             <text x="170" y="250" text-anchor="middle" class="axis-label">Monday</text>
@@ -244,7 +184,7 @@
             <text x="440" y="250" text-anchor="middle" class="axis-label">Thursday</text>
             <text x="530" y="250" text-anchor="middle" class="axis-label">Friday</text>
             <text x="620" y="250" text-anchor="middle" class="axis-label">Saturday</text>
-            
+
             <!-- Gradient definition -->
             <defs>
               <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -253,7 +193,7 @@
               </linearGradient>
             </defs>
           </svg>
-          
+
           <!-- Tooltip -->
           <div class="chart-tooltip" style="display: none;">
             <div class="tooltip-day"></div>
@@ -274,74 +214,107 @@
         <svg viewBox="0 0 1000 320" class="revenue-svg">
           <!-- Grid lines -->
           <line x1="40" y1="240" x2="960" y2="240" stroke="#E8EBF0" stroke-width="2"></line>
-          <line x1="40" y1="180" x2="960" y2="180" stroke="#E8EBF0" stroke-width="1" stroke-dasharray="5,5" opacity="0.5"></line>
-          <line x1="40" y1="120" x2="960" y2="120" stroke="#E8EBF0" stroke-width="1" stroke-dasharray="5,5" opacity="0.5"></line>
-          <line x1="40" y1="60" x2="960" y2="60" stroke="#E8EBF0" stroke-width="1" stroke-dasharray="5,5" opacity="0.5"></line>
-          
+          <line x1="40" y1="180" x2="960" y2="180" stroke="#E8EBF0" stroke-width="1" stroke-dasharray="5,5"
+            opacity="0.5"></line>
+          <line x1="40" y1="120" x2="960" y2="120" stroke="#E8EBF0" stroke-width="1" stroke-dasharray="5,5"
+            opacity="0.5"></line>
+          <line x1="40" y1="60" x2="960" y2="60" stroke="#E8EBF0" stroke-width="1" stroke-dasharray="5,5" opacity="0.5">
+          </line>
+
           <!-- 2024 Smooth Line (Blue) -->
-          <path 
+          <path
             d="M 50,160 C 80,130 100,110 130,100 C 160,90 180,120 210,130 C 240,140 260,90 290,80 C 320,70 340,55 370,50 C 400,45 420,65 450,70 C 480,75 500,85 530,90 C 560,95 580,87 610,85 C 640,83 660,95 690,100 C 720,105 740,85 770,80 C 800,75 820,87 850,90 C 880,93 900,87 930,85"
-            fill="none" 
-            stroke="#42A5F5" 
-            stroke-width="3"
-            stroke-linecap="round">
+            fill="none" stroke="#42A5F5" stroke-width="3" stroke-linecap="round">
           </path>
-          
+
           <!-- 2025 Smooth Line (Red) -->
-          <path 
+          <path
             d="M 50,140 C 80,145 100,148 130,150 C 160,152 180,90 210,70 C 240,50 260,115 290,130 C 320,145 340,50 370,40 C 400,30 420,75 450,85 C 480,95 500,105 530,110 C 560,115 580,70 610,60 C 640,50 660,90 690,95 C 720,100 740,75 770,70 C 800,65 820,120 850,130 C 880,140 900,90 930,80"
-            fill="none" 
-            stroke="#EF5350" 
-            stroke-width="3"
-            stroke-linecap="round">
+            fill="none" stroke="#EF5350" stroke-width="3" stroke-linecap="round">
           </path>
-          
+
           <!-- Hover areas for each month -->
-          <rect class="revenue-hover-area" data-month="1" data-value2024="4.200.000" data-value2025="5.000.000" x="10" y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="2" data-value2024="5.800.000" data-value2025="4.500.000" x="90" y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="3" data-value2024="4.500.000" data-value2025="6.800.000" x="170" y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="4" data-value2024="6.200.000" data-value2025="5.200.000" x="250" y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="5" data-value2024="7.000.000" data-value2025="7.500.000" x="330" y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="6" data-value2024="6.500.000" data-value2025="6.200.000" x="410" y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="7" data-value2024="5.800.000" data-value2025="5.500.000" x="490" y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="8" data-value2024="6.000.000" data-value2025="7.200.000" x="570" y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="9" data-value2024="5.500.000" data-value2025="6.000.000" x="650" y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="10" data-value2024="6.200.000" data-value2025="6.800.000" x="730" y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="11" data-value2024="5.900.000" data-value2025="5.200.000" x="810" y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="12" data-value2024="6.000.000" data-value2025="6.500.000" x="890" y="0" width="70" height="240" fill="transparent" />
-          
+          <rect class="revenue-hover-area" data-month="1" data-value2024="4.200.000" data-value2025="5.000.000" x="10"
+            y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="2" data-value2024="5.800.000" data-value2025="4.500.000" x="90"
+            y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="3" data-value2024="4.500.000" data-value2025="6.800.000" x="170"
+            y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="4" data-value2024="6.200.000" data-value2025="5.200.000" x="250"
+            y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="5" data-value2024="7.000.000" data-value2025="7.500.000" x="330"
+            y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="6" data-value2024="6.500.000" data-value2025="6.200.000" x="410"
+            y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="7" data-value2024="5.800.000" data-value2025="5.500.000" x="490"
+            y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="8" data-value2024="6.000.000" data-value2025="7.200.000" x="570"
+            y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="9" data-value2024="5.500.000" data-value2025="6.000.000" x="650"
+            y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="10" data-value2024="6.200.000" data-value2025="6.800.000" x="730"
+            y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="11" data-value2024="5.900.000" data-value2025="5.200.000" x="810"
+            y="0" width="70" height="240" fill="transparent" />
+          <rect class="revenue-hover-area" data-month="12" data-value2024="6.000.000" data-value2025="6.500.000" x="890"
+            y="0" width="70" height="240" fill="transparent" />
+
           <!-- Data points 2024 (hidden by default) -->
           <g class="revenue-data-points-2024">
-            <circle data-index="0" cx="50" cy="160" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
-            <circle data-index="1" cx="130" cy="100" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
-            <circle data-index="2" cx="210" cy="130" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
-            <circle data-index="3" cx="290" cy="80" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
-            <circle data-index="4" cx="370" cy="50" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
-            <circle data-index="5" cx="450" cy="70" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
-            <circle data-index="6" cx="530" cy="90" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
-            <circle data-index="7" cx="610" cy="85" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
-            <circle data-index="8" cx="690" cy="100" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
-            <circle data-index="9" cx="770" cy="80" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
-            <circle data-index="10" cx="850" cy="90" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
-            <circle data-index="11" cx="930" cy="85" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
+            <circle data-index="0" cx="50" cy="160" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="1" cx="130" cy="100" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="2" cx="210" cy="130" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="3" cx="290" cy="80" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="4" cx="370" cy="50" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="5" cx="450" cy="70" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="6" cx="530" cy="90" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="7" cx="610" cy="85" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="8" cx="690" cy="100" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="9" cx="770" cy="80" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="10" cx="850" cy="90" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="11" cx="930" cy="85" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
+            </circle>
           </g>
-          
+
           <!-- Data points 2025 (hidden by default) -->
           <g class="revenue-data-points-2025">
-            <circle data-index="0" cx="50" cy="140" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
-            <circle data-index="1" cx="130" cy="150" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
-            <circle data-index="2" cx="210" cy="70" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
-            <circle data-index="3" cx="290" cy="130" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
-            <circle data-index="4" cx="370" cy="40" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
-            <circle data-index="5" cx="450" cy="85" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
-            <circle data-index="6" cx="530" cy="110" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
-            <circle data-index="7" cx="610" cy="60" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
-            <circle data-index="8" cx="690" cy="95" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
-            <circle data-index="9" cx="770" cy="70" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
-            <circle data-index="10" cx="850" cy="130" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
-            <circle data-index="11" cx="930" cy="80" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
+            <circle data-index="0" cx="50" cy="140" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="1" cx="130" cy="150" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="2" cx="210" cy="70" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="3" cx="290" cy="130" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="4" cx="370" cy="40" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="5" cx="450" cy="85" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="6" cx="530" cy="110" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="7" cx="610" cy="60" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="8" cx="690" cy="95" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="9" cx="770" cy="70" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="10" cx="850" cy="130" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
+            </circle>
+            <circle data-index="11" cx="930" cy="80" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
+            </circle>
           </g>
-          
+
           <!-- X-axis labels -->
           <text x="50" y="270" text-anchor="middle" class="axis-label">1</text>
           <text x="130" y="270" text-anchor="middle" class="axis-label">2</text>
@@ -355,14 +328,14 @@
           <text x="770" y="270" text-anchor="middle" class="axis-label">10</text>
           <text x="850" y="270" text-anchor="middle" class="axis-label">11</text>
           <text x="930" y="270" text-anchor="middle" class="axis-label">12</text>
-          
+
           <!-- Y-axis labels -->
           <text x="10" y="245" class="axis-label-y">2.000.000</text>
           <text x="10" y="185" class="axis-label-y">4.000.000</text>
           <text x="10" y="125" class="axis-label-y">6.000.000</text>
           <text x="10" y="65" class="axis-label-y">8.000.000</text>
         </svg>
-        
+
         <!-- Tooltip for revenue chart -->
         <div class="revenue-tooltip" style="display: none;">
           <div class="revenue-tooltip-month"></div>
