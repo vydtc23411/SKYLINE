@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AuthService, UserWithoutPassword } from '../services/auth.service';
+import { BookingService } from '../services/booking.service';
 
 type Cabin = 'Economy' | 'Premium Economy' | 'Business';
 export interface Flight {
@@ -53,7 +54,8 @@ export class BaggageSelection implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private bookingService: BookingService 
   ) {
 
     this.passengerForm = this.fb.group({
@@ -152,6 +154,7 @@ export class BaggageSelection implements OnInit {
       console.log('Baggage Quantity:', this.baggageQuantity);
 
       // Điều hướng sang trang Confirmation và truyền dữ liệu chuyến bay
+      this.bookingService.setData('baggage', this.baggageQuantity);
       this.router.navigate(['/confirmation'], {
         state: { flight: this.selectedFlight }
       });

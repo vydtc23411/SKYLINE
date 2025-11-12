@@ -26,6 +26,9 @@ export class Confirmation {
   cvv = signal<string>('');
   couponCode = signal<string>('');
 
+  // Signal hiển thị popup alert
+  showPaymentAlert = signal(false);
+
   @ViewChild('cardNameInput') cardNameInput!: ElementRef<HTMLInputElement>;
 
   // computed tổng tiền
@@ -34,8 +37,8 @@ export class Confirmation {
   constructor() {
     const data = this.bookingService.getAllData();
 
-    // Nếu chưa chọn chuyến bay/ghế → quay lại chọn chuyến
     if (!data.flight || !data.seat) {
+      // Nếu chưa có dữ liệu, quay lại chọn chuyến hoặc ghế
       this.router.navigate(['/chon-chuyen-bay']);
     } else {
       this.flight.set(data.flight);
@@ -43,79 +46,71 @@ export class Confirmation {
     }
   }
 
-  // ======== ACTIONS =========
-  focusCardName(event: Event) {
-    const checked = (event.target as HTMLInputElement).checked;
-    if (checked && this.cardNameInput) {
-      this.cardNameInput.nativeElement.focus();
-    }
+  // Hàm helper hiển thị thông tin
+  flightName() {
+    return this.flight()?.airline ?? '';
   }
 
+  flightPrice() {
+    return this.flight()?.price ?? 0;
+  }
+
+  flightTime() {
+    return `${this.flight()?.departTime} – ${this.flight()?.arriveTime}`;
+  }
+  confirmPayment(form: NgForm) {
+    if (!form.valid) {
+      this.showPaymentAlert.set(true); // Hiện popup nếu form chưa hợp lệ
+      return;
+    }
+  
+    // Form hợp lệ → lưu dữ liệu và chuyển trang
+    console.log('Thanh toán được xác nhận với dữ liệu:', form.value);
+    this.bookingService.setData('payment', {
+      method: this.paymentMethod(),
+      details: form.value
+    });
+  
+    this.router.navigate(['/checkout']); // hoặc trang tiếp theo bạn muốn
+  }
+  
+  
+  closeAlert() {
+    this.showPaymentAlert.set(false);
+  }
+  applyCoupon() {
+    const code = this.couponCode();
+    if (!code) {
+      alert('Vui lòng nhập mã giảm giá.');
+      return;
+    }
+  
+    // Ví dụ đơn giản: giảm 10% nếu mã là "DISCOUNT10"
+    if (code === 'DISCOUNT10') {
+      const oldPrice = this.flight()?.price ?? 0;
+      const newPrice = oldPrice * 0.9;
+      this.flight.update(f => f ? { ...f, price: newPrice } : f);
+      alert('Mã giảm giá áp dụng thành công! Giá mới: ' + newPrice);
+    } else {
+      alert('Mã giảm giá không hợp lệ.');
+    }
+  }
+  backToSeatSelection() {
+    // Quay lại trang chọn ghế, truyền flightId nếu có
+    const flightId = this.flight()?.id;
+    if (flightId) {
+      this.router.navigate(['/seat-selection', flightId]);
+    } else {
+      this.router.navigate(['/chon-chuyen-bay']);
+    }
+  }
+  focusCardName(event: Event) {
+    // Lấy phần tử input và focus
+    this.cardNameInput?.nativeElement?.focus();
+  }
   selectMethod(method: 'credit' | 'google' | 'apple' | 'paypal') {
     this.paymentMethod.set(method);
   }
-
-  backToSeatSelection() {
-    window.history.back();
-  }
-
-  applyCoupon() {
-    console.log('Mã giảm giá:', this.couponCode());
-    // TODO: logic áp dụng coupon
-  }
-
-  confirmPayment(form: NgForm) {
-    if (form.valid) {
-      console.log('Thanh toán:', {
-        flight: this.flight(),
-        seat: this.seat(),
-        paymentMethod: this.paymentMethod(),
-        nameOnCard: this.nameOnCard(),
-        cardNumber: this.cardNumber(),
-        expiry: this.expiry(),
-        cvv: this.cvv(),
-      });
-
-      // Lưu dữ liệu nếu cần
-      this.bookingService.setData('payment', {
-        paymentMethod: this.paymentMethod(),
-        nameOnCard: this.nameOnCard(),
-        cardNumber: this.cardNumber(),
-        expiry: this.expiry(),
-        cvv: this.cvv(),
-      });
-
-      this.router.navigate(['/checkout']);
-    } else {
-      alert('Vui lòng điền đầy đủ thông tin thanh toán.');
-    }
-  }
-
-  // ======== HELPERS =========
-  timeHM(iso?: string) {
-    if (!iso) return '';
-    try {
-      return new Date(iso).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', hour12: false });
-    } catch {
-      return '';
-    }
-  }
-
-  durationStr(mins?: number) {
-    if (!mins) return '';
-    const h = Math.floor(mins / 60);
-    const m = mins % 60;
-    return h ? `${h}h${m}m` : `${m}m`;
-  }
-
-  timeRangeText(flight: any) {
-    return flight ? `${this.timeHM(flight.departTime)} – ${this.timeHM(flight.arriveTime)} (${this.durationStr(flight.durationMin)})` : '';
-  }
-
-  priceStr(value?: number, currency: 'VND' | 'USD' = 'VND') {
-    if (value == null) return '';
-    return currency === 'VND'
-      ? `${value.toLocaleString('vi-VN')} đ`
-      : `$${value.toFixed(2)}`;
-  }
+  
+  
 }

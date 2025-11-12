@@ -43,7 +43,20 @@ export class SeatSelection implements OnInit {
 
   selectedFlight = signal<Flight | null>(null);
   isLoading = signal(true);
-
+////////..///
+  chooseSeat(selectedSeat: string, seatType: string) {
+    if (!this.selectedFlight()) {
+      console.error('Chưa có chuyến bay để chọn ghế!');
+      return;
+    }
+  
+    this.bookingService.setData('flight', this.selectedFlight());
+    this.bookingService.setData('seat', selectedSeat);
+    this.bookingService.setData('seatType', seatType);
+  
+    this.router.navigate(['/confirmation']);
+  }
+  //.//
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -96,6 +109,8 @@ export class SeatSelection implements OnInit {
       alert('⚠️ Vui lòng chọn ghế trước khi tiếp tục!');
       return;
     }
+
+    this.bookingService.setData('seat', this.selectedSeat);
 
     this.router.navigate(['/baggage-selection'], {
       queryParams: {
