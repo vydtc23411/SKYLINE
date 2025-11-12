@@ -4,17 +4,20 @@
     overflow-y: auto;
     background: #375578;
     color: #fff;
-    padding: 0; 
+    padding: 0;
     min-height: 100vh;
     font-size: 14px;
+    
 }
 
 /* =================== HEADER PAGE =================== */
 .header {
+    padding: 10px 10px 0 10px; 
     display: flex;
     flex-direction: column;
     gap: 10px;
-
+    margin-top: 80px; 
+    margin-left: 0;
 }
 
 .header h1 {
@@ -37,7 +40,6 @@
     align-items: center;
     padding: 10px 20px;
     margin-top: 20px;
-    border-bottom: 1px solid #E5E7EB;
     background: #f8fafc;
     border-radius: 10px 10px 0 0;
 }
@@ -47,16 +49,15 @@
     gap: 10px;
 }
 
+/* Tab chính (Promotion) */
 .tabs button {
     padding: 10px 20px;
-    font-size: 14px;
-    font-weight: 500;
-    border: none;
-    border-bottom: 3px solid transparent;
-    background: none;
-    cursor: pointer;
     color: #6B7280;
+    cursor: pointer;
+    border: none;
+    background: none;
     transition: all 0.2s ease;
+    margin-bottom: -1px;
 }
 
 .tabs button:hover {
@@ -66,10 +67,9 @@
 .tabs button.active {
     color: #375578;
     font-weight: bold;
-    border-bottom: 3px solid #375578;
-    background: #fff;
-    border-radius: 5px 5px 0 0;
+    /* border-bottom: 3px solid #375578; chỉ tab active gạch xanh */
 }
+
 
 
 .search-input-wrap {
@@ -133,11 +133,12 @@
     cursor: pointer;
     gap: 8px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-    font-size: 12px; 
+    font-size: 12px;
     position: relative;
 }
+
 .user-profile-menu::before {
-    content: 'Nhân viên'; 
+    content: 'Nhân viên';
     position: absolute;
     top: -15px;
     right: 5px;
@@ -175,7 +176,14 @@
 }
 
 .header {
-    margin: 30px 20px; 
+    margin: 30px 20px;
+}
+
+.main-content-panel {
+    margin: 0 20px 20px 30px; /* Tăng margin trái lên 30px */
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .subtitle {
@@ -183,19 +191,11 @@
     color: #6B7280; 
 }
 
-.main-content-panel {
-    margin: 0 20px 20px 20px; 
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
 /* --- TAB STYLES --- */
 .tab-header-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #E5E7EB; 
 }
 
 .tabs button {
@@ -225,7 +225,7 @@
 .tab-header-row.step-tabs {
     padding: 15px 20px 0 20px;
     margin-bottom: 20px;
-    border-bottom: 1px solid #E5E7EB; 
+    border-bottom: 1px solid #E5E7EB;
     /* Đảm bảo border-bottom của step-tabs nằm trong nội dung form */
 }
 
@@ -247,6 +247,7 @@
     display: flex;
     align-items: center;
 }
+
 .list-toolbar .search-wrap input {
     border: none;
     padding: 8px;
@@ -277,7 +278,7 @@
 .table-wrapper {
     border: 1px solid #e2e8f0;
     border-radius: 10px;
-    overflow: hidden;
+    overflow-x: auto;
 }
 
 .table-wrapper table {
@@ -292,6 +293,7 @@
     border-bottom: 1px solid #e2e8f0;
     text-align: center;
     vertical-align: middle;
+    white-space: nowrap;
 }
 
 .table-wrapper th {
@@ -323,23 +325,23 @@
 }
 
 .status-active {
-    background: #D1FAE5; 
-    color: #065F46; 
+    background: #D1FAE5;
+    color: #065F46;
 }
 
 .status-upcoming {
-    background: #FEF9C3; 
-    color: #A16207; 
+    background: #FEF9C3;
+    color: #A16207;
 }
 
 .status-expired {
-    background: #FEE2E2; 
-    color: #B91C1C; 
+    background: #FEE2E2;
+    color: #B91C1C;
 }
 
 .status-draft {
-    background: #E5E7EB; 
-    color: #4B5563; 
+    background: #E5E7EB;
+    color: #4B5563;
 }
 
 .actions {
@@ -364,7 +366,7 @@
 
 /* --- FORM STYLES --- */
 .form-container.promo-form {
-    padding: 0 20px 20px 20px; 
+    padding: 0 20px 20px 20px;
     color: #374151;
 }
 
@@ -374,7 +376,7 @@
     font-weight: 600;
     margin-bottom: 8px;
     color: #375578;
-    font-size: 13px; 
+    font-size: 13px;
 }
 
 .form-group input[type="text"],
@@ -410,7 +412,7 @@
     margin-bottom: 0;
 }
 
-.form-row.three-cols > .form-group {
+.form-row.three-cols>.form-group {
     flex-basis: calc(33.33% - 13.33px);
 }
 
@@ -419,16 +421,16 @@
     display: flex;
     gap: 20px;
     margin-bottom: 20px;
-    border-top: 1px solid #E5E7EB; 
+    border-top: 1px solid #E5E7EB;
     padding-top: 20px;
 }
 
 .form-col-left {
-    flex: 2.5; 
+    flex: 2.5;
 }
 
 .form-col-right.status-col {
-    flex: 1; 
+    flex: 1;
 }
 
 .radio-status {
@@ -449,7 +451,7 @@
 }
 
 .form-row.time-detail-group.seven-cols .form-group {
-    flex-basis: 15%; 
+    flex-basis: 15%;
 }
 
 .form-row.time-detail-group .btn-add-time {
@@ -498,7 +500,7 @@
 .form-note {
     font-size: 13px;
     color: #6B7280;
-    background: #FEF3C7; 
+    background: #FEF3C7;
     border-left: 4px solid #F59E0B;
     padding: 10px 15px;
     border-radius: 4px;
@@ -516,7 +518,7 @@
 /* Footer Buttons */
 .form-buttons {
     display: flex;
-    justify-content: flex-end; 
+    justify-content: flex-end;
     gap: 16px;
     margin-top: 32px;
     border-top: 1px solid #E5E7EB;
@@ -538,16 +540,20 @@
 }
 
 /* NÚT HỦY (Xám đậm) */
-.form-btn-cancel, .form-btn-draft {
+.form-btn-cancel,
+.form-btn-draft {
     background: #6B7280;
     color: #fff;
 }
-.form-btn-cancel:hover, .form-btn-draft:hover:not(:disabled) {
+
+.form-btn-cancel:hover,
+.form-btn-draft:hover:not(:disabled) {
     background: #4B5563;
 }
 
 /* NÚT LƯU & TIẾP TỤC / KÍCH HOẠT (Xanh chủ đạo) */
-.form-btn-continue, .form-btn-activate { 
+.form-btn-continue,
+.form-btn-activate {
     background: #375578;
     color: #fff;
 }
@@ -613,6 +619,7 @@
     color: #374151;
     cursor: pointer;
 }
+
 .btn-modal-cancel:hover {
     background: #F9FAFB;
 }
@@ -622,60 +629,292 @@
     padding: 10px 20px;
     font-weight: bold;
     border-radius: 5px;
-    background: #EF4444; 
+    background: #EF4444;
     color: #fff;
     border: none;
     cursor: pointer;
 }
+
 .btn-modal-delete:hover {
     background: #DC2626;
 }
 
-/* Responsive adjustments */
-@media (max-width: 900px) {
-    .top-header-bar {
-        flex-direction: column;
-        gap: 15px;
-    }
-    .user-controls {
-        width: 100%;
-        justify-content: flex-end;
-    }
-    .search-input-wrap {
-        margin-right: 0;
+/* =================== MODAL OVERLAY & GENERAL MODAL STYLES =================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.65); 
+    display: flex;
+    /* 🛑 FIX: Thêm căn giữa theo chiều dọc nếu nội dung nhỏ */
+    align-items: center; 
+    /* 🛑 FIX: Cho phép cuộn khi nội dung Modal lớn hơn viewport */
+    overflow-y: auto; 
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+    backdrop-filter: blur(3px); 
+}
+
+.modal-content {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 450px;
+    width: 100%;
+    /* 🛑 FIX: Thêm margin top/bottom để nội dung Modal không chạm mép khi cuộn */
+    margin: auto 0; 
+}
+
+.modal-content h4 {
+    font-size: 20px;
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.modal-content p {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+/* ... (Giữ nguyên các style nút) ... */
+
+
+/* =================== MODAL VIEW (Chi tiết) STYLES =================== */
+.modal-content.modal-view {
+    max-width: 700px; 
+    text-align: left;
+    background: #ffffff;
+    border-radius: 12px; 
+    padding: 30px; 
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-view-title {
+    font-size: 24px; 
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0; 
+    text-align: center; 
+}
+
+/* 🟢 STYLE CHO KHU VỰC ẢNH */
+.promo-image-wrap {
+    text-align: center;
+    margin-bottom: 25px; 
+    padding: 10px;
+}
+.promo-image-detail {
+    max-width: 100%;
+    height: 220px; 
+    object-fit: cover; 
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #eee;
+}
+
+.view-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 18px; 
+    margin-top: 15px;
+}
+
+.detail-item {
+    padding: 12px 15px; 
+    background: #f8f9fa; 
+    border-radius: 8px;
+    border: 1px solid #e9ecef; 
+}
+
+.detail-item label {
+    display: block;
+    font-size: 12px; 
+    font-weight: 700; 
+    color: #375578;
+    margin-bottom: 5px; 
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-item span {
+    font-size: 15px; 
+    color: #333;
+    word-break: break-word;
+    line-height: 1.4;
+}
+
+.detail-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end; 
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+.form-btn-edit { 
+    background-color: #375578;
+    color: #ffffff;
+}
+.form-btn-edit:hover {
+    background-color: #2471a3;
+}
+
+/* =================== RESPONSIVE (FIX LỖI KHUẤT) =================== */
+@media (max-width: 1024px) {
+    .content {
+        margin-left: 220px;
     }
 
-    .form-row {
+    .header {
+        margin-top: 65px;
+    }
+}
+
+
+@media (max-width: 900px) {
+    .content {
+        margin-left: 200px;
+    }
+
+    .header {
+        margin-top: 5px;
         flex-direction: column;
         gap: 15px;
     }
-    .form-row.three-cols > .form-group {
-        flex-basis: 100%;
-    }
-    .form-row.time-detail-group.seven-cols {
-        flex-wrap: wrap;
-    }
-    .form-row.time-detail-group.seven-cols .form-group {
-        flex-basis: 45%;
-    }
-    
-    .form-buttons {
+
+
+    .tab-header-row {
         flex-direction: column;
-        gap: 10px;
         align-items: stretch;
+        gap: 15px;
+        padding: 10px;
     }
-    .form-buttons .btn {
-        width: 100%;
-        min-width: unset;
+
+    .tabs {
+        justify-content: center;
+    }
+
+    .list-toolbar {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .search-wrap {
+        flex-grow: 1;
+    }
+
+    .flight-form {
+        grid-template-columns: 1fr;
+    }
+
+    .table-wrapper th:nth-child(2),
+    .table-wrapper td:nth-child(2),
+    .table-wrapper th:nth-child(3),
+    .table-wrapper td:nth-child(3),
+    .table-wrapper th:nth-child(4),
+    .table-wrapper td:nth-child(4),
+    .table-wrapper th:nth-child(5),
+    .table-wrapper td:nth-child(5) {
+        display: none;
+    }
+
+    .form-buttons {
+        justify-content: center;
+    }
+
+    .time-inputs {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 768px) {
+
+    .table-wrapper th:nth-child(4),
+    .table-wrapper td:nth-child(4) {
+        display: none;
+    }
+
+    .user-form {
+        grid-template-columns: 1fr;
+    }
+
+    .form-buttons {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 500px) {
     .content {
-        margin-left: 0;
+        margin-left: 180px;
         padding: 10px;
     }
-    .main-content-panel {
-        margin: 0;
+
+    .header {
+        padding: 10px;
+        margin-top: 130px;
+    }
+
+
+    .list-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-add-new {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .modal-view .view-details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+    }
+
+    .form-buttons .btn {
+        width: 100%;
+    }
+
+    .tabs button {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .time-inputs {
+        grid-template-columns: 1fr;
     }
 }
