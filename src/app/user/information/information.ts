@@ -30,36 +30,121 @@ export class Information implements OnInit {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   ngOnInit(): void {
-    // Ưu tiên lấy từ localStorage nếu đã có
+    // Kiểm tra xem user đã đăng nhập chưa
+    if (!this.authService.isLoggedIn()) {
+      console.warn('⚠️ User not logged in');
+      return;
+    }
+    
+    // Lấy thông tin user hiện tại
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) {
+      console.error('❌ No current user found');
+      return;
+    }
+    
+    console.log('🔍 Current user email:', currentUser.email);
+    
+    // Ưu tiên lấy từ localStorage (nếu đã có và đầy đủ)
     const saved = localStorage.getItem('fullUserData');
     if (saved) {
-      this.user = JSON.parse(saved);
-      console.log('🔹 Loaded from localStorage:', this.user);
-    } else {
-      // Nếu chưa có, tải từ file JSON
-      this.http.get<any[]>('assets/data/user_data.json').subscribe({
-        next: (data) => {
-          if (Array.isArray(data) && data.length > 0) {
-            this.user = { ...data[0] };
-            console.log('📦 Loaded from JSON:', this.user);
-
-            // Cập nhật vào AuthService & localStorage
-            const currentUser = {
-              id: Date.now(),
-              name: this.user.fullName,
-              email: this.user.email,
-              createdAt: new Date().toISOString(),
-            };
-
-            localStorage.setItem('fullUserData', JSON.stringify(this.user));
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-          } else {
-            console.warn('⚠️ No user data found in user_data.json');
-          }
-        },
-        error: (err) => console.error('❌ Failed to load JSON:', err),
-      });
+      const userData = JSON.parse(saved);
+      
+      // Kiểm tra xem dữ liệu có đầy đủ không (phone, birthday, passport phải có giá trị)
+      const hasCompleteData = userData.phone && userData.birthday && userData.passport;
+      
+      if (hasCompleteData) {
+        this.user = userData;
+        console.log('✅ Loaded complete user data from localStorage:', this.user);
+        console.log('📊 User data details:', {
+          phone: this.user.phone,
+          birthday: this.user.birthday,
+          passport: this.user.passport,
+          passportExpiry: this.user.passportExpiry
+        });
+        return; // Đã có dữ liệu đầy đủ, không cần load từ JSON
+      } else {
+        console.warn('⚠️ localStorage data is incomplete, will reload from JSON');
+        console.log('Current data:', {
+          phone: userData.phone,
+          birthday: userData.birthday,
+          passport: userData.passport
+        });
+      }
     }
+    
+    // Nếu chưa có hoặc dữ liệu không đầy đủ → Load từ file JSON
+    console.log('� Loading user data from JSON file...');
+    this.loadUserDataFromJSON(currentUser.email);
+  }
+  
+  // Helper method để load dữ liệu từ JSON
+  private loadUserDataFromJSON(email: string): void {
+    this.http.get<any[]>('assets/data/user_data.json').subscribe({
+      next: (users) => {
+        console.log('📦 Loaded', users.length, 'users from JSON');
+        
+        // Tìm user theo email
+        const foundUser = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+        
+        if (foundUser) {
+          console.log('✅ Found user in JSON file:', foundUser.fullName);
+          this.user = { ...foundUser };
+          
+          // Lưu vào localStorage để lần sau không cần load lại
+          localStorage.setItem('fullUserData', JSON.stringify(this.user));
+          
+          console.log('💾 Saved complete data to localStorage:', {
+            phone: this.user.phone,
+            birthday: this.user.birthday,
+            passport: this.user.passport,
+            passportExpiry: this.user.passportExpiry
+          });
+        } else {
+          console.warn('⚠️ User not found in JSON, creating default profile');
+          // Tạo profile mặc định nếu không tìm thấy (tài khoản mới đăng ký)
+          this.user = {
+            fullName: this.authService.getCurrentUser()?.name || '',
+            email: email,
+            phone: '',
+            birthday: '',
+            gender: '',
+            passport: '',
+            passportExpiry: '',
+            country: 'Việt Nam',
+            address: '',
+            avatar: 'assets/img/AVT1.jpg',
+            currentRank: 'Đồng',
+            points: 0,
+            nextRank: 'Bạc',
+            nextThreshold: 500,
+            status: 'Hoạt động'
+          };
+          localStorage.setItem('fullUserData', JSON.stringify(this.user));
+        }
+      },
+      error: (err) => {
+        console.error('❌ Failed to load user_data.json:', err);
+        // Tạo profile mặc định nếu lỗi
+        this.user = {
+          fullName: this.authService.getCurrentUser()?.name || '',
+          email: email,
+          phone: '',
+          birthday: '',
+          gender: '',
+          passport: '',
+          passportExpiry: '',
+          country: 'Việt Nam',
+          address: '',
+          avatar: 'assets/img/AVT1.jpg',
+          currentRank: 'Đồng',
+          points: 0,
+          nextRank: 'Bạc',
+          nextThreshold: 500,
+          status: 'Hoạt động'
+        };
+      }
+    });
   }
 
   onEdit(): void {
@@ -68,7 +153,89 @@ export class Information implements OnInit {
 
   onSave(): void {
     this.isEditing = false;
+    
+    // Lưu vào fullUserData
     localStorage.setItem('fullUserData', JSON.stringify(this.user));
+    
+    // Đồng bộ với users array trong localStorage (nếu có)
+    const usersJson = localStorage.getItem('users');
+    if (usersJson) {
+      const users = JSON.parse(usersJson);
+      const currentUser = this.authService.getCurrentUser();
+      
+      if (currentUser) {
+        const userIndex = users.findIndex((u: any) => u.email === currentUser.email);
+        if (userIndex !== -1) {
+          // Cập nhật thông tin user trong mảng
+          users[userIndex] = {
+            ...users[userIndex],
+            name: this.user.fullName,
+            phone: this.user.phone,
+            birthday: this.user.birthday,
+            gender: this.user.gender,
+            passport: this.user.passport,
+            passportExpiry: this.user.passportExpiry,
+            country: this.user.country,
+            address: this.user.address,
+            avatar: this.user.avatar
+          };
+          localStorage.setItem('users', JSON.stringify(users));
+          console.log('✅ Updated user in users array');
+        }
+      }
+    }
+    
     alert('✅ Thông tin đã được lưu thành công!');
+  }
+
+  // Debug method - có thể gọi từ console hoặc thêm nút tạm
+  reloadUserData(): void {
+    console.log('🔄 Reloading user data from JSON file...');
+    const currentUser = this.authService.getCurrentUser();
+    
+    if (!currentUser) {
+      console.error('❌ No current user');
+      alert('❌ Vui lòng đăng nhập lại!');
+      return;
+    }
+    
+    console.log('🔍 Looking for user:', currentUser.email);
+    
+    this.http.get<any[]>('assets/data/user_data.json').subscribe({
+      next: (users) => {
+        console.log('📦 Loaded', users.length, 'users from JSON');
+        
+        const foundUser = users.find(u => u.email.toLowerCase() === currentUser.email.toLowerCase());
+        
+        if (foundUser) {
+          this.user = { ...foundUser };
+          localStorage.setItem('fullUserData', JSON.stringify(this.user));
+          
+          console.log('✅ Reloaded user data:', {
+            fullName: this.user.fullName,
+            email: this.user.email,
+            phone: this.user.phone,
+            birthday: this.user.birthday,
+            passport: this.user.passport,
+            passportExpiry: this.user.passportExpiry,
+            address: this.user.address
+          });
+          
+          alert(`✅ Đã tải lại dữ liệu thành công!\n\n` +
+                `Họ tên: ${this.user.fullName}\n` +
+                `Email: ${this.user.email}\n` +
+                `Điện thoại: ${this.user.phone || 'Chưa có'}\n` +
+                `Ngày sinh: ${this.user.birthday || 'Chưa có'}\n` +
+                `Passport: ${this.user.passport || 'Chưa có'}`);
+        } else {
+          console.error('❌ User not found in JSON file');
+          alert(`❌ Không tìm thấy thông tin cho email: ${currentUser.email}\n\nCó thể bạn đã đăng ký tài khoản mới.`);
+        }
+      },
+      error: (err) => {
+        console.error('❌ Error loading JSON:', err);
+        alert('❌ Lỗi khi tải file JSON. Vui lòng kiểm tra console!');
+      }
+    });
   }
 }

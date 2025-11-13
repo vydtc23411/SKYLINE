@@ -8,6 +8,20 @@ export interface User {
   email: string;
   password: string;
   createdAt: string;
+  // Thông tin bổ sung từ user_data.json
+  phone?: string;
+  birthday?: string;
+  gender?: string;
+  passport?: string;
+  passportExpiry?: string;
+  country?: string;
+  address?: string;
+  avatar?: string;
+  currentRank?: string;
+  points?: number;
+  nextRank?: string;
+  nextThreshold?: number;
+  status?: string;
 }
 
 export interface UserWithoutPassword {
@@ -98,16 +112,40 @@ export class AuthService {
         createdAt: localUser.createdAt
       };
       
+      // Tạo fullUserData với các trường cần thiết cho trang hồ sơ
+      const fullUserData = {
+        fullName: localUser.name,
+        email: localUser.email,
+        password: localUser.password,
+        phone: localUser.phone || '',
+        birthday: localUser.birthday || '',
+        gender: localUser.gender || '',
+        passport: localUser.passport || '',
+        passportExpiry: localUser.passportExpiry || '',
+        country: localUser.country || 'Việt Nam',
+        address: localUser.address || '',
+        avatar: localUser.avatar || 'assets/img/AVT1.jpg',
+        currentRank: localUser.currentRank || 'Đồng',
+        points: localUser.points || 0,
+        nextRank: localUser.nextRank || 'Bạc',
+        nextThreshold: localUser.nextThreshold || 500,
+        status: localUser.status || 'Hoạt động',
+        id: localUser.id,
+        createdAt: localUser.createdAt
+      };
+      
       const session = {
         user: userToStore,
-        fullUserData: localUser,
+        fullUserData: fullUserData,
         timestamp: new Date().getTime(),
         expiresIn: 24 * 60 * 60 * 1000 // 24 giờ
       };
       
       localStorage.setItem(this.USER_SESSION_KEY, JSON.stringify(session));
       localStorage.setItem(this.CURRENT_USER_KEY, JSON.stringify(userToStore));
-      localStorage.setItem('fullUserData', JSON.stringify(localUser));
+      localStorage.setItem('fullUserData', JSON.stringify(fullUserData));
+      
+      console.log('✅ Saved full user data to localStorage:', fullUserData);
       
       return { 
         success: true, 
@@ -130,6 +168,7 @@ export class AuthService {
       if (user) {
         console.log('Found user in JSON file:', user.email);
         
+        // Chuẩn bị thông tin user cơ bản
         const userToStore: UserWithoutPassword = {
           id: Date.now(),
           name: user.fullName || user.name,
@@ -137,16 +176,26 @@ export class AuthService {
           createdAt: new Date().toISOString()
         };
         
+        // Lưu TOÀN BỘ thông tin từ JSON vào fullUserData (bao gồm avatar, rank, points, phone, passport, v.v.)
+        const fullUserData = {
+          ...user,  // Lấy tất cả trường từ JSON
+          id: userToStore.id,
+          createdAt: userToStore.createdAt
+        };
+        
         const session = {
           user: userToStore,
-          fullUserData: user,
+          fullUserData: fullUserData,
           timestamp: new Date().getTime(),
           expiresIn: 24 * 60 * 60 * 1000 // 24 giờ
         };
         
+        // Lưu vào localStorage
         localStorage.setItem(this.USER_SESSION_KEY, JSON.stringify(session));
         localStorage.setItem(this.CURRENT_USER_KEY, JSON.stringify(userToStore));
-        localStorage.setItem('fullUserData', JSON.stringify(user));
+        localStorage.setItem('fullUserData', JSON.stringify(fullUserData)); // Lưu đầy đủ thông tin
+        
+        console.log('✅ Saved full user data to localStorage:', fullUserData);
         
         return { 
           success: true, 
@@ -168,18 +217,63 @@ export class AuthService {
     if (users.find(u => u.email === email)) {
       return { success: false, message: 'Email này đã được đăng ký!' };
     }
+    
+    // Tạo user mới với đầy đủ thông tin mặc định
     const newUser: User = {
       id: Date.now(),
       name,
       email,
       password,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      // Thông tin mặc định cho user mới
+      phone: '',
+      birthday: '',
+      gender: '',
+      passport: '',
+      passportExpiry: '',
+      country: 'Việt Nam',
+      address: '',
+      avatar: 'assets/img/AVT1.jpg',
+      currentRank: 'Đồng',
+      points: 0,
+      nextRank: 'Bạc',
+      nextThreshold: 500,
+      status: 'Hoạt động'
     };
+    
     users.push(newUser);
     localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
+    
     const { password: _, ...userWithoutPassword } = newUser;
-    // store as current user (auto-login after register)
+    
+    // Tạo fullUserData cho trang hồ sơ
+    const fullUserData = {
+      fullName: newUser.name,
+      email: newUser.email,
+      password: newUser.password,
+      phone: newUser.phone,
+      birthday: newUser.birthday,
+      gender: newUser.gender,
+      passport: newUser.passport,
+      passportExpiry: newUser.passportExpiry,
+      country: newUser.country,
+      address: newUser.address,
+      avatar: newUser.avatar,
+      currentRank: newUser.currentRank,
+      points: newUser.points,
+      nextRank: newUser.nextRank,
+      nextThreshold: newUser.nextThreshold,
+      status: newUser.status,
+      id: newUser.id,
+      createdAt: newUser.createdAt
+    };
+    
+    // Lưu thông tin đầy đủ vào localStorage
     localStorage.setItem(this.CURRENT_USER_KEY, JSON.stringify(userWithoutPassword));
+    localStorage.setItem('fullUserData', JSON.stringify(fullUserData));
+    
+    console.log('✅ New user registered with full data:', fullUserData);
+    
     return { success: true, message: 'Đăng ký thành công!', user: userWithoutPassword };
   }
 
