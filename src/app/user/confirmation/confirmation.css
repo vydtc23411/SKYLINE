@@ -438,34 +438,51 @@
   vertical-align: middle;
 }
 
-/* ===== POPUP COUPON ĐẸP, TINH TẾ ===== */
-.coupon-alert {
+/* ===== POPUP COUPON ĐẸP, CHÍNH GIỮA MÀN HÌNH ===== */
+.coupon-alert-overlay {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #f0f4ff; /* nền nhẹ, không quá chói */
-  color: #375578; /* text màu trang */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4); /* nền mờ */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  pointer-events: auto;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.coupon-alert-box {
+  background: #f0f4ff; /* nền popup nhẹ */
+  color: #375578; /* text màu chủ đạo */
   padding: 20px 28px;
-  border-radius: 12px; /* bo tròn mềm mại */
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2); /* bóng mềm */
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25); /* bóng mềm */
   font-size: 15px;
   font-weight: 500;
   text-align: center;
-  z-index: 10000;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
+  min-width: 260px;
+  max-width: 320px;
+  transform: scale(0.9);
+  animation: popupScale 0.2s forwards;
 }
 
-/* Khi hiển thị popup */
-.coupon-alert.show {
-  opacity: 1;
-  pointer-events: auto;
+/* Animation fade in overlay */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-/* Icon đi kèm */
-.coupon-alert p {
+/* Animation scale popup */
+@keyframes popupScale {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Text kèm icon trạng thái */
+.coupon-alert-box p {
   margin: 0;
   display: flex;
   align-items: center;
@@ -473,15 +490,28 @@
   gap: 8px;
 }
 
-.coupon-alert p.success::before {
+/* Icon success / error */
+.coupon-alert-box p.success::before {
   content: "🎉";
 }
 
-.coupon-alert p.error::before {
+.coupon-alert-box p.error::before {
   content: "⚠️";
 }
 
-.coupon-alert button:hover {
-  background-color: #4f5edc;
+/* Nút đóng (nếu muốn thêm sau) */
+.coupon-alert-box button {
+  margin-top: 12px;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #606DEC;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
 }
 
+.coupon-alert-box button:hover {
+  background-color: #4f5edc;
+}
