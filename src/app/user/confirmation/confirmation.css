@@ -34,7 +34,6 @@
   background-color: #fafafa;
 }
 
-
 /* ===== HEADER ===== */
 .section-header h2 {
   font-size: 22px;
@@ -45,7 +44,6 @@
   font-size: 14px;
   color: #375578;
 }
-
 
 /* ===== LAYOUT ===== */
 .payment-container {
@@ -70,14 +68,12 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-
 /* ===== TEXT ===== */
 .note {
   color: #375578;
   font-size: 14px;
   margin-bottom: 20px;
 }
-
 
 /* ===== PAYMENT METHODS ===== */
 .method-group {
@@ -89,7 +85,6 @@
 
 .method-btn {
   flex: 1 1 48%;
-  ;
   padding: 10px 20px;
   justify-content: center;
   align-items: center;
@@ -117,7 +112,6 @@
   background: #eaf0ff;
   color: #606DEC;
 }
-
 
 /* ===== FORM FIELDS ===== */
 .payment-details h4 {
@@ -162,7 +156,6 @@
   flex: 1;
 }
 
-
 /* ===== ERROR MESSAGES ===== */
 .error-message,
 .error-message-small {
@@ -171,7 +164,6 @@
   font-weight: 500;
   margin-top: 6px;
 }
-
 
 /* ===== POWERED BY ===== */
 .powered {
@@ -187,7 +179,6 @@
   padding: 0 10px;
 }
 
-
 /* ===== POLICY ===== */
 .policy {
   margin-top: 30px;
@@ -200,7 +191,6 @@
   color: #606DEC;
   text-decoration: none;
 }
-
 
 /* ===== BUTTONS ===== */
 .action-buttons {
@@ -242,7 +232,6 @@
 .btn-secondary:hover {
   background-color: #ddd;
 }
-
 
 /* ===== FLIGHT INFO (RIGHT COLUMN) ===== */
 .flight-card {
@@ -295,9 +284,7 @@
 
 .seat-info {
   display: block;
-  /* xuống dòng */
   margin-top: 2px;
-  /* cách 1 chút cho đẹp */
 }
 
 .detail {
@@ -344,7 +331,6 @@
   text-align: right;
 }
 
-
 .coupon {
   display: flex;
   gap: 8px;
@@ -378,7 +364,6 @@
   margin: 10px 0 20px;
 }
 
-
 /* ===== CONFIRM BUTTON RIGHT ===== */
 .confirm-btn-wrapper {
   display: flex;
@@ -389,27 +374,42 @@
   padding: 10px 24px;
 }
 
-.payment-alert {
+/* ===== ALERTS ===== */
+.payment-alert,
+.coupon-alert-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 10000;
 }
 
-.payment-alert-box {
+.payment-alert {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.coupon-alert-overlay {
+  background: rgba(0, 0, 0, 0.4);
+  pointer-events: auto;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.payment-alert-box,
+.coupon-alert-box {
   background: #fff;
-  padding: 20px 25px;
   border-radius: 12px;
   text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+}
+
+.payment-alert-box {
+  padding: 20px 25px;
   min-width: 250px;
   max-width: 300px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
 }
 
 .payment-alert-box p {
@@ -432,34 +432,11 @@
   background-color: #4f5edc;
 }
 
-.method-btn i {
-  margin-right: 8px;
-  font-size: 16px;
-  vertical-align: middle;
-}
-
-/* ===== POPUP COUPON ĐẸP, CHÍNH GIỮA MÀN HÌNH ===== */
-.coupon-alert-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.4); /* nền mờ */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
-  pointer-events: auto;
-  animation: fadeIn 0.2s ease-in-out;
-}
-
+/* ===== POPUP COUPON BOX ===== */
 .coupon-alert-box {
-  background: #f0f4ff; /* nền popup nhẹ */
-  color: #375578; /* text màu chủ đạo */
+  background: #f0f4ff;
+  color: #375578;
   padding: 20px 28px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25); /* bóng mềm */
   font-size: 15px;
   font-weight: 500;
   text-align: center;
@@ -467,21 +444,10 @@
   max-width: 320px;
   transform: scale(0.9);
   animation: popupScale 0.2s forwards;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  border-radius: 12px;
 }
 
-/* Animation fade in overlay */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Animation scale popup */
-@keyframes popupScale {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-/* Text kèm icon trạng thái */
 .coupon-alert-box p {
   margin: 0;
   display: flex;
@@ -490,7 +456,6 @@
   gap: 8px;
 }
 
-/* Icon success / error */
 .coupon-alert-box p.success::before {
   content: "🎉";
 }
@@ -499,7 +464,6 @@
   content: "⚠️";
 }
 
-/* Nút đóng (nếu muốn thêm sau) */
 .coupon-alert-box button {
   margin-top: 12px;
   padding: 8px 20px;
@@ -514,4 +478,53 @@
 
 .coupon-alert-box button:hover {
   background-color: #4f5edc;
+}
+
+.method-btn i {
+  margin-right: 8px;
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popupScale {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .sidebar-header { font-size: 1vw; padding: 1vh 1.5vw; }
+  .hightlight { font-size: 2vw; }
+  .payment-page { padding: 30px 50px; }
+  .method-btn { padding: 8px 12px; font-size: 13px; }
+  .form-field input { padding: 8px; font-size: 13px; }
+  .form-field label { font-size: 12px; }
+  .summary .row { font-size: 13px; }
+  .summary .row span { font-size: 14px; }
+  .btn-primary, .btn-secondary { padding: 10px 20px; font-size: 13px; }
+  .coupon input { padding: 6px; font-size: 13px; }
+  .coupon button { padding: 6px 12px; font-size: 13px; }
+  .flight-item img { width: 100px; height: 100px; }
+  .airline { font-size: 16px; }
+  .flight-no { font-size: 14px; }
+  .time, .detail { font-size: 13px; }
+}
+
+@media (max-width: 768px) {
+  .payment-container { flex-direction: column; gap: 20px; }
+  .payment-left, .payment-right { padding: 20px; }
+  .method-btn { flex: 1 1 45%; }
+}
+
+@media (max-width: 480px) {
+  .method-btn { flex: 1 1 100%; }
+  .payment-page { padding: 15px 20px; }
+  .sidebar-header { font-size: 0.9vw; }
+  .hightlight { font-size: 1.8vw; }
 }
