@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 interface Ticket {
   code: string;
@@ -14,21 +15,31 @@ interface Ticket {
 @Component({
   selector: 'app-checkticket',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, HttpClientModule],
   templateUrl: './checkticket.html',
   styleUrls: ['./checkticket.css']
 })
-export class CheckTicket {
+export class CheckTicket implements OnInit {
   searchText: string = '';
+  tickets: Ticket[] = [];
+  filteredTickets: Ticket[] = [];
 
-  tickets: Ticket[] = [
-    { code: 'TRPM01', name: 'Nguyễn Văn A', seat: 'A15', status: 'Đã thanh toán', route: 'Hà Nội - HCM' },
-    { code: 'TRPM02', name: 'Nguyễn Văn A', seat: 'A16', status: 'Chờ thanh toán', route: 'Hà Nội - Đà Nẵng' }
-  ];
+  constructor(private router: Router, private http: HttpClient) {}
 
-  filteredTickets: Ticket[] = [...this.tickets];
-
-  constructor(private router: Router) {}
+  ngOnInit(): void {
+    // Load data từ JSON
+    this.http.get<Ticket[]>('assets/data/example_ticket.json').subscribe({
+      next: (data) => {
+        this.tickets = data;
+        this.filteredTickets = [...this.tickets];
+      },
+      error: (err) => {
+        console.error('Lỗi khi đọc file JSON:', err);
+        this.tickets = [];
+        this.filteredTickets = [];
+      }
+    });
+  }
 
   goToDetail(ticket: Ticket) {
     this.router.navigate(['/checkticket2'], { queryParams: { code: ticket.code } });

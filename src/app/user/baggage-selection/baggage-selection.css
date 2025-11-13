@@ -27,7 +27,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: 20rem;
+    gap: 25rem;
 }
 
 .image-section img {
@@ -81,6 +81,11 @@
     margin-bottom: 1.5rem;
 }
 
+.form-description-highlight {
+    font-weight: bold;
+    font-style: italic;
+}
+
 .form-group {
     margin-bottom: 1.25rem;
     position: relative;
@@ -119,40 +124,6 @@
     cursor: pointer;
 }
 
-.quantity-selector {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.quantity-selector label {
-    margin-bottom: 0;
-}
-
-.quantity-btn {
-    background-color: #e0e0e0;
-    border: none;
-    border-radius: 4px;
-    width: 32px;
-    height: 32px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-    line-height: 1;
-}
-
-.quantity-btn:disabled {
-    background-color: #99BBFF;
-    color: #fff;
-    cursor: not-allowed;
-}
-
-.quantity-display {
-    padding: 0.5rem 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
 .button-group {
     display: flex;
     justify-content: center;
@@ -186,12 +157,12 @@
 }
 
 .submit-btn {
-    background-color: #007bff;
+    background-color: #606DEC;
     color: white;
 }
 
 .submit-btn:hover {
-    background-color: #0056b3;
+    background-color: #737ee6;
 }
 
 .submit-btn:disabled {
@@ -245,4 +216,63 @@
 .hightlight {
     font-size: 2.4vw;
     font-weight: bold;
+}
+
+.baggage-options-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.baggage-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    cursor: pointer;
+    min-height: 75px;
+    background-color: #fafafa;
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.baggage-option:hover {
+    border-color: #80bfff;
+    background-color: #f7fbff;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.baggage-option:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.baggage-option.selected {
+    border-color: #606DEC;
+    background-color: #f0f0ff;
+    box-shadow: 0 4px 10px rgba(96, 109, 236, 0.2);
+    transform: translateY(-3px);
+}
+
+.baggage-name {
+    font-weight: bold;
+    text-align: center;
+    padding: 0 10px;
+}
+
+.baggage-price {
+    font-weight: bold;
+    color: #606DEC;
+}
+
+.baggage-option:first-child .baggage-price {
+    color: #666;
+    font-weight: bold;
+}
+
+.baggage-option:first-child.selected {
+    border-color: #aaa;
+    background-color: #f1f1f1;
+    box-shadow: none;
 }

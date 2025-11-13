@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AuthService, UserWithoutPassword } from '../services/auth.service';
+import { BookingService } from '../services/booking.service';
 
 type Cabin = 'Economy' | 'Premium Economy' | 'Business';
 export interface Flight {
@@ -37,7 +38,9 @@ export interface Flight {
 export class BaggageSelection implements OnInit {
 
   passengerForm: FormGroup;
-  baggageQuantity: number = 1;
+
+  baggageOptions: any[] = [];
+  selectedBaggage = signal<any>(null);
 
   isLoading = signal(true);
   selectedFlight = signal<Flight | null>(null);
@@ -53,7 +56,8 @@ export class BaggageSelection implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private bookingService: BookingService
   ) {
 
     this.passengerForm = this.fb.group({
@@ -72,7 +76,6 @@ export class BaggageSelection implements OnInit {
     this.selectedSeat = this.route.snapshot.queryParams['seat'];
     this.selectedSeatType = this.route.snapshot.queryParams['type'];
     this.currentUser = this.authService.getCurrentUser();
-
 
     let fullUserData: any = null;
     const fullUserRaw = localStorage.getItem('fullUserData');
@@ -98,7 +101,7 @@ export class BaggageSelection implements OnInit {
     }
 
     if (this.selectedFlightId) {
-      this.http.get('assets/flight-search-sampledata.json').subscribe({
+      this.http.get('assets/data/flight-search-sampledata.json').subscribe({
         next: (raw: any) => {
           const all = this.normalizeFlights(raw);
           const f = all.find(x => String(x.id) === String(this.selectedFlightId)) ?? null;
@@ -115,53 +118,58 @@ export class BaggageSelection implements OnInit {
       console.error('Không có ID chuyến bay!');
       this.isLoading.set(false);
     }
+
+
+    this.baggageOptions = [
+      { name: '20kg', price: 230000, priceDisplay: '230.000đ' },
+      { name: '30kg', price: 345000, priceDisplay: '345.000đ' },
+      { name: '40kg', price: 460000, priceDisplay: '460.000đ' },
+      { name: '50kg', price: 632500, priceDisplay: '632.500đ' },
+      { name: '60kg', price: 747500, priceDisplay: '747.500đ' },
+      { name: 'Hành lý quá khổ 20kg', price: 517500, priceDisplay: '517.500đ' },
+      { name: 'Hành lý quá khổ 30kg', price: 632500, priceDisplay: '632.500đ' },
+    ];
   }
 
   private formatDateForInput(dateStr: string): string {
     if (!dateStr || dateStr.split('/').length !== 3) {
       return '';
     }
-
     const parts = dateStr.split('/');
     const day = parts[0].padStart(2, '0');
     const month = parts[1].padStart(2, '0');
     const year = parts[2];
-
     return `${year}-${month}-${day}`;
   }
-
 
 
   get f() {
     return this.passengerForm.controls;
   }
 
-  decrementBaggage(): void {
-    if (this.baggageQuantity > 1) {
-      this.baggageQuantity--;
+  selectBaggage(option: any): void {
+    if (this.selectedBaggage() === option) {
+      this.selectedBaggage.set(null);
+    } else {
+      this.selectedBaggage.set(option);
     }
-  }
-
-  incrementBaggage(): void {
-    this.baggageQuantity++;
   }
 
   onSubmit(): void {
     if (this.passengerForm.valid) {
       console.log('Form Data:', this.passengerForm.value);
-      console.log('Baggage Quantity:', this.baggageQuantity);
 
-      const navigationData = {
-        state: {
-          flight: this.selectedFlight(),
-          passenger: this.passengerForm.value,
-          baggage: this.baggageQuantity,
-          seat: this.selectedSeat,
-          seatType: this.selectedSeatType
-        }
-      };
+      const selectedBaggagePrice = this.selectedBaggage() ? this.selectedBaggage().price : 0;
+      console.log('Baggage Price selected:', selectedBaggagePrice);
 
-      this.router.navigate(['/confirmation'], navigationData);
+      this.bookingService.setData('passengerInfo', this.passengerForm.value);
+      this.bookingService.setData('baggagePrice', selectedBaggagePrice);
+      this.bookingService.setData('selectedFlight', this.selectedFlight());
+      this.bookingService.setData('selectedSeat', this.selectedSeat);
+      this.bookingService.setData('selectedSeatType', this.selectedSeatType);
+
+      this.router.navigate(['/confirmation']);
+
     } else {
       this.passengerForm.markAllAsTouched();
       console.error('Form không hợp lệ.');
@@ -202,7 +210,9 @@ export class BaggageSelection implements OnInit {
         airline: String(pick(x, ['airline', 'carrier', 'airline_name'], 'Unknown')),
         flightNo: String(pick(x, ['flightNo', 'number', 'flight_no'], 'XX000')),
         from, to, date,
+
         departTime: departISO,
+
         arriveTime: arriveISO,
         durationMin: duration,
         price,

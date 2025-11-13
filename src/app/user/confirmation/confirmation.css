@@ -1,6 +1,35 @@
+.sidebar-header {
+  width: 100%;
+  background-color: #375578;
+  color: #f0f0f0;
+  display: flex;
+  padding: 1.5vh 2vw;
+  font-size: 1.2vw;
+  align-items: center;
+}
+
+.header-box {
+  flex: 1;
+  text-align: center;
+}
+
+.header-box:nth-child(2) {
+  flex: 0.5;
+}
+
+.header-box:nth-child(4),
+.header-box:nth-child(5) {
+  flex: 1.25;
+}
+
+.hightlight {
+  font-size: 2.4vw;
+  font-weight: bold;
+}
+
 .payment-page {
   font-family: "Inter", sans-serif;
-  color: #333;
+  color: #375578;
   padding: 40px 80px;
   background-color: #fafafa;
 }
@@ -12,10 +41,9 @@
   margin-bottom: 4px;
 }
 
-
 .section-header .sub {
   font-size: 14px;
-  color: #666;
+  color: #375578;
 }
 
 
@@ -26,7 +54,6 @@
   margin-top: 30px;
 }
 
-
 .payment-left {
   flex: 2;
   background: #fff;
@@ -34,7 +61,6 @@
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
-
 
 .payment-right {
   flex: 1;
@@ -47,7 +73,7 @@
 
 /* ===== TEXT ===== */
 .note {
-  color: #666;
+  color: #375578;
   font-size: 14px;
   margin-bottom: 20px;
 }
@@ -61,16 +87,30 @@
   margin-bottom: 25px;
 }
 
-
 .method-btn {
+  flex: 1 1 48%;
+  ;
   padding: 10px 20px;
+  justify-content: center;
+  align-items: center;
+  color: #375578;
   border: 1px solid #ccc;
   background: #fff;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
+@media (min-width: 900px) {
+  .method-btn {
+    flex: 1 1 22%;
+  }
+}
 
 .method-btn.active {
   border-color: #606DEC;
@@ -84,19 +124,16 @@
   margin-bottom: 12px;
 }
 
-
 .form-field {
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
 }
 
-
 .form-field label {
   font-size: 13px;
   margin-bottom: 5px;
 }
-
 
 .form-field input {
   padding: 10px;
@@ -106,24 +143,20 @@
   transition: border 0.2s, background 0.2s;
 }
 
-
 .form-field input:focus {
   border-color: #606DEC;
   outline: none;
 }
-
 
 .form-field input.invalid-field {
   border-color: #dc3545;
   background-color: #fff8f8;
 }
 
-
 .form-row {
   display: flex;
   gap: 20px;
 }
-
 
 .form-field.small {
   flex: 1;
@@ -146,9 +179,8 @@
   margin-top: 20px;
   border-bottom: 1px solid #ccc;
   line-height: 0.1em;
-  color: #999;
+  color: #375578;
 }
-
 
 .powered span {
   background: #fff;
@@ -160,10 +192,9 @@
 .policy {
   margin-top: 30px;
   font-size: 14px;
-  color: #555;
+  color: #375578;
   line-height: 20px;
 }
-
 
 .policy a {
   color: #606DEC;
@@ -178,7 +209,6 @@
   margin-top: 30px;
 }
 
-
 .btn-primary {
   background-color: #606DEC;
   color: white;
@@ -190,17 +220,14 @@
   transition: background 0.2s;
 }
 
-
 .btn-primary:hover {
   background-color: #4f5edc;
 }
-
 
 .btn-primary:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
-
 
 .btn-secondary {
   background-color: #eee;
@@ -208,10 +235,9 @@
   border-radius: 8px;
   padding: 12px 28px;
   cursor: pointer;
-  color: #333;
+  color: #375578;
   transition: background 0.2s;
 }
-
 
 .btn-secondary:hover {
   background-color: #ddd;
@@ -223,9 +249,12 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
+  padding: 10px;
+  background-color: #f5f7ff;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
-
 
 .flight-item {
   display: flex;
@@ -233,35 +262,86 @@
   align-items: center;
 }
 
-
 .flight-item img {
-  width: 32px;
-  height: 32px;
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
 }
 
+.flight-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
 .airline {
+  font-size: 18px;
+  font-weight: 700;
+  color: #375578;
+}
+
+.flight-no {
+  font-size: 16px;
   font-weight: 600;
+  color: #606DEC;
 }
-
-
-.detail {
-  font-size: 13px;
-  color: #666;
-}
-
 
 .time {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
+  color: #375578;
 }
 
+.seat-info {
+  display: block;
+  /* xuống dòng */
+  margin-top: 2px;
+  /* cách 1 chút cho đẹp */
+}
+
+.detail {
+  font-size: 14px;
+  color: #375578;
+}
+
+.flight-item div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.flight-item p {
+  margin: 0;
+}
 
 /* ===== SUMMARY ===== */
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .summary .row {
   display: flex;
   justify-content: space-between;
-  margin: 8px 0;
+  align-items: center;
+  font-size: 14px;
+  padding: 2px 0;
+}
+
+.summary .row span {
+  white-space: nowrap;
+  font-size: 16px;
+}
+
+.summary .row span:first-child {
+  flex: 1;
+}
+
+.summary .row span:last-child {
+  flex: 0;
+  text-align: right;
 }
 
 
@@ -271,14 +351,12 @@
   margin: 15px 0;
 }
 
-
 .coupon input {
   flex: 1;
   padding: 8px;
   border-radius: 6px;
   border: 1px solid #ccc;
 }
-
 
 .coupon button {
   padding: 8px 16px;
@@ -289,11 +367,9 @@
   cursor: pointer;
 }
 
-
 .coupon button:hover {
   background: #4f5edc;
 }
-
 
 .total {
   display: flex;
@@ -309,10 +385,133 @@
   justify-content: flex-end;
 }
 
-
 .confirm-btn-wrapper .btn-primary {
   padding: 10px 24px;
 }
 
+.payment-alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
 
+.payment-alert-box {
+  background: #fff;
+  padding: 20px 25px;
+  border-radius: 12px;
+  text-align: center;
+  min-width: 250px;
+  max-width: 300px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+}
 
+.payment-alert-box p {
+  margin: 0 0 15px;
+  font-size: 14px;
+  color: #375578;
+}
+
+.payment-alert-box button {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #606DEC;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.payment-alert-box button:hover {
+  background-color: #4f5edc;
+}
+
+.method-btn i {
+  margin-right: 8px;
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+/* ===== POPUP COUPON ĐẸP, CHÍNH GIỮA MÀN HÌNH ===== */
+.coupon-alert-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4); /* nền mờ */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  pointer-events: auto;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.coupon-alert-box {
+  background: #f0f4ff; /* nền popup nhẹ */
+  color: #375578; /* text màu chủ đạo */
+  padding: 20px 28px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25); /* bóng mềm */
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
+  min-width: 260px;
+  max-width: 320px;
+  transform: scale(0.9);
+  animation: popupScale 0.2s forwards;
+}
+
+/* Animation fade in overlay */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Animation scale popup */
+@keyframes popupScale {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Text kèm icon trạng thái */
+.coupon-alert-box p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Icon success / error */
+.coupon-alert-box p.success::before {
+  content: "🎉";
+}
+
+.coupon-alert-box p.error::before {
+  content: "⚠️";
+}
+
+/* Nút đóng (nếu muốn thêm sau) */
+.coupon-alert-box button {
+  margin-top: 12px;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #606DEC;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.coupon-alert-box button:hover {
+  background-color: #4f5edc;
+}

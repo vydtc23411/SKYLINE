@@ -1,238 +1,393 @@
-.checkticket-container.detail-container {
-    display: flex;
-    max-width: 900px; 
-    margin: 30px auto;
-    padding: 25px;
-    background-color: #fff;
-}
-
-.header-detail {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin-bottom: 25px;
-}
-
-.title-group {
-    flex-grow: 1;
-    text-align: left;
-}
-
-.header-detail h2 {
-    font-size: 1.8rem;
-    color: #333;
-    font-weight: 700;
-    margin: 0;
-}
-
-.back-button {
-    display: none;
+.checkticket-container {
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 30px;
+  background: #f8f9fb;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  color: #333;
+  font-family: "Segoe UI", sans-serif;
+  transition: all 0.3s ease;
 }
 
 .ticket-detail-card-content {
-    background-color: #fff;
-    padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
-.ticket-summary-area {
-    padding: 0 0 20px 0;
-}
-
+/* --- THÔNG TIN VÉ --- */
 .ticket-summary-area h3 {
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: #333;
+  color: #375578;
+  font-weight: 600;
+  margin-bottom: 15px;
 }
 
-/* Cấu hình lưới 5 cột */
 .ticket-summary-grid {
-    display: grid;
-    /* Điều chỉnh tỉ lệ cột theo mẫu Figma */
-    grid-template-columns: 1.2fr 1.5fr 1fr 1.5fr 1fr; 
-    gap: 15px;
-    padding: 0 0 5px 0;
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 1fr 1fr 1fr;
+  gap: 10px;
+  align-items: center;
+  word-wrap: break-word;
+  white-space: normal;
+  font-size: 16px;
 }
 
-.grid-header-row span {
-    font-size: 1rem;
-    font-weight: 500;
-    color: #666;
+.grid-header-row {
+  font-weight: 600;
+  color: #375578;
+  background: #eaf0fa;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.summary-data-row {
+  background: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  line-height: 1.4;
 }
 
 .summary-line {
-    border: 0;
-    border-top: 1px solid #dcdcdc;
-    margin: 5px 0 10px 0;
+  margin: 15px 0;
+  border: none;
+  height: 1px;
+  background: #ddd;
 }
 
-.summary-data-row span {
-    font-size: 1rem;
-    font-weight: 500;
-    color: #333;
-}
-
-.summary-data-row .code-value {
-    font-weight: 700;
-}
-
-.placeholder-data {
-    color: #333;
-}
-
-/* Tình trạng thanh toán trong bảng tóm tắt */
 .status-value-summary {
-    font-weight: 700;
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
 }
 
 .status-value-summary.paid {
-    color: #155724; 
-    background-color: #d4edda; 
+  color: #2b8a3e;
 }
 
 .status-value-summary.unpaid {
-    color: #721c24;
-    background-color: #f8d7da;
+  color: #d6336c;
 }
 
-/* --- Khối Chi Tiết Chuyến Đi (Mô phỏng khối xám lớn) --- */
+/* --- CHI TIẾT CHUYẾN BAY --- */
 .flight-detail-block {
-    background-color: #e0e0e0; /* Màu xám nhạt nổi bật */
-    padding: 30px;
-    border-radius: 12px;
-    margin-top: 25px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 100%;
+  transition: all 0.3s ease;
 }
 
 .flight-main-info {
-    display: flex;
-    align-items: flex-end; /* Căn chỉnh các khối theo đường đáy */
-    justify-content: space-between;
-    width: 100%;
+  display: grid;
+  grid-template-columns: 100px 1fr 0.5fr 1fr 0.6fr;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
 }
 
-/* Giả lập ô hình ảnh bên trái */
-.image-placeholder {
-    width: 100px;
-    height: 100px;
-    background-color: #f7f7f7; 
-    border-radius: 8px;
-    margin-right: 20px;
-    flex-shrink: 0; /* Không cho phép co lại */
+/* Ô QR code */
+.qr-placeholder {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  flex-shrink: 0;
 }
 
-.time-col {
-    text-align: left;
-    min-width: 150px;
+.qr-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;      
+  border: none;          
 }
 
-.time-col.arrival-time-route {
-    text-align: right;
-    min-width: 150px;
-}
-
+/* Thời gian & thành phố */
 .time-col .time {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #343a40;
+  font-size: 18px;
+  font-weight: 600;
 }
 
-.time-col .city {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #343a40;
-    margin-top: 5px;
-}
-
-.duration-col {
-    flex-grow: 1; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding-bottom: 45px; /* Đẩy thời lượng lên trên cùng */
-    position: relative;
-    max-width: 100px;
+.city {
+  font-size: 14px;
+  color: #666;
 }
 
 .duration-label {
-    font-size: 1rem;
-    color: #6c757d;
-    background-color: #d1d1d1;
-    padding: 2px 10px;
-    border-radius: 4px;
-    font-weight: 500;
-}
-
-.seat-col {
-    text-align: right;
-    min-width: 100px;
+  background: #eaf0fa;
+  color: #375578;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 14px;
 }
 
 .seat-label {
-    font-size: 1rem;
-    color: #343a40; /* Màu đậm hơn trong mẫu */
-    font-weight: 700;
+  font-size: 13px;
+  color: #777;
 }
 
 .seat-value {
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: #343a40;
-    margin-top: 5px;
+  font-weight: 600;
+  color: #375578;
 }
 
-/* --- Hành động trong khối xám --- */
+/* --- NÚT HÀNH ĐỘNG --- */
 .flight-actions {
-    display: flex;
-    justify-content: flex-end; 
-    align-items: center;
-    gap: 25px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .link-action {
-    color: #333;
-    text-decoration: underline;
-    font-size: 1rem;
-    font-weight: 500;
+  text-decoration: none;
+  color: #375578;
+  font-weight: 500;
+  transition: 0.2s;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.link-action:hover {
+  text-decoration: underline;
 }
 
 .btn-swap,
 .btn-cancel {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 1rem;
-    color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s;
 }
 
 .btn-swap {
-    background-color: #888888; 
+  background: #4dabf7;
+  color: #fff;
+}
+
+.btn-swap:hover {
+  background: #1c7ed6;
 }
 
 .btn-cancel {
-    background-color: #888888; 
+  background: #f03e3e;
+  color: #fff;
 }
 
-/* --- Nút Về trang chủ --- */
+.btn-cancel:hover {
+  background: #c92a2a;
+}
+
+/* --- NÚT QUAY LẠI --- */
 .home-btn {
-    display: block;
-    margin: 30px auto 0 auto;
-    width: 200px;
-    padding: 12px 20px;
-    background-color: #666; 
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: 600;
+  align-self: center;
+  background: #375578;
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.home-btn:hover {
+  background: #2c4463;
+}
+
+/* --- PHẦN KHÔNG TÌM THẤY --- */
+.not-found {
+  text-align: center;
+  padding: 50px;
+  font-size: 16px;
+  color: #888;
+}
+
+/* --- MODAL & POPUP --- */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-box {
+  background: #fff;
+  padding: 20px 25px;
+  border-radius: 12px;
+  min-width: 280px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  animation: fadeIn 0.25s ease-out;
+}
+
+.modal-box p {
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+}
+
+.modal-actions .btn-confirm {
+  background: #4dabf7;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.modal-actions .btn-cancel {
+  background: #f03e3e;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.modal-actions .btn-confirm:hover {
+  background: #1c7ed6;
+}
+
+.modal-actions .btn-cancel:hover {
+  background: #c92a2a;
+}
+
+.feedback-popup {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-weight: 500;
+  z-index: 1000;
+  animation: slideUp 0.3s ease-out;
+}
+
+/* --- POPUP KHUYẾN MÃI / LỢI ÍCH --- */
+.info-popup-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+}
+
+.info-popup-box {
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  animation: popupFadeIn 0.3s ease-out;
+}
+
+.info-popup-box h4 {
+  font-size: 18px;
+  color: #375578;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.info-popup-box p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.info-popup-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.info-popup-actions .btn-ok,
+.info-popup-actions .btn-close {
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.info-popup-actions .btn-ok {
+  background: #4dabf7;
+  color: #fff;
+}
+
+.info-popup-actions .btn-ok:hover {
+  background: #1c7ed6;
+}
+
+.info-popup-actions .btn-close {
+  background: #f03e3e;
+  color: #fff;
+}
+
+.info-popup-actions .btn-close:hover {
+  background: #c92a2a;
+}
+
+.info-list {
+  list-style: none; 
+  padding-left: 0;  
+  margin: 0;
+}
+
+.info-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+  margin-bottom: 8px; 
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9);}
+  to { opacity: 1; transform: scale(1);}
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translate(-50%, 20px);}
+  to { opacity: 1; transform: translate(-50%, 0);}
+}
+
+@keyframes popupFadeIn {
+  from { opacity: 0; transform: scale(0.8);}
+  to { opacity: 1; transform: scale(1);}
 }

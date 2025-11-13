@@ -36,7 +36,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin-home',
-    loadComponent: () => import('./admin/admin-home/admin-home').then(m => m.AdminHome)
+    loadComponent: () => import('./admin/admin-home/admin-home').then(m => m.AdminHomeComponent)
   },
 
   // Admin Management Pages
@@ -106,6 +106,7 @@ export const routes: Routes = [
 
   // Trang đặt vé / chuyến bay (SỬA LỖI CHÍNH)
   { path: 'seat-selection/:flightId', component: SeatSelection }, // <-- SỬA: Thêm :flightId
+  { path: 'baggage-selection/:id', component: BaggageSelection },
   { path: 'baggage-selection', component: BaggageSelection },
   { path: 'checkout', component: Checkout },
 

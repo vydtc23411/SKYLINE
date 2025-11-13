@@ -21,6 +21,7 @@
   background: rgba(255, 255, 255, 0.85);
   border-radius: 20px;
   padding: 14px;
+  margin: 0;
   box-shadow: var(--shadow-soft);
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
@@ -225,6 +226,15 @@
 }
 
 /* ========= Filter Card ========= */
+
+aside {
+  padding-block: 20px;
+  padding-left: 30px;  
+  margin: 0 auto; 
+  box-sizing: border-box;
+  border-radius: 10px; 
+}
+
 .filter-card {
   border: 1px solid var(--primary-100);
   border-radius: 18px;
@@ -327,7 +337,8 @@
   border-radius: 20px;
   background: var(--tile);
   box-shadow: var(--shadow);
-  padding: 14px 16px;
+  padding: 20px;
+  margin: 20px;
   transition: 0.18s ease;
 }
 .rc2-card:hover {
@@ -384,11 +395,16 @@
   letter-spacing: 0.5px;
 }
 
-/* Middle block */
 .rc2-mid {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.d-flex {
+  display: flex;
+  align-items: center; 
+  padding: 10px; 
 }
 
 /* Time row + timeline */
@@ -554,6 +570,7 @@
 @media (max-width: 992px) {
   .filter-card {
     margin-bottom: 12px;
+    margin: 10px;
   }
   .fs-grid {
     grid-template-columns: 1fr;

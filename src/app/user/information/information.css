@@ -1,86 +1,94 @@
 .profile-container {
-    display: flex;
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f8f8f8;
-    min-height: 100vh;
-  }
+  display: flex;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f8f8f8;
+  min-height: 100vh;
+}
 
-  /* ===== MAIN CONTENT ===== */
-  .main-content {
-    flex: 1;
-    padding: 30px 50px;
-    background-color: #fff;
-    color: #375578;
-  }
-  
-  h2 {
-    flex: 1;
+/* ===== MAIN CONTENT ===== */
+.main-content {
+  flex: 1;
+  padding: 30px 50px;
+  background-color: #fff;
+  color: #375578;
+}
 
-    background-color: #fff;
-    color: #375578;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-group.half {
-    width: 48%;
-    display: inline-block;
-    vertical-align: top;
-  }
-  
-  label {
-    display: block;
-    font-size: 14px;
-    color: #375578;
-    margin-bottom: 6px;
-  }
-  
-  input,
-  select {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-bottom: 1px solid #a9a9a9;
-    font-size: 14px;
-    color: #333;
-    background: transparent;
-    outline: none;
-  }
-  
-  input[readonly],
-  select[disabled] {
-    background-color: #fafafa;
-    color: #555;
-  }
-  
-  .actions {
-    margin-top: 30px;
-    display: flex;
-    gap: 10px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-size: 14px;
-    border: none;
-    cursor: pointer;
-    transition: 0.2s;
-  }
-  
-  .btn-edit {
-    background-color: #375578;
-    color: #fff;
-  }
-  
-  .btn-save {
-    background-color: #375578;
-    color: #fff;
-  }
-  
-  button:hover {
-    opacity: 0.9;
-  }
-  
+h2 {
+  margin-bottom: 25px;
+  font-weight: 600;
+  color: #375578;
+}
+
+/* --- FORM STYLE --- */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.form-group {
+  width: 100%;
+}
+
+.form-group.half {
+  width: calc(50% - 10px);
+}
+
+/* --- LABELS --- */
+label {
+  display: block;
+  font-size: 14px;
+  color: #375578;
+  font-weight: 600; /* in đậm */
+  margin-bottom: 6px;
+}
+
+/* --- INPUTS --- */
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid #a9a9a9;
+  font-size: 14px;
+  color: #333;
+  background: #fafafa;
+  outline: none;
+  box-sizing: border-box;
+}
+
+input[readonly],
+select[disabled] {
+  background-color: #fdfdfd;
+  color: #555;
+}
+
+/* --- ACTIONS --- */
+.actions {
+  width: 100%;
+  margin-top: 30px;
+  display: flex;
+  justify-content: center; /* căn giữa nút */
+  align-items: center;
+  gap: 10px;
+}
+
+
+button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-edit,
+.btn-save {
+  background-color: #6366F1;
+  color: #fff;
+}
+
+button:hover {
+  opacity: 0.9;
+}
