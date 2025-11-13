@@ -14,29 +14,29 @@ export class BookingService {
     }
   }
 
-  /** Lưu thông tin */
+  // Lưu thông tin
   setData(key: string, value: any) {
     this.bookingData[key] = value;
     this.persist(); // lưu xuống localStorage ngay
   }
 
-  /** Lấy thông tin, nếu chưa có thì trả về null */
+  // Lấy thông tin, nếu chưa có thì trả về null
   getData(key: string) {
     return this.bookingData[key] ?? null;
   }
 
-  /** Lấy tất cả dữ liệu */
+  // Lấy tất cả dữ liệu
   getAllData() {
     return { ...this.bookingData };
   }
 
-  /** Xóa toàn bộ dữ liệu */
+  // Xóa dữ liệu
   clearData() {
     this.bookingData = {};
     localStorage.removeItem('bookingData');
   }
 
-  /** Lưu xuống localStorage */
+  // Lưu xuống localStorage
   private persist() {
     localStorage.setItem('bookingData', JSON.stringify(this.bookingData));
   }

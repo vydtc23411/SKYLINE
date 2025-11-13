@@ -581,7 +581,7 @@
 .date-popover {
   position: absolute;
   top: calc(100% + 5px);
-  right: 0;
+  left: 0;
   width: 360px;
   background: #fff;
   border-radius: 10px;

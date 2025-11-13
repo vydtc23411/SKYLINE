@@ -6,7 +6,7 @@
     background-color: #ffffff;
     max-width: 800px;
     margin: 0 auto;
-    padding: 50px 100px;
+    padding: 30px 100px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
@@ -15,7 +15,7 @@
     display: flex;
     align-items: center;
     gap: 30px;
-    padding-bottom: 25px;
+    padding-bottom: 20px;
     border-bottom: 1px solid #eee;
 }
 
@@ -29,11 +29,12 @@
 
 .payment-info .deadline {
     font-weight: bold;
+    color: red;
 }
 
 .ticket-details h3 {
     border-bottom: 2px solid #f0f0f0;
-    padding: 20px;
+    padding: 10px;
 }
 
 .ticket-content {
@@ -45,6 +46,11 @@
     padding: 40px;
     text-align: center;
     color: #888;
+}
+
+.qr-code {
+    display: flex;
+    align-items: center;
 }
 
 .qr-code qrcode canvas {

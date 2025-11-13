@@ -147,10 +147,10 @@
                 <div class="seat-economy occupied" style="top: 1602px; left: 53.5%;">C20</div>
                 <div class="seat-economy occupied" style="top: 1602px; left: 59.5%;">D20</div>
 
-                <div class="seat-economy" (click)="selectSeat('A22', 'economy')"
-                    [class.selected]="selectedSeat === 'A22'" style="top: 1690px; left: 38.5%;">A21</div>
-                <div class="seat-economy" (click)="selectSeat('B22', 'economy')"
-                    [class.selected]="selectedSeat === 'B22'" style="top: 1690px; left: 44.5%;">B21</div>
+                <div class="seat-economy" (click)="selectSeat('A21', 'economy')"
+                    [class.selected]="selectedSeat === 'A21'" style="top: 1690px; left: 38.5%;">A21</div>
+                <div class="seat-economy" (click)="selectSeat('A21', 'economy')"
+                    [class.selected]="selectedSeat === 'A21'" style="top: 1690px; left: 44.5%;">B21</div>
                 <div class="seat-economy occupied" style="top: 1690px; left: 53.5%;">C21</div>
                 <div class="seat-economy occupied" style="top: 1690px; left: 59.5%;">D21</div>
 
@@ -216,7 +216,7 @@
     <!-- ===== CỘT THÔNG TIN (SIDEBAR) ===== -->
     <aside class="info-column">
 
-        <!-- ===== HEADER (ĐÃ CẬP NHẬT ĐỘNG) ===== -->
+        <!-- ===== HEADER ===== -->
         <header class="sidebar-header">
 
             <!-- Hiển thị khi đang tải -->
@@ -260,7 +260,6 @@
             </ng-container>
 
         </header>
-        <!-- ===== KẾT THÚC CẬP NHẬT HEADER ===== -->
 
 
         <main class="sidebar-main">
@@ -303,7 +302,7 @@
 
         </main>
 
-        <!-- ===== FOOTER (ĐÃ CẬP NHẬT ĐỘNG) ===== -->
+        <!-- ===== FOOTER ===== -->
         <footer class="sidebar-footer">
 
             <div class="footer-info-box">
