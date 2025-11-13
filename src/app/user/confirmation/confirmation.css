@@ -29,7 +29,7 @@
 
 .payment-page {
   font-family: "Inter", sans-serif;
-  color: #333;
+  color: #375578;
   padding: 40px 80px;
   background-color: #fafafa;
 }
@@ -43,7 +43,7 @@
 
 .section-header .sub {
   font-size: 14px;
-  color: #666;
+  color: #375578;
 }
 
 
@@ -73,7 +73,7 @@
 
 /* ===== TEXT ===== */
 .note {
-  color: #666;
+  color: #375578;
   font-size: 14px;
   margin-bottom: 20px;
 }
@@ -88,16 +88,18 @@
 }
 
 .method-btn {
-  flex: 1 1 48%;;
+  flex: 1 1 48%;
+  ;
   padding: 10px 20px;
   justify-content: center;
   align-items: center;
+  color: #375578;
   border: 1px solid #ccc;
   background: #fff;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
-  box-sizing: border-box; /* để padding không phá layout */
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -106,7 +108,7 @@
 
 @media (min-width: 900px) {
   .method-btn {
-    flex: 1 1 22%; /* 4 nút nằm gọn 1 hàng, có gap */
+    flex: 1 1 22%;
   }
 }
 
@@ -177,7 +179,7 @@
   margin-top: 20px;
   border-bottom: 1px solid #ccc;
   line-height: 0.1em;
-  color: #999;
+  color: #375578;
 }
 
 .powered span {
@@ -190,7 +192,7 @@
 .policy {
   margin-top: 30px;
   font-size: 14px;
-  color: #555;
+  color: #375578;
   line-height: 20px;
 }
 
@@ -233,7 +235,7 @@
   border-radius: 8px;
   padding: 12px 28px;
   cursor: pointer;
-  color: #333;
+  color: #375578;
   transition: background 0.2s;
 }
 
@@ -247,7 +249,11 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
+  padding: 10px;
+  background-color: #f5f7ff;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
 .flight-item {
@@ -257,31 +263,87 @@
 }
 
 .flight-item img {
-  width: 32px;
-  height: 32px;
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.flight-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .airline {
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
+  color: #375578;
 }
 
-.detail {
-  font-size: 13px;
-  color: #666;
+.flight-no {
+  font-size: 16px;
+  font-weight: 600;
+  color: #606DEC;
 }
 
 .time {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
+  color: #375578;
 }
 
+.seat-info {
+  display: block;
+  /* xuống dòng */
+  margin-top: 2px;
+  /* cách 1 chút cho đẹp */
+}
+
+.detail {
+  font-size: 14px;
+  color: #375578;
+}
+
+.flight-item div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.flight-item p {
+  margin: 0;
+}
 
 /* ===== SUMMARY ===== */
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .summary .row {
   display: flex;
   justify-content: space-between;
-  margin: 8px 0;
+  align-items: center;
+  font-size: 14px;
+  padding: 2px 0;
 }
+
+.summary .row span {
+  white-space: nowrap;
+  font-size: 16px;
+}
+
+.summary .row span:first-child {
+  flex: 1;
+}
+
+.summary .row span:last-child {
+  flex: 0;
+  text-align: right;
+}
+
 
 .coupon {
   display: flex;
@@ -353,7 +415,7 @@
 .payment-alert-box p {
   margin: 0 0 15px;
   font-size: 14px;
-  color: #333;
+  color: #375578;
 }
 
 .payment-alert-box button {
@@ -375,3 +437,51 @@
   font-size: 16px;
   vertical-align: middle;
 }
+
+/* ===== POPUP COUPON ĐẸP, TINH TẾ ===== */
+.coupon-alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #f0f4ff; /* nền nhẹ, không quá chói */
+  color: #375578; /* text màu trang */
+  padding: 20px 28px;
+  border-radius: 12px; /* bo tròn mềm mại */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2); /* bóng mềm */
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Khi hiển thị popup */
+.coupon-alert.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Icon đi kèm */
+.coupon-alert p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.coupon-alert p.success::before {
+  content: "🎉";
+}
+
+.coupon-alert p.error::before {
+  content: "⚠️";
+}
+
+.coupon-alert button:hover {
+  background-color: #4f5edc;
+}
+

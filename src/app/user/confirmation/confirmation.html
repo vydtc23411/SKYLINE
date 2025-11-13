@@ -32,17 +32,14 @@
         </button>
       </div>
 
-
       <!-- FORM CHÍNH -->
       <form #paymentForm="ngForm">
         <div class="payment-details">
           <h4>Chi tiết thẻ thanh toán</h4>
 
-
           <label>
             <input type="checkbox" (change)="focusCardName($event)" /> Địa chỉ thanh toán:
           </label>
-
 
           <!-- Tên trên thẻ -->
           <div class="form-field">
@@ -54,7 +51,6 @@
             </div>
           </div>
 
-
           <!-- Số thẻ -->
           <div class="form-field">
             <input type="text" name="cardNumber" [(ngModel)]="cardNumber" placeholder="Số thẻ" required
@@ -65,7 +61,6 @@
               <span *ngIf="cardNumberRef.errors?.['pattern']">Số thẻ phải gồm 10 chữ số.</span>
             </div>
           </div>
-
 
           <!-- Hạn và CVV -->
           <div class="form-row">
@@ -87,9 +82,7 @@
             </div>
           </div>
 
-
           <p class="powered"><span>Skyline</span></p>
-
 
           <!-- Chính sách -->
           <div class="policy">
@@ -101,7 +94,6 @@
             </p>
           </div>
 
-
           <div class="action-buttons">
             <button class="btn-secondary" type="button" (click)="backToSeatSelection()">Quay lại</button>
           </div>
@@ -109,19 +101,19 @@
       </form>
     </div>
 
-
     <!-- RIGHT COLUMN -->
     <div class="payment-right">
       <div class="flight-card">
         <div class="flight-item">
-          <img src="/assets/logo_skyline.png" alt="plane" />
+          <img src="/assets/media/mainLogo.png" alt="plane" />
           <div>
             <p class="airline">{{ flightName() }}</p>
-            <p class="time">{{ flightTime() }}</p>
+            <p class="flight-no">{{ flight()?.flightNo }}</p>
             <p class="detail">
               {{ flight()?.departTime | date:'shortTime' }} -
               {{ flight()?.arriveTime | date:'shortTime' }} •
-              {{ flight()?.durationMin }} phút • Ghế: {{ seat() }}
+              {{ flight()?.durationMin }} phút
+              <span class="seat-info">Ghế: {{ seat() }}</span>
             </p>
           </div>
         </div>
@@ -148,6 +140,13 @@
           <span>Tổng cộng</span>
           <span>{{ (totalPrice() + totalPrice() * 0.1) | number:'1.0-0' }} đ</span>
         </div>
+
+        <!-- Coupon Popup -->
+        <!-- Notification Overlay Coupon -->
+        <div id="coupon-alert" class="coupon-alert" [class.show]="showCouponAlert().show">
+          <p>{{ showCouponAlert().message }}</p>
+        </div>
+
 
         <!-- Notification Overlay -->
         <div class="payment-alert" *ngIf="showPaymentAlert()">
