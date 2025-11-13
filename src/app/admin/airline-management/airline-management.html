@@ -121,6 +121,7 @@
       <!-- Form Cập nhật hãng bay -->
       <div *ngIf="activeTab === 'form'" class="form-container">
         <div class="flight-form">
+          <!-- Cột 1 -->
           <div class="form-column">
             <div>
               <label>Mã hãng bay</label>
@@ -138,6 +139,10 @@
               <label>Hotline</label>
               <input [(ngModel)]="emptyFormAirline.hotline" type="text" placeholder="Ví dụ: 1900 1100" />
             </div>
+          </div>
+
+          <!-- Cột 2 -->
+          <div class="form-column">
             <div>
               <label>Tỷ lệ hoa hồng (%)</label>
               <input [(ngModel)]="emptyFormAirline.commissionRate" type="number" placeholder="Ví dụ: 5" />
@@ -149,12 +154,13 @@
                 <option value="Ngừng hợp tác">Ngừng hợp tác</option>
               </select>
             </div>
+            <div>
+              <label>Ghi chú</label>
+              <input [(ngModel)]="emptyFormAirline.notes" type="text" />
+            </div>
           </div>
         </div>
-        <div class="notes-field">
-          <label>Ghi chú</label>
-          <input [(ngModel)]="emptyFormAirline.notes" type="text" />
-        </div>
+
         <div class="form-buttons">
           <button class="btn form-btn-cancel" (click)="cancelForm()">Hủy</button>
           <button class="btn form-btn-save" (click)="addAirline()" [disabled]="isFormInvalid">

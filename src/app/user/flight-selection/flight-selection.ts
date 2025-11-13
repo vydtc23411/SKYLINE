@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import { HeaderComponent } from '../shared/header/header';
 import { FooterComponent } from '../shared/footer/footer';
 export { FlightSelectionComponent as FlightSelection } from './flight-selection';
+import { BookingService } from '../services/booking.service';
 
 type Cabin = 'Economy' | 'Premium Economy' | 'Business';
 
@@ -75,6 +76,7 @@ export class FlightSelectionComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private location = inject(Location);
+  private bookingService = inject(BookingService); // <-- thêm dòng này
 
   isLoading = signal(true);
   loadError = signal<string | null>(null);
@@ -83,12 +85,15 @@ export class FlightSelectionComponent {
   private readonly STATIC_CABINS = ['Phổ thông', 'Thương gia'];
 
   constructor() {
+    //thêm 1
+    console.log('Flight chọn:', this.flight());
     const id = this.route.snapshot.paramMap.get('id')!;
-    this.http.get('assets/flight-search-sampledata.json').subscribe({
+    this.http.get('assets/data/flight-search-sampledata.json').subscribe({
       next: raw => {
         const all = normalizeFlights(raw);
         const f = all.find(x => String(x.id) === String(id)) ?? null;
         this.flight.set(f);
+        this.bookingService.setData('flight', this.flight());
         this.isLoading.set(false);
         if (!f) this.loadError.set('Không tìm thấy chuyến bay.');
       },
