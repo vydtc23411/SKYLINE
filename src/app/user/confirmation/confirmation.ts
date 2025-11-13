@@ -21,7 +21,7 @@ export class Confirmation {
   flight = signal<any>(null);
   seat = signal<string>('');
   seatType = signal<string>('');
-  baggageCount = signal<number>(0);
+  baggageFee = signal<number>(0); // chỉ giữ phí hành lý
 
   paymentMethod = signal<'credit' | 'google' | 'apple' | 'paypal'>('credit');
   nameOnCard = signal<string>('');
@@ -40,7 +40,7 @@ export class Confirmation {
   // Computed giá
   basePrice = computed(() => this.flight()?.price ?? 0);
   taxesAndFees = computed(() => this.basePrice() * TAX_RATE);
-  totalPrice = computed(() => this.basePrice() + this.taxesAndFees());
+  totalPrice = computed(() => this.basePrice() + this.taxesAndFees() + this.baggageFee());
 
   constructor() {
     const data = this.bookingService.getAllData();
@@ -48,44 +48,32 @@ export class Confirmation {
     if (!data.flight || !data.seat) {
       this.router.navigate(['/chon-chuyen-bay']);
     } else {
-      this.flight.set({ ...data.selectedFlight }); // clone để lưu originalPrice
+      this.flight.set({ ...data.flight });
       this.seat.set(data.selectedSeat);
       this.seatType.set(data.selectedSeatType ?? 'Standard');
-      this.baggageCount.set(data.baggage ?? 0);
+
+      // Chỉ lấy giá hành lý nếu đã chọn
+      const baggagePrice = this.bookingService.getData('baggagePrice') ?? 0;
+      this.baggageFee.set(baggagePrice);
     }
   }
 
-  // Helper hiển thị thông tin
-  flightName() {
-    return this.flight()?.airline ?? '';
-  }
-
-  flightPrice() {
-    return this.basePrice();
-  }
+  flightName() { return this.flight()?.airline ?? ''; }
+  flightPrice() { return this.basePrice(); }
 
   flightTime() {
     try {
       const d = new Date(this.flight()?.departTime).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', hour12: false });
       const a = new Date(this.flight()?.arriveTime).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', hour12: false });
       return `${d} – ${a}`;
-    } catch {
-      return 'N/A';
-    }
+    } catch { return 'N/A'; }
   }
 
-  getTaxes() {
-    return this.taxesAndFees();
-  }
+  getTaxes() { return this.taxesAndFees(); }
 
-  // Thanh toán
   confirmPayment(form: NgForm) {
-    if (!form.valid) {
-      this.showPaymentAlert.set(true);
-      return;
-    }
+    if (!form.valid) { this.showPaymentAlert.set(true); return; }
 
-    // Lưu dữ liệu thanh toán
     this.bookingService.setData('payment', {
       method: this.paymentMethod(),
       details: form.value
@@ -94,7 +82,6 @@ export class Confirmation {
     this.bookingService.setData('totalAmount', this.totalPrice());
     this.bookingService.setData('bookingDate', new Date().toISOString());
 
-    // Tạo mã vé tạm
     const flightNo = this.flight()?.flightNo ?? 'BK';
     const randomCode = Date.now().toString().slice(-6);
     const tempTicketCode = `${flightNo}-${randomCode}`;
@@ -103,23 +90,18 @@ export class Confirmation {
     this.router.navigate(['/checkout']);
   }
 
-  closeAlert() {
-    this.showPaymentAlert.set(false);
-  }
+  closeAlert() { this.showPaymentAlert.set(false); }
 
-  // Coupon
   applyCoupon() {
     if (this.couponApplied()) {
       this.showCouponAlert.set({ show: true, message: 'Bạn đã áp dụng mã giảm giá rồi.' });
-      this.autoHideCouponAlert();
-      return;
+      this.autoHideCouponAlert(); return;
     }
 
     const code = this.couponCode();
     if (!code) {
       this.showCouponAlert.set({ show: true, message: 'Vui lòng nhập mã giảm giá.' });
-      this.autoHideCouponAlert();
-      return;
+      this.autoHideCouponAlert(); return;
     }
 
     if (code === 'DISCOUNT10') {
@@ -140,25 +122,20 @@ export class Confirmation {
   }
 
   private autoHideCouponAlert() {
-    setTimeout(() => {
-      this.showCouponAlert.set({ show: false, message: '' });
-    }, 3000);
+    setTimeout(() => { this.showCouponAlert.set({ show: false, message: '' }); }, 3000);
   }
 
-  backToSeatSelection() {
-    const flightId = this.flight()?.id;
+  backToBaggageSelection() {
+    const f = this.flight();
+    const flightId = f?.id;
+  
     if (flightId) {
-      this.router.navigate(['/seat-selection', flightId]);
+      this.router.navigate(['/baggage-selection', flightId]);
     } else {
-      this.router.navigate(['/tim-chuyen-bay']);
+      this.router.navigate(['/baggage-selection']);
     }
   }
-
-  focusCardName(event: Event) {
-    this.cardNameInput?.nativeElement?.focus();
-  }
-
-  selectMethod(method: 'credit' | 'google' | 'apple' | 'paypal') {
-    this.paymentMethod.set(method);
-  }
+  
+  focusCardName(event: Event) { this.cardNameInput?.nativeElement?.focus(); }
+  selectMethod(method: 'credit' | 'google' | 'apple' | 'paypal') { this.paymentMethod.set(method); }
 }

@@ -106,6 +106,7 @@ export const routes: Routes = [
 
   // Trang đặt vé / chuyến bay (SỬA LỖI CHÍNH)
   { path: 'seat-selection/:flightId', component: SeatSelection }, // <-- SỬA: Thêm :flightId
+  { path: 'baggage-selection/:id', component: BaggageSelection },
   { path: 'baggage-selection', component: BaggageSelection },
   { path: 'checkout', component: Checkout },
 

@@ -91,7 +91,7 @@
           </div>
 
           <div class="action-buttons">
-            <button class="btn-secondary" type="button" (click)="backToSeatSelection()">Quay lại</button>
+            <button class="btn-secondary" type="button" (click)="backToBaggageSelection()">Quay lại</button>
           </div>
         </div>
       </form>
@@ -124,6 +124,10 @@
           <span>Thuế và Phí</span>
           <span>{{ getTaxes() | number:'1.0-0' }} đ</span>
         </div>
+        <div class="row" *ngIf="baggageFee() > 0">
+          <span>Phí hành lý</span>
+          <span>{{ baggageFee() | number:'1.0-0' }} đ</span>
+        </div>
 
         <hr />
 
@@ -143,7 +147,6 @@
             <p>{{ showCouponAlert().message }}</p>
           </div>
         </div>
-
 
         <!-- Payment Alert -->
         <div class="payment-alert" *ngIf="showPaymentAlert()">
