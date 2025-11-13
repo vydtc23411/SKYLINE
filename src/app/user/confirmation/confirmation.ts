@@ -4,6 +4,8 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BookingService } from '../services/booking.service';
 
+const TAX_RATE = 0.10;
+
 @Component({
   selector: 'app-confirmation',
   standalone: true,
@@ -15,9 +17,10 @@ export class Confirmation {
   private bookingService = inject(BookingService);
   private router = inject(Router);
 
-  // Signals
   flight = signal<any>(null);
   seat = signal<string>('');
+  seatType = signal<string>('');
+  baggageCount = signal<number>(0);
 
   paymentMethod = signal<'credit' | 'google' | 'apple' | 'paypal'>('credit');
   nameOnCard = signal<string>('');
@@ -26,91 +29,118 @@ export class Confirmation {
   cvv = signal<string>('');
   couponCode = signal<string>('');
 
-  // Signal hiển thị popup alert
   showPaymentAlert = signal(false);
 
   @ViewChild('cardNameInput') cardNameInput!: ElementRef<HTMLInputElement>;
 
-  // computed tổng tiền
-  totalPrice = computed(() => this.flight()?.price ?? 0);
+  basePrice = computed(() => this.flight()?.price ?? 0);
+
+  // TÍNH THUẾ (10% trên giá vé)
+  taxesAndFees = computed(() => {
+    return this.basePrice() * TAX_RATE;
+  });
+
+  // TỔNG TIỀN CUỐI CÙNG (Giá vé + Thuế)
+  totalPrice = computed(() => {
+    return this.basePrice() + this.taxesAndFees();
+  });
 
   constructor() {
     const data = this.bookingService.getAllData();
 
-    if (!data.flight || !data.seat) {
-      // Nếu chưa có dữ liệu, quay lại chọn chuyến hoặc ghế
-      this.router.navigate(['/chon-chuyen-bay']);
+    if (!data.selectedFlight || !data.selectedSeat) {
+      console.warn('Không tìm thấy selectedFlight hoặc selectedSeat, điều hướng...');
+      this.router.navigate(['/tim-chuyen-bay']);
     } else {
-      this.flight.set(data.flight);
-      this.seat.set(data.seat);
+      this.flight.set(data.selectedFlight);
+      this.seat.set(data.selectedSeat);
+      this.seatType.set(data.selectedSeatType ?? 'Standard');
+      this.baggageCount.set(data.baggage ?? 0);
     }
   }
 
-  // Hàm helper hiển thị thông tin
   flightName() {
     return this.flight()?.airline ?? '';
   }
 
   flightPrice() {
-    return this.flight()?.price ?? 0;
+    return this.basePrice();
   }
 
   flightTime() {
-    return `${this.flight()?.departTime} – ${this.flight()?.arriveTime}`;
+    try {
+      const d = new Date(this.flight()?.departTime).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', hour12: false });
+      const a = new Date(this.flight()?.arriveTime).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', hour12: false });
+      return `${d} – ${a}`;
+    } catch { return 'N/A'; }
   }
+
+  getTaxes() { return this.taxesAndFees(); }
+
   confirmPayment(form: NgForm) {
     if (!form.valid) {
-      this.showPaymentAlert.set(true); // Hiện popup nếu form chưa hợp lệ
+      this.showPaymentAlert.set(true);
       return;
     }
-  
-    // Form hợp lệ → lưu dữ liệu và chuyển trang
-    console.log('Thanh toán được xác nhận với dữ liệu:', form.value);
+
+    console.log('Thanh toán được xác nhận');
     this.bookingService.setData('payment', {
       method: this.paymentMethod(),
       details: form.value
     });
-  
-    this.router.navigate(['/checkout']); // hoặc trang tiếp theo bạn muốn
+
+    this.bookingService.setData('totalAmount', this.totalPrice());
+
+    this.bookingService.setData('bookingDate', new Date().toISOString());
+
+    const flightNo = this.flight()?.flightNo ?? 'BK';
+    const randomCode = Date.now().toString().slice(-6);
+    const tempTicketCode = `${flightNo}-${randomCode}`;
+    this.bookingService.setData('ticketCode', tempTicketCode);
+
+    this.router.navigate(['/checkout']);
   }
-  
-  
+
+
   closeAlert() {
     this.showPaymentAlert.set(false);
   }
+
   applyCoupon() {
     const code = this.couponCode();
     if (!code) {
       alert('Vui lòng nhập mã giảm giá.');
       return;
     }
-  
-    // Ví dụ đơn giản: giảm 10% nếu mã là "DISCOUNT10"
+
     if (code === 'DISCOUNT10') {
       const oldPrice = this.flight()?.price ?? 0;
+      if (this.flight()?.originalPrice) {
+        alert('Bạn đã áp dụng mã giảm giá rồi.');
+        return;
+      }
       const newPrice = oldPrice * 0.9;
-      this.flight.update(f => f ? { ...f, price: newPrice } : f);
-      alert('Mã giảm giá áp dụng thành công! Giá mới: ' + newPrice);
+      this.flight.update(f => f ? { ...f, price: newPrice, originalPrice: oldPrice } : f);
+      alert('Mã giảm giá áp dụng thành công!');
     } else {
       alert('Mã giảm giá không hợp lệ.');
     }
   }
+
   backToSeatSelection() {
-    // Quay lại trang chọn ghế, truyền flightId nếu có
     const flightId = this.flight()?.id;
     if (flightId) {
       this.router.navigate(['/seat-selection', flightId]);
     } else {
-      this.router.navigate(['/chon-chuyen-bay']);
+      this.router.navigate(['/tim-chuyen-bay']);
     }
   }
+
   focusCardName(event: Event) {
-    // Lấy phần tử input và focus
     this.cardNameInput?.nativeElement?.focus();
   }
+
   selectMethod(method: 'credit' | 'google' | 'apple' | 'paypal') {
     this.paymentMethod.set(method);
   }
-  
-  
 }

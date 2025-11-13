@@ -8,10 +8,10 @@
             </div>
             <div class="payment-info">
                 <h2>THỰC HIỆN THANH TOÁN</h2>
-                <p>Mã thanh toán của bạn sẽ được giữ trong vòng 06 giờ.</p>
+                <p>Mã thanh toán của bạn sẽ được giữ trong vòng 15 phút.</p>
                 <p>Mã thanh toán này sẽ bị hủy nếu không có thanh toán nào xảy ra.</p>
                 <div class="deadline">
-                    {{ paymentDeadline | date:'EEEE, HH:mm | dd/MM/yyyy':'vi' }}
+                    Mã thanh toán này sẽ hết hạn vào lúc {{ paymentDeadline | date:'HH:mm | dd/MM/yyyy':'vi' }}
                 </div>
             </div>
         </header>
@@ -32,8 +32,18 @@
 
                     <div class="ticket-info-list">
                         <div class="info-row">
-                            <span>Họ và tên</span>
+                            <span>Tên hành khách</span>
                             <strong>{{ ticketInfo.name }}</strong>
+                        </div>
+
+                        <div class="info-row flight-summary" *ngIf="flightDetails">
+                            <span>Chuyến bay</span>
+                            <strong>{{ flightDetails.flightNo }} ({{ flightDetails.from }} → {{ flightDetails.to }}) -
+                                Ghế {{ seatDetails }}</strong>
+                        </div>
+                        <div class="info-row flight-summary" *ngIf="flightDetails">
+                            <span>Khởi hành</span>
+                            <strong>{{ timeHM(flightDetails.departTime) }} - {{ dateVN(flightDetails.date) }}</strong>
                         </div>
                         <div class="info-row">
                             <span>Số điện thoại</span>

@@ -55,7 +55,7 @@ export class BaggageSelection implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private authService: AuthService,
-    private bookingService: BookingService 
+    private bookingService: BookingService
   ) {
 
     this.passengerForm = this.fb.group({
@@ -74,7 +74,6 @@ export class BaggageSelection implements OnInit {
     this.selectedSeat = this.route.snapshot.queryParams['seat'];
     this.selectedSeatType = this.route.snapshot.queryParams['type'];
     this.currentUser = this.authService.getCurrentUser();
-
 
     let fullUserData: any = null;
     const fullUserRaw = localStorage.getItem('fullUserData');
@@ -100,7 +99,7 @@ export class BaggageSelection implements OnInit {
     }
 
     if (this.selectedFlightId) {
-      this.http.get('assets/flight-search-sampledata.json').subscribe({
+      this.http.get('assets/data/flight-search-sampledata.json').subscribe({
         next: (raw: any) => {
           const all = this.normalizeFlights(raw);
           const f = all.find(x => String(x.id) === String(this.selectedFlightId)) ?? null;
@@ -123,12 +122,10 @@ export class BaggageSelection implements OnInit {
     if (!dateStr || dateStr.split('/').length !== 3) {
       return '';
     }
-
     const parts = dateStr.split('/');
     const day = parts[0].padStart(2, '0');
     const month = parts[1].padStart(2, '0');
     const year = parts[2];
-
     return `${year}-${month}-${day}`;
   }
 
@@ -153,23 +150,13 @@ export class BaggageSelection implements OnInit {
       console.log('Form Data:', this.passengerForm.value);
       console.log('Baggage Quantity:', this.baggageQuantity);
 
-      // Điều hướng sang trang Confirmation và truyền dữ liệu chuyến bay
+      this.bookingService.setData('passengerInfo', this.passengerForm.value);
       this.bookingService.setData('baggage', this.baggageQuantity);
-      this.router.navigate(['/confirmation'], {
-        state: { flight: this.selectedFlight }
-      });
+      this.bookingService.setData('selectedFlight', this.selectedFlight());
+      this.bookingService.setData('selectedSeat', this.selectedSeat);
+      this.bookingService.setData('selectedSeatType', this.selectedSeatType);
+      this.router.navigate(['/confirmation']);
 
-      const navigationData = {
-        state: {
-          flight: this.selectedFlight(),
-          passenger: this.passengerForm.value,
-          baggage: this.baggageQuantity,
-          seat: this.selectedSeat,
-          seatType: this.selectedSeatType
-        }
-      };
-
-      this.router.navigate(['/confirmation'], navigationData);
     } else {
       this.passengerForm.markAllAsTouched();
       console.error('Form không hợp lệ.');

@@ -43,7 +43,7 @@ export class SeatSelection implements OnInit {
 
   selectedFlight = signal<Flight | null>(null);
   isLoading = signal(true);
-////////..///
+
   chooseSeat(selectedSeat: string, seatType: string) {
     if (!this.selectedFlight()) {
       console.error('Chưa có chuyến bay để chọn ghế!');
@@ -56,7 +56,7 @@ export class SeatSelection implements OnInit {
   
     this.router.navigate(['/confirmation']);
   }
-  //.//
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -73,7 +73,7 @@ export class SeatSelection implements OnInit {
     if (this.selectedFlightId) {
       console.log('Đang chọn ghế cho chuyến bay:', this.selectedFlightId);
 
-      this.http.get('assets/flight-search-sampledata.json').subscribe({
+      this.http.get('assets/data/flight-search-sampledata.json').subscribe({
         next: (raw: any) => {
           const all = this.normalizeFlights(raw);
           const f = all.find(x => String(x.id) === String(this.selectedFlightId)) ?? null;
@@ -177,7 +177,7 @@ export class SeatSelection implements OnInit {
       return `${dd} Thg ${mm}`;
     } catch { return ''; }
   }
-  // ở seat-selection.ts
+
 chooseFlight(flight: any, selectedSeat: string) {
   this.bookingService.setData('flight', flight);
   this.bookingService.setData('seat', selectedSeat);
