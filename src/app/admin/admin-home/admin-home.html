@@ -14,7 +14,6 @@
         <p>Chào, Tường Vy, mừng bạn đến với trang admin!</p>
       </div>
       <div class="date-filter">
-        <!-- Single Filter Button -->
         <button class="filter-btn" (click)="toggleDateDropdown()">
           <img src="/assets/icons/Calendar1.png" alt="Calendar Icon">
           <div>
@@ -23,9 +22,7 @@
           </div>
         </button>
 
-        <!-- Unified Filter Dropdown -->
         <div class="date-dropdown unified-dropdown" *ngIf="showFilterDropdown">
-
           <!-- Step 1: Year Selection -->
           <div *ngIf="filterStep === 'year'" class="filter-step">
             <div class="dropdown-header">
@@ -58,20 +55,18 @@
                 [class.active]="selectedMonthIndex === i" (click)="selectMonth(i)">
                 <div class="month-info">
                   <span class="month-label">Tháng {{ month.month }}/{{ month.year }}</span>
-                  <span class="month-stats">{{ month.ticketsSold }} vé - {{ formatRevenue(month.revenueActual) }}M
-                    VNĐ</span>
+                  <span class="month-stats">{{ month.ticketsSold }} vé - {{ formatRevenue(month.revenueActual) }}M VNĐ</span>
                 </div>
               </button>
             </div>
 
             <div class="dropdown-actions">
               <button class="cancel-btn" (click)="toggleDateDropdown()">Hủy</button>
-              <button class="apply-btn" *ngIf="availableWeeks.length === 0" (click)="applyMonthFilter()">Áp
-                dụng</button>
+              <button class="apply-btn" *ngIf="availableWeeks.length === 0" (click)="applyMonthFilter()">Áp dụng</button>
             </div>
           </div>
 
-          <!-- Step 3: Week Selection (Only for 2025) -->
+          <!-- Step 3: Week Selection -->
           <div *ngIf="filterStep === 'week'" class="filter-step">
             <div class="dropdown-header">
               <button class="back-btn" (click)="goBackToMonth()">← Quay lại</button>
@@ -93,7 +88,6 @@
               <button class="apply-btn" (click)="applyWeekFilter()">Áp dụng</button>
             </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -101,9 +95,7 @@
     <!-- Statistics Cards -->
     <section class="stats-grid">
       <div class="stat-card" *ngFor="let stat of stats" [style.background-color]="stat.bgColor">
-        <div class="stat-icon">
-          <img *ngIf="stat.image" [src]="stat.image" [alt]="stat.label">
-        </div>
+        <div class="stat-icon"><img *ngIf="stat.image" [src]="stat.image" [alt]="stat.label"></div>
         <div class="stat-content">
           <p class="stat-label">{{ stat.label }}</p>
           <h3 class="stat-value">{{ stat.value }} <span class="stat-unit">{{ stat.unit }}</span></h3>
@@ -113,21 +105,13 @@
 
     <!-- Charts Section -->
     <section class="charts-section">
-      <!-- Left: Donut Charts -->
       <div class="chart-container donut-charts">
         <h3 class="chart-title">Tỷ lệ và tốc độ tăng trưởng kinh doanh</h3>
         <div class="donut-grid">
           <div class="donut-item" *ngFor="let chart of chartData">
             <svg class="donut-chart" viewBox="0 0 100 100">
-              <!-- Background circle with lighter shade -->
-              <circle cx="50" cy="50" [attr.r]="donutRadius" fill="none" [attr.stroke]="chart.color" stroke-width="18"
-                opacity="0.15" [attr.stroke-dasharray]="donutCircumference()"></circle>
-              <!-- Filled circle -->
-              <circle cx="50" cy="50" [attr.r]="donutRadius" fill="none" [attr.stroke]="chart.color" stroke-width="18"
-                [attr.stroke-dasharray]="getDonutStrokeDasharray(chart.percentage)" stroke-dashoffset="0"
-                stroke-linecap="round" transform="rotate(-90 50 50)">
-              </circle>
-              <!-- Percentage text -->
+              <circle cx="50" cy="50" [attr.r]="donutRadius" fill="none" [attr.stroke]="chart.color" stroke-width="18" opacity="0.15"></circle>
+              <circle cx="50" cy="50" [attr.r]="donutRadius" fill="none" [attr.stroke]="chart.color" stroke-width="18" [attr.stroke-dasharray]="getDonutStrokeDasharray(chart.percentage)" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 50 50)"></circle>
               <text x="50" y="48" text-anchor="middle" class="donut-percentage">{{ chart.percentage }}</text>
               <text x="50" y="58" text-anchor="middle" class="donut-percentage-symbol">%</text>
             </svg>
@@ -136,7 +120,6 @@
         </div>
       </div>
 
-      <!-- Right: Line Chart -->
       <div class="chart-container line-chart">
         <div class="chart-header-row">
           <div class="chart-header-left">
@@ -150,30 +133,38 @@
         </div>
 
         <div class="line-chart-area">
-
           <svg viewBox="0 0 700 280" class="line-svg">
             <!-- Grid line (bottom only) -->
             <line x1="40" y1="220" x2="680" y2="220" stroke="#E8EBF0" stroke-width="2"></line>
 
             <!-- Smooth curve path (dynamic) -->
-            <path [attr.d]="generateWeeklyPath()" fill="none" stroke="#42A5F5" stroke-width="4" stroke-linecap="round"
-              stroke-linejoin="round">
-            </path>
+            <path [attr.d]="generateWeeklyPath()" fill="none" stroke="#42A5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
 
             <!-- Area fill with smooth curve (dynamic) -->
-            <path [attr.d]="generateWeeklyAreaPath()" fill="url(#gradient)" opacity="0.4">
-            </path>
+            <path [attr.d]="generateWeeklyAreaPath()" fill="url(#gradient)" opacity="0.4"></path>
 
             <!-- Hover areas (generated from weeklyData) -->
-            <rect *ngFor="let day of weeklyData; let i = index" class="hover-area" [attr.data-day]="day.day"
-              [attr.data-value]="day.value" [attr.x]="getHoverRectX(i)" y="0" [attr.width]="getHoverRectWidth()"
-              height="220" fill="transparent"></rect>
+            <rect *ngFor="let day of weeklyData; let i = index" class="hover-area" 
+              [attr.data-day]="day.day" 
+              [attr.data-value]="day.value" 
+              [attr.x]="getHoverRectX(i)" 
+              y="0" 
+              [attr.width]="getHoverRectWidth()" 
+              height="220" 
+              fill="transparent"></rect>
 
             <!-- Data points (generated from weeklyData) -->
             <g class="data-points">
-              <circle *ngFor="let day of weeklyData; let i = index" class="data-point" [attr.data-index]="i"
-                [attr.cx]="getDataPointCx(i)" [attr.cy]="getDataPointCy(i)" r="6" fill="white" stroke="#42A5F5"
-                stroke-width="3" opacity="0"></circle>
+              <circle *ngFor="let day of weeklyData; let i = index" 
+                class="data-point" 
+                [attr.data-index]="i" 
+                [attr.cx]="getDataPointCx(i)" 
+                [attr.cy]="getDataPointCy(i)" 
+                r="6" 
+                fill="white" 
+                stroke="#42A5F5" 
+                stroke-width="3" 
+                opacity="0"></circle>
             </g>
 
             <!-- X-axis labels -->
@@ -212,206 +203,37 @@
       </div>
       <div class="revenue-chart-area">
         <svg viewBox="0 0 1000 320" class="revenue-svg">
-          <!-- Grid lines -->
           <line x1="40" y1="240" x2="960" y2="240" stroke="#E8EBF0" stroke-width="2"></line>
-          <line x1="40" y1="180" x2="960" y2="180" stroke="#E8EBF0" stroke-width="1" stroke-dasharray="5,5"
-            opacity="0.5"></line>
-          <line x1="40" y1="120" x2="960" y2="120" stroke="#E8EBF0" stroke-width="1" stroke-dasharray="5,5"
-            opacity="0.5"></line>
-          <line x1="40" y1="60" x2="960" y2="60" stroke="#E8EBF0" stroke-width="1" stroke-dasharray="5,5" opacity="0.5">
-          </line>
+          <line x1="40" y1="180" x2="960" y2="180" stroke="#E8EBF0" stroke-width="1" stroke-dasharray="5,5" opacity="0.5"></line>
+          <line x1="40" y1="120" x2="960" y2="120" stroke="#E8EBF0" stroke-width="1" stroke-dasharray="5,5" opacity="0.5"></line>
+          <line x1="40" y1="60" x2="960" y2="60" stroke="#E8EBF0" stroke-width="1" stroke-dasharray="5,5" opacity="0.5"></line>
 
-          <!-- 2024 Smooth Line (Blue) -->
-<<<<<<< HEAD
-          <path 
-            [attr.d]="revenuePath2024"
-            fill="none" 
-            stroke="#42A5F5" 
-            stroke-width="3"
-            stroke-linecap="round">
-=======
-          <path
-            d="M 50,160 C 80,130 100,110 130,100 C 160,90 180,120 210,130 C 240,140 260,90 290,80 C 320,70 340,55 370,50 C 400,45 420,65 450,70 C 480,75 500,85 530,90 C 560,95 580,87 610,85 C 640,83 660,95 690,100 C 720,105 740,85 770,80 C 800,75 820,87 850,90 C 880,93 900,87 930,85"
-            fill="none" stroke="#42A5F5" stroke-width="3" stroke-linecap="round">
->>>>>>> bfbb9c8507d8bdb547fbade9a16da7a7df5e8d69
-          </path>
+          <path [attr.d]="revenuePath2024" fill="none" stroke="#42A5F5" stroke-width="3" stroke-linecap="round"></path>
+          <path [attr.d]="revenuePath2025" fill="none" stroke="#EF5350" stroke-width="3" stroke-linecap="round"></path>
 
-          <!-- 2025 Smooth Line (Red) -->
-<<<<<<< HEAD
-          <path 
-            [attr.d]="revenuePath2025"
-            fill="none" 
-            stroke="#EF5350" 
-            stroke-width="3"
-            stroke-linecap="round">
-=======
-          <path
-            d="M 50,140 C 80,145 100,148 130,150 C 160,152 180,90 210,70 C 240,50 260,115 290,130 C 320,145 340,50 370,40 C 400,30 420,75 450,85 C 480,95 500,105 530,110 C 560,115 580,70 610,60 C 640,50 660,90 690,95 C 720,100 740,75 770,70 C 800,65 820,120 850,130 C 880,140 900,90 930,80"
-            fill="none" stroke="#EF5350" stroke-width="3" stroke-linecap="round">
->>>>>>> bfbb9c8507d8bdb547fbade9a16da7a7df5e8d69
-          </path>
+          <rect *ngFor="let label of monthlyRevenue.labels; let i = index" class="revenue-hover-area" [attr.data-month]="i + 1" [attr.x]="getRevenueHoverX(i)" y="0" [attr.width]="getRevenueHoverWidth()" height="240" fill="transparent"></rect>
 
-          <!-- Hover areas for each month -->
-<<<<<<< HEAD
-          <rect *ngFor="let label of monthlyRevenue.labels; let i = index"
-                class="revenue-hover-area" 
-                [attr.data-month]="i + 1"
-                [attr.x]="getRevenueHoverX(i)" 
-                y="0" 
-                [attr.width]="getRevenueHoverWidth()" 
-                height="240" 
-                fill="transparent" />
-          
-          <!-- Data points 2024 (hidden by default) -->
           <g class="revenue-data-points-2024">
-            <circle *ngFor="let label of monthlyRevenue.labels; let i = index"
-                    [attr.data-index]="i" 
-                    [attr.cx]="getRevenueDataPoint(i, 2024).cx" 
-                    [attr.cy]="getRevenueDataPoint(i, 2024).cy" 
-                    r="6" 
-                    fill="white" 
-                    stroke="#42A5F5" 
-                    stroke-width="3" 
-                    opacity="0">
-=======
-          <rect class="revenue-hover-area" data-month="1" data-value2024="4.200.000" data-value2025="5.000.000" x="10"
-            y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="2" data-value2024="5.800.000" data-value2025="4.500.000" x="90"
-            y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="3" data-value2024="4.500.000" data-value2025="6.800.000" x="170"
-            y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="4" data-value2024="6.200.000" data-value2025="5.200.000" x="250"
-            y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="5" data-value2024="7.000.000" data-value2025="7.500.000" x="330"
-            y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="6" data-value2024="6.500.000" data-value2025="6.200.000" x="410"
-            y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="7" data-value2024="5.800.000" data-value2025="5.500.000" x="490"
-            y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="8" data-value2024="6.000.000" data-value2025="7.200.000" x="570"
-            y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="9" data-value2024="5.500.000" data-value2025="6.000.000" x="650"
-            y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="10" data-value2024="6.200.000" data-value2025="6.800.000" x="730"
-            y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="11" data-value2024="5.900.000" data-value2025="5.200.000" x="810"
-            y="0" width="70" height="240" fill="transparent" />
-          <rect class="revenue-hover-area" data-month="12" data-value2024="6.000.000" data-value2025="6.500.000" x="890"
-            y="0" width="70" height="240" fill="transparent" />
-
-          <!-- Data points 2024 (hidden by default) -->
-          <g class="revenue-data-points-2024">
-            <circle data-index="0" cx="50" cy="160" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="1" cx="130" cy="100" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="2" cx="210" cy="130" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="3" cx="290" cy="80" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="4" cx="370" cy="50" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="5" cx="450" cy="70" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="6" cx="530" cy="90" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="7" cx="610" cy="85" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="8" cx="690" cy="100" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="9" cx="770" cy="80" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="10" cx="850" cy="90" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="11" cx="930" cy="85" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0">
->>>>>>> bfbb9c8507d8bdb547fbade9a16da7a7df5e8d69
-            </circle>
+            <circle *ngFor="let label of monthlyRevenue.labels; let i = index" [attr.data-index]="i" [attr.cx]="getRevenueDataPoint(i, 2024).cx" [attr.cy]="getRevenueDataPoint(i, 2024).cy" r="6" fill="white" stroke="#42A5F5" stroke-width="3" opacity="0"></circle>
           </g>
 
-          <!-- Data points 2025 (hidden by default) -->
           <g class="revenue-data-points-2025">
-<<<<<<< HEAD
-            <circle *ngFor="let label of monthlyRevenue.labels; let i = index"
-                    [attr.data-index]="i" 
-                    [attr.cx]="getRevenueDataPoint(i, 2025).cx" 
-                    [attr.cy]="getRevenueDataPoint(i, 2025).cy" 
-                    r="6" 
-                    fill="white" 
-                    stroke="#EF5350" 
-                    stroke-width="3" 
-                    opacity="0">
-=======
-            <circle data-index="0" cx="50" cy="140" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="1" cx="130" cy="150" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="2" cx="210" cy="70" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="3" cx="290" cy="130" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="4" cx="370" cy="40" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="5" cx="450" cy="85" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="6" cx="530" cy="110" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="7" cx="610" cy="60" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="8" cx="690" cy="95" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="9" cx="770" cy="70" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="10" cx="850" cy="130" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
-            </circle>
-            <circle data-index="11" cx="930" cy="80" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0">
->>>>>>> bfbb9c8507d8bdb547fbade9a16da7a7df5e8d69
-            </circle>
+            <circle *ngFor="let label of monthlyRevenue.labels; let i = index" [attr.data-index]="i" [attr.cx]="getRevenueDataPoint(i, 2025).cx" [attr.cy]="getRevenueDataPoint(i, 2025).cy" r="6" fill="white" stroke="#EF5350" stroke-width="3" opacity="0"></circle>
           </g>
 
-          <!-- X-axis labels -->
-<<<<<<< HEAD
-          <text *ngFor="let label of monthlyRevenue.labels; let i = index"
-                [attr.x]="getRevenueLabelX(i)" 
-                y="270" 
-                text-anchor="middle" 
-                class="axis-label">{{ i + 1 }}</text>
-          
-=======
-          <text x="50" y="270" text-anchor="middle" class="axis-label">1</text>
-          <text x="130" y="270" text-anchor="middle" class="axis-label">2</text>
-          <text x="210" y="270" text-anchor="middle" class="axis-label">3</text>
-          <text x="290" y="270" text-anchor="middle" class="axis-label">4</text>
-          <text x="370" y="270" text-anchor="middle" class="axis-label">5</text>
-          <text x="450" y="270" text-anchor="middle" class="axis-label">6</text>
-          <text x="530" y="270" text-anchor="middle" class="axis-label">7</text>
-          <text x="610" y="270" text-anchor="middle" class="axis-label">8</text>
-          <text x="690" y="270" text-anchor="middle" class="axis-label">9</text>
-          <text x="770" y="270" text-anchor="middle" class="axis-label">10</text>
-          <text x="850" y="270" text-anchor="middle" class="axis-label">11</text>
-          <text x="930" y="270" text-anchor="middle" class="axis-label">12</text>
+          <text *ngFor="let label of monthlyRevenue.labels; let i = index" [attr.x]="getRevenueLabelX(i)" y="270" text-anchor="middle" class="axis-label">{{ i + 1 }}</text>
 
->>>>>>> bfbb9c8507d8bdb547fbade9a16da7a7df5e8d69
-          <!-- Y-axis labels -->
           <text x="10" y="245" class="axis-label-y">{{ getRevenueYAxisLabels()[0] }}</text>
           <text x="10" y="185" class="axis-label-y">{{ getRevenueYAxisLabels()[1] }}</text>
           <text x="10" y="125" class="axis-label-y">{{ getRevenueYAxisLabels()[2] }}</text>
           <text x="10" y="65" class="axis-label-y">{{ getRevenueYAxisLabels()[3] }}</text>
         </svg>
 
-        <!-- Tooltip for revenue chart -->
         <div class="revenue-tooltip" style="display: none;">
           <div class="revenue-tooltip-month"></div>
           <div class="revenue-tooltip-values">
-            <div class="revenue-tooltip-2024">
-              <span class="dot-inline blue"></span>
-              <span class="year-label">2024:</span>
-              <span class="value-label value-2024"></span>
-            </div>
-            <div class="revenue-tooltip-2025">
-              <span class="dot-inline red"></span>
-              <span class="year-label">2025:</span>
-              <span class="value-label value-2025"></span>
-            </div>
+            <div class="revenue-tooltip-2024"><span class="dot-inline blue"></span><span class="year-label">2024:</span><span class="value-label value-2024"></span></div>
+            <div class="revenue-tooltip-2025"><span class="dot-inline red"></span><span class="year-label">2025:</span><span class="value-label value-2025"></span></div>
           </div>
         </div>
       </div>

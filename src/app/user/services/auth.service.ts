@@ -78,34 +78,65 @@ export class AuthService {
     return users ? JSON.parse(users) as User[] : [];
   }
 
-  // Đăng nhập — sử dụng dữ liệu từ assets nếu localStorage chưa có
+  // Đăng nhập — kiểm tra cả localStorage (tài khoản đăng ký) và file JSON (tài khoản có sẵn)
   async login(email: string, password: string): Promise<AuthResponse> {
+    await this.ensureUsersLoaded();
+    
+    // Bước 1: Kiểm tra trong localStorage (tài khoản đã đăng ký)
+    const localUsers = this.getUsersSync();
+    const localUser = localUsers.find(u => 
+      u.email.toLowerCase() === email.toLowerCase() && u.password === password
+    );
+    
+    if (localUser) {
+      console.log('Found user in localStorage:', localUser.email);
+      
+      const userToStore: UserWithoutPassword = {
+        id: localUser.id,
+        name: localUser.name,
+        email: localUser.email,
+        createdAt: localUser.createdAt
+      };
+      
+      const session = {
+        user: userToStore,
+        fullUserData: localUser,
+        timestamp: new Date().getTime(),
+        expiresIn: 24 * 60 * 60 * 1000 // 24 giờ
+      };
+      
+      localStorage.setItem(this.USER_SESSION_KEY, JSON.stringify(session));
+      localStorage.setItem(this.CURRENT_USER_KEY, JSON.stringify(userToStore));
+      localStorage.setItem('fullUserData', JSON.stringify(localUser));
+      
+      return { 
+        success: true, 
+        message: 'Đăng nhập thành công!', 
+        user: userToStore 
+      };
+    }
+    
+    // Bước 2: Nếu không tìm thấy trong localStorage, kiểm tra file JSON
     try {
-      // Đọc dữ liệu từ file JSON và log để debug
-      console.log('Attempting to load users from:', this.assetsPath);
+      console.log('Checking users from file:', this.assetsPath);
       const users = await lastValueFrom(this.http.get<any[]>(this.assetsPath));
-      console.log('Loaded users:', users);
-      console.log('Attempting login with:', { email, password });
       
       const user = users.find(u => {
         const emailMatch = u.email.toLowerCase() === email.toLowerCase();
         const passwordMatch = u.password === password;
-        console.log('Checking user:', u.email, 'Email match:', emailMatch, 'Password match:', passwordMatch);
         return emailMatch && passwordMatch;
       });
       
       if (user) {
-        console.log('Found matching user:', user);
+        console.log('Found user in JSON file:', user.email);
         
-        // Tạo đối tượng user chuẩn hóa
-        const userToStore = {
+        const userToStore: UserWithoutPassword = {
           id: Date.now(),
-          name: user.fullName,
+          name: user.fullName || user.name,
           email: user.email,
           createdAt: new Date().toISOString()
         };
         
-        // Lưu thông tin session
         const session = {
           user: userToStore,
           fullUserData: user,
@@ -113,7 +144,6 @@ export class AuthService {
           expiresIn: 24 * 60 * 60 * 1000 // 24 giờ
         };
         
-        // Lưu vào localStorage
         localStorage.setItem(this.USER_SESSION_KEY, JSON.stringify(session));
         localStorage.setItem(this.CURRENT_USER_KEY, JSON.stringify(userToStore));
         localStorage.setItem('fullUserData', JSON.stringify(user));
@@ -123,11 +153,9 @@ export class AuthService {
           message: 'Đăng nhập thành công!', 
           user: userToStore 
         };
-      } else {
-        console.log('No matching user found');
       }
     } catch (error) {
-      console.error('Error loading user data:', error);
+      console.error('Error loading user data from file:', error);
     }
     
     return { success: false, message: 'Email hoặc mật khẩu không đúng!' };

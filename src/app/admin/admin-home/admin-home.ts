@@ -63,16 +63,11 @@ export class AdminHomeComponent implements OnInit {
     data2024: [] as number[],
     data2025: [] as number[]
   };
-
-<<<<<<< HEAD
   // SVG paths for revenue chart (generated dynamically)
   revenuePath2024: string = '';
   revenuePath2025: string = '';
 
-  constructor(private router: Router, private http: HttpClient) {}
-=======
   constructor(private http: HttpClient) {}
->>>>>>> bfbb9c8507d8bdb547fbade9a16da7a7df5e8d69
 
   ngOnInit() {
     const userStr = localStorage.getItem('currentUser');
@@ -134,15 +129,12 @@ export class AdminHomeComponent implements OnInit {
           this.availableMonths = this.selectedYear === 2025 ? monthly2025 : monthly2024;
           this.monthlyRevenue.data2024 = monthly2024.map((m: any) => m.revenueActual);
           this.monthlyRevenue.data2025 = monthly2025.map((m: any) => m.revenueActual);
-          
-<<<<<<< HEAD
-          // Generate SVG paths for both years
+
+          // Generate SVG paths for both years (based on loaded data)
           this.revenuePath2024 = this.generateRevenuePath(this.monthlyRevenue.data2024);
           this.revenuePath2025 = this.generateRevenuePath(this.monthlyRevenue.data2025);
-          
+
           // Get latest month with data
-=======
->>>>>>> bfbb9c8507d8bdb547fbade9a16da7a7df5e8d69
           const latestMonthIndex = this.availableMonths.length - 1;
           this.selectedMonthIndex = latestMonthIndex;
           const latestMonth = this.availableMonths[latestMonthIndex];
@@ -337,7 +329,7 @@ export class AdminHomeComponent implements OnInit {
   
   generateWeeklyPath(): string {
     const points = this.computeWeeklyPoints();
-    if (points.length === 0 || points.some(p => p.y === 0)) return '';
+    if (points.length === 0) return '';
     let path = `M ${points[0].x},${points[0].y}`;
     for (let i = 0; i < points.length - 1; i++) {
       const cur = points[i], next = points[i+1];
@@ -351,18 +343,18 @@ export class AdminHomeComponent implements OnInit {
   }
   generateWeeklyAreaPath(): string {
     const points = this.computeWeeklyPoints();
-    if (points.length === 0 || points.some(p => p.y === 0)) return '';
+    if (points.length === 0) return '';
     const path = this.generateWeeklyPath();
     const width = 700, height = 220, padding = 80;
     return `${path} L ${width - padding},${height} L ${padding},${height} Z`;
   }
   computeWeeklyPoints(): { x: number; y: number }[] {
     const width = 700, height = 220, padding = 80;
-    const maxValue = Math.max(...this.weeklyData.map(d => d.value), 100);
+    const maxValue = Math.max(...this.weeklyData.map(d => d.value), 1);
     return this.weeklyData.map((d, i) => {
       const step = (width - padding * 2) / Math.max(this.weeklyData.length - 1, 1);
       const x = padding + (i * step);
-      const y = (d.value === 0) ? 0 : height - ((d.value / maxValue) * (height - 40));
+      const y = height - ((d.value / maxValue) * (height - 40));
       return { x, y };
     });
   }
@@ -400,7 +392,6 @@ export class AdminHomeComponent implements OnInit {
     }
     return path;
   }
-<<<<<<< HEAD
 
   // Get revenue data point coordinates
   getRevenueDataPoint(monthIndex: number, year: 2024 | 2025): { cx: number, cy: number } {
@@ -464,10 +455,9 @@ export class AdminHomeComponent implements OnInit {
   }
 
   // Toggle sidebar on mobile
-=======
   
   // === SIDEBAR LOGIC ===
->>>>>>> bfbb9c8507d8bdb547fbade9a16da7a7df5e8d69
+
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
   }
