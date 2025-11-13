@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router'; // Router có thể không cần ở đây nếu logout đã ở header
 import { FormsModule } from '@angular/forms';
@@ -67,7 +67,7 @@ export class AdminHomeComponent implements OnInit {
   revenuePath2024: string = '';
   revenuePath2025: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     const userStr = localStorage.getItem('currentUser');
@@ -270,18 +270,40 @@ export class AdminHomeComponent implements OnInit {
       
       this.showFilterDropdown = false;
       this.filterStep = 'year';
+      
+      // Re-setup chart hover sau khi dữ liệu thay đổi
+      setTimeout(() => this.setupChartHover(), 100);
     }
   }
 
   updateWeeklyChart(week: any) {
     if (!week) {
       this.weeklyData = this.weeklyData.map(d => ({ ...d, value: 0 }));
+      this.cdr.detectChanges();
       return;
     }
-    this.weeklyData = week.days.map((day: any) => ({
+    
+    console.log('📊 Updating weekly chart with week data:', week);
+    console.log('📅 Week range:', this.formatWeekRange(week));
+    
+    // Map dữ liệu từ tuần được chọn
+    const newData = week.days.map((day: any) => ({
       day: day.weekday,
       value: day.tickets
     }));
+    
+    // Cập nhật từng phần tử thay vì gán mới để trigger change detection
+    this.weeklyData.forEach((item, index) => {
+      if (newData[index]) {
+        item.day = newData[index].day;
+        item.value = newData[index].value;
+      }
+    });
+    
+    console.log('✅ Updated weeklyData:', JSON.stringify(this.weeklyData));
+    
+    // Force Angular detect changes
+    this.cdr.detectChanges();
   }
 
   updateMonthRange(month: any) {
@@ -311,7 +333,145 @@ export class AdminHomeComponent implements OnInit {
   // === BIỂU ĐỒ HELPERS ===
   
   setupChartHover() {
-    // (Giữ nguyên code setupChartHover...)
+    // Setup hover và click cho biểu đồ vé trong tuần
+    const hoverAreas = document.querySelectorAll('.hover-area');
+    const dataPoints = document.querySelectorAll('.data-point');
+    const tooltip = document.querySelector('.chart-tooltip') as HTMLElement;
+
+    hoverAreas.forEach((area, index) => {
+      area.addEventListener('mouseenter', () => {
+        const day = area.getAttribute('data-day');
+        const value = area.getAttribute('data-value');
+        
+        if (tooltip) {
+          tooltip.style.display = 'block';
+          const tooltipDay = tooltip.querySelector('.tooltip-day');
+          const tooltipValue = tooltip.querySelector('.tooltip-value');
+          
+          if (tooltipDay) tooltipDay.textContent = day || '';
+          if (tooltipValue) tooltipValue.textContent = `${value} vé`;
+          
+          const rect = area.getBoundingClientRect();
+          const chartContainer = area.closest('.line-chart-area');
+          if (chartContainer) {
+            const containerRect = chartContainer.getBoundingClientRect();
+            tooltip.style.left = `${rect.left - containerRect.left + rect.width / 2}px`;
+            tooltip.style.top = `${rect.top - containerRect.top + 30}px`;
+          }
+        }
+        
+        // Hiện data point
+        if (dataPoints[index]) {
+          (dataPoints[index] as HTMLElement).style.opacity = '1';
+        }
+      });
+
+      area.addEventListener('mouseleave', () => {
+        if (tooltip) {
+          tooltip.style.display = 'none';
+        }
+        if (dataPoints[index]) {
+          (dataPoints[index] as HTMLElement).style.opacity = '0';
+        }
+      });
+      
+      // Thêm sự kiện click
+      area.addEventListener('click', () => {
+        const day = area.getAttribute('data-day');
+        const value = area.getAttribute('data-value');
+        alert(`${day}: ${value} vé được đặt`);
+      });
+    });
+
+    // Setup hover và click cho biểu đồ doanh thu
+    const revenueHoverAreas = document.querySelectorAll('.revenue-hover-area');
+    const revenueDataPoints2024 = document.querySelectorAll('.revenue-data-points-2024 circle');
+    const revenueDataPoints2025 = document.querySelectorAll('.revenue-data-points-2025 circle');
+    const revenueTooltip = document.querySelector('.revenue-tooltip') as HTMLElement;
+
+    revenueHoverAreas.forEach((area, index) => {
+      area.addEventListener('mouseenter', () => {
+        const month = parseInt(area.getAttribute('data-month') || '0');
+        
+        if (revenueTooltip) {
+          revenueTooltip.style.display = 'block';
+          const tooltipMonth = revenueTooltip.querySelector('.revenue-tooltip-month');
+          const value2024 = revenueTooltip.querySelector('.value-2024');
+          const value2025 = revenueTooltip.querySelector('.value-2025');
+          
+          if (tooltipMonth) tooltipMonth.textContent = `Tháng ${month}`;
+          
+          const revenue2024 = this.monthlyRevenue.data2024[index] || 0;
+          const revenue2025 = this.monthlyRevenue.data2025[index] || 0;
+          
+          if (value2024) value2024.textContent = `${this.formatRevenue(revenue2024)}M VNĐ`;
+          if (value2025) value2025.textContent = `${this.formatRevenue(revenue2025)}M VNĐ`;
+          
+          const rect = area.getBoundingClientRect();
+          const chartContainer = area.closest('.revenue-chart-area');
+          if (chartContainer) {
+            const containerRect = chartContainer.getBoundingClientRect();
+            revenueTooltip.style.left = `${rect.left - containerRect.left + rect.width / 2}px`;
+            revenueTooltip.style.top = `${rect.top - containerRect.top + 30}px`;
+          }
+        }
+        
+        // Hiện data points
+        if (revenueDataPoints2024[index]) {
+          (revenueDataPoints2024[index] as HTMLElement).style.opacity = '1';
+        }
+        if (revenueDataPoints2025[index]) {
+          (revenueDataPoints2025[index] as HTMLElement).style.opacity = '1';
+        }
+      });
+
+      area.addEventListener('mouseleave', () => {
+        if (revenueTooltip) {
+          revenueTooltip.style.display = 'none';
+        }
+        if (revenueDataPoints2024[index]) {
+          (revenueDataPoints2024[index] as HTMLElement).style.opacity = '0';
+        }
+        if (revenueDataPoints2025[index]) {
+          (revenueDataPoints2025[index] as HTMLElement).style.opacity = '0';
+        }
+      });
+    });
+    
+    // Click vào data point của năm 2024
+    revenueDataPoints2024.forEach((point, index) => {
+      point.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const month = index + 1;
+        const revenue = this.monthlyRevenue.data2024[index] || 0;
+        alert(`Doanh thu tháng ${month}/2024: ${this.formatRevenue(revenue)}M VNĐ (${revenue.toLocaleString('vi-VN')} VNĐ)`);
+      });
+    });
+    
+    // Click vào data point của năm 2025
+    revenueDataPoints2025.forEach((point, index) => {
+      point.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const month = index + 1;
+        const revenue = this.monthlyRevenue.data2025[index] || 0;
+        alert(`Doanh thu tháng ${month}/2025: ${this.formatRevenue(revenue)}M VNĐ (${revenue.toLocaleString('vi-VN')} VNĐ)`);
+      });
+    });
+    
+    // Click vào hover area để hiển thị cả 2 năm
+    revenueHoverAreas.forEach((area, index) => {
+      area.addEventListener('click', () => {
+        const month = parseInt(area.getAttribute('data-month') || '0');
+        const revenue2024 = this.monthlyRevenue.data2024[index] || 0;
+        const revenue2025 = this.monthlyRevenue.data2025[index] || 0;
+        
+        alert(
+          `Doanh thu tháng ${month}\n\n` +
+          `Năm 2024: ${this.formatRevenue(revenue2024)}M VNĐ (${revenue2024.toLocaleString('vi-VN')} VNĐ)\n` +
+          `Năm 2025: ${this.formatRevenue(revenue2025)}M VNĐ (${revenue2025.toLocaleString('vi-VN')} VNĐ)`
+        );
+      });
+    });
   }
   getChartStrokeDasharray(percentage: number): string {
     return this.getDonutStrokeDasharray(percentage);
