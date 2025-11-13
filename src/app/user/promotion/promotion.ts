@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms'; 
 import { HeaderComponent } from '../shared/header/header';
 import { FooterComponent } from '../shared/footer/footer';
 
@@ -24,20 +25,23 @@ interface Section {
 
 @Component({
   selector: 'app-promotion',
-  imports: [CommonModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent], 
+  standalone: true,
   templateUrl: './promotion.html',
   styleUrl: './promotion.css',
 })
 export class Promotion implements OnInit { 
   selectedDeal: Deal | null = null;
-  sections: Section[] = [];
+  sections: Section[] = []; 
+  filteredSections: Section[] = []; 
+  searchTerm: string = ''; 
   copyStatusMessage: string | null = null; 
 
   ngOnInit(): void { 
     this.loadPromotions();
   }
 
-  // Tải dữ liệu từ file JSON (assets/data/promotion.json)
+  // Tải dữ liệu từ file JSON 
   async loadPromotions() {
     try {
       const response = await fetch('assets/data/promotion.json');
@@ -49,20 +53,59 @@ export class Promotion implements OnInit {
         expanded: false
       }));
 
+      this.applyFilter(); // Vẫn gọi lần đầu để hiện thị toàn bộ data
     } catch (error) {
       console.error('Lỗi khi tải khuyến mãi từ JSON:', error);
-      // Giả định tải thất bại, sections sẽ là mảng rỗng
     }
   }
 
-  // Hàm sao chép mã khuyến mãi
+  // HÀM LỌC CHỈ CHẠY KHI BẤM ICON HOẶC ENTER
+  applyFilter(): void {
+    if (!this.sections || this.sections.length === 0) {
+        this.filteredSections = [];
+        return;
+    }
+
+    const term = this.searchTerm.toLowerCase().trim();
+
+    if (!term) {
+        // Nếu không có từ khóa, hiển thị toàn bộ sections
+        this.filteredSections = this.sections.map(section => ({
+            ...section,
+            visibleCount: 3, 
+            expanded: false
+        }));
+        return;
+    }
+
+    // Lọc theo từ khóa
+    this.filteredSections = this.sections.map(section => {
+        const filteredItems = section.items.filter(item => {
+            // Kiểm tra từ khóa trong label, details, và promoCode
+            return item.label.toLowerCase().includes(term) ||
+                   item.details.toLowerCase().includes(term) ||
+                   item.promoCode.toLowerCase().includes(term);
+        });
+
+        // Trả về một section mới với items đã lọc
+        return { 
+            ...section, 
+            items: filteredItems,
+            visibleCount: filteredItems.length > 3 ? 3 : filteredItems.length, 
+            expanded: false
+        };
+    })
+    // Loại bỏ các section không còn ưu đãi nào sau khi lọc
+    .filter(section => section.items.length > 0);
+  }
+
+  // Hàm sao chép mã khuyến mãi (giữ nguyên)
   copyCode(code: string) {
     const el = document.createElement('textarea');
     el.value = code;
     document.body.appendChild(el);
     el.select();
     try {
-        // Dùng document.execCommand('copy')
         document.execCommand('copy');
         this.copyStatusMessage = '✅ Đã sao chép mã khuyến mãi!';
     } catch (err) {
@@ -70,15 +113,14 @@ export class Promotion implements OnInit {
     }
     document.body.removeChild(el);
 
-    // Tự động ẩn thông báo sau 3 giây
     setTimeout(() => {
         this.copyStatusMessage = null;
     }, 3000);
   }
 
-  // --- Các hàm logic hiển thị và cuộn trang ---
+  // --- Các hàm logic hiển thị (ĐÃ DÙNG filteredSections) ---
   toggleSection(index: number) {
-    const section = this.sections[index];
+    const section = this.filteredSections[index]; 
     if (section.expanded) {
       section.visibleCount = 3;
     } else {
@@ -88,20 +130,21 @@ export class Promotion implements OnInit {
   }
 
   getVisibleItems(index: number): Deal[] {
-    if (!this.sections[index]) return [];
-    return this.sections[index].items.slice(0, this.sections[index].visibleCount);
+    if (!this.filteredSections[index]) return []; 
+    return this.filteredSections[index].items.slice(0, this.filteredSections[index].visibleCount); 
   }
 
   hasMoreItems(index: number): boolean {
-    if (!this.sections[index]) return false;
-    return this.sections[index].visibleCount < this.sections[index].items.length;
+    if (!this.filteredSections[index]) return false; 
+    return this.filteredSections[index].visibleCount < this.filteredSections[index].items.length; 
   }
 
   canCollapse(index: number): boolean {
-    if (!this.sections[index]) return false;
-    return this.sections[index].visibleCount > 3;
+    if (!this.filteredSections[index]) return false; 
+    return this.filteredSections[index].expanded && this.filteredSections[index].items.length > 3; 
   }
 
+  // Hàm cuộn trang (giữ nguyên)
   scrollTo(sectionId: string) {
     const element = document.getElementById(sectionId);
     if (element) {

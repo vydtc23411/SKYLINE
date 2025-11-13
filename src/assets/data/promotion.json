@@ -2,7 +2,7 @@
   {
     "id": "special",
     "title": "Chiến dịch đặc biệt",
-    "icon": "fa-solid fa-star",
+    "icon": "fa fa-bullhorn",
     "items": [
       { 
         "image": "assets/img/CDDB_1.jpg", 
@@ -272,7 +272,7 @@
   {
     "id": "related",
     "title": "Ưu đãi Liên quan",
-    "icon": "fa-solid fa-plane-departure",
+    "icon": "fa fa-tags",
     "items": [
       { 
         "image": "assets/img/UDLQ_1.jpg", 

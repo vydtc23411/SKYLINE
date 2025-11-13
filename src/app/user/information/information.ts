@@ -136,7 +136,7 @@ export class Information implements OnInit {
           passportExpiry: '',
           country: 'Việt Nam',
           address: '',
-          avatar: 'assets/img/AVT1.jpg',
+          avatar: 'assets/img/AVT0.jpg',
           currentRank: 'Đồng',
           points: 0,
           nextRank: 'Bạc',

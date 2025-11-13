@@ -9,8 +9,13 @@
             </div>
 
             <div class="search-bar">
-                <i class="fa fa-search search-icon"></i>
-                <input type="text" placeholder="Nhập khuyến mãi mà bạn muốn" />
+                <i class="fa fa-search search-icon" (click)="applyFilter()"></i>
+                <input 
+                    type="text" 
+                    placeholder="Nhập khuyến mãi mà bạn muốn"
+                    [(ngModel)]="searchTerm"
+                    (keyup.enter)="applyFilter()"
+                />
             </div>
         </div>
     </div>
@@ -31,10 +36,14 @@
 
     <div class="deals-container">
         <div *ngIf="sections.length === 0" class="loading-message">
-            Đang tải khuyến mãi...
+             Đang tải khuyến mãi...
         </div>
         
-        <div *ngFor="let section of sections; let i = index" [id]="section.id" class="deal-section">
+        <div *ngIf="sections.length > 0 && filteredSections.length === 0" class="loading-message">
+            Không tìm thấy ưu đãi nào phù hợp với từ khóa **"{{ searchTerm }}"**.
+        </div>
+
+        <div *ngFor="let section of filteredSections; let i = index" [id]="section.id" class="deal-section">
             <div class="section-header">
                 <h2><i class="{{ section.icon }}"></i> {{ section.title }}</h2>
             </div>
@@ -74,14 +83,14 @@
             <p><strong>Đối tượng áp dụng:</strong> {{ selectedDeal.target }}</p>
             <p><strong>Thời gian áp dụng:</strong> <span class="apply-time-tag">{{ selectedDeal.applyTime }}</span></p>
         </div>
-         <div class="promo-code-box">
-             <div class="code-display">
-                <span class="code-label">Mã khuyến mãi:</span>
-                <span class="code-value">{{ selectedDeal.promoCode }}</span>
-            </div>
-            <button class="copy-btn" (click)="copyCode(selectedDeal.promoCode)">
-                <i class="fa fa-copy"></i> Sao chép
-            </button>
+           <div class="promo-code-box">
+               <div class="code-display">
+                 <span class="code-label">Mã khuyến mãi:</span>
+                 <span class="code-value">{{ selectedDeal.promoCode }}</span>
+               </div>
+               <button class="copy-btn" (click)="copyCode(selectedDeal.promoCode)">
+                 <i class="fa fa-copy"></i> Sao chép
+               </button>
         </div>
     </div>
 </div>
