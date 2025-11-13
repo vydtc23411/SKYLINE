@@ -38,12 +38,6 @@ export class AdminSidebarComponent {
       active: false 
     },
     { 
-      route: '/admin/seat-management', 
-      icon: '/assets/icons/seat.png', 
-      label: 'Ghế ngồi',
-      active: false 
-    },
-    { 
       route: '/admin/promotion-management', 
       icon: '/assets/icons/promotion.png', 
       label: 'Khuyến mãi',

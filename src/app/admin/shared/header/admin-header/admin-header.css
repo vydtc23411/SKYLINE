@@ -3,7 +3,7 @@
   background-color: #375578;
   padding: 20px 30px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 }
 
