@@ -38,7 +38,9 @@ export interface Flight {
 export class BaggageSelection implements OnInit {
 
   passengerForm: FormGroup;
-  baggageQuantity: number = 1;
+
+  baggageOptions: any[] = [];
+  selectedBaggage = signal<any>(null);
 
   isLoading = signal(true);
   selectedFlight = signal<Flight | null>(null);
@@ -116,6 +118,17 @@ export class BaggageSelection implements OnInit {
       console.error('Không có ID chuyến bay!');
       this.isLoading.set(false);
     }
+
+
+    this.baggageOptions = [
+      { name: '20kg', price: 230000, priceDisplay: '230.000đ' },
+      { name: '30kg', price: 345000, priceDisplay: '345.000đ' },
+      { name: '40kg', price: 460000, priceDisplay: '460.000đ' },
+      { name: '50kg', price: 632500, priceDisplay: '632.500đ' },
+      { name: '60kg', price: 747500, priceDisplay: '747.500đ' },
+      { name: 'Hành lý quá khổ 20kg', price: 517500, priceDisplay: '517.500đ' },
+      { name: 'Hành lý quá khổ 30kg', price: 632500, priceDisplay: '632.500đ' },
+    ];
   }
 
   private formatDateForInput(dateStr: string): string {
@@ -130,31 +143,31 @@ export class BaggageSelection implements OnInit {
   }
 
 
-
   get f() {
     return this.passengerForm.controls;
   }
 
-  decrementBaggage(): void {
-    if (this.baggageQuantity > 1) {
-      this.baggageQuantity--;
+  selectBaggage(option: any): void {
+    if (this.selectedBaggage() === option) {
+      this.selectedBaggage.set(null);
+    } else {
+      this.selectedBaggage.set(option);
     }
-  }
-
-  incrementBaggage(): void {
-    this.baggageQuantity++;
   }
 
   onSubmit(): void {
     if (this.passengerForm.valid) {
       console.log('Form Data:', this.passengerForm.value);
-      console.log('Baggage Quantity:', this.baggageQuantity);
+
+      const selectedBaggagePrice = this.selectedBaggage() ? this.selectedBaggage().price : 0;
+      console.log('Baggage Price selected:', selectedBaggagePrice);
 
       this.bookingService.setData('passengerInfo', this.passengerForm.value);
-      this.bookingService.setData('baggage', this.baggageQuantity);
+      this.bookingService.setData('baggagePrice', selectedBaggagePrice);
       this.bookingService.setData('selectedFlight', this.selectedFlight());
       this.bookingService.setData('selectedSeat', this.selectedSeat);
       this.bookingService.setData('selectedSeatType', this.selectedSeatType);
+
       this.router.navigate(['/confirmation']);
 
     } else {
@@ -197,7 +210,9 @@ export class BaggageSelection implements OnInit {
         airline: String(pick(x, ['airline', 'carrier', 'airline_name'], 'Unknown')),
         flightNo: String(pick(x, ['flightNo', 'number', 'flight_no'], 'XX000')),
         from, to, date,
+
         departTime: departISO,
+
         arriveTime: arriveISO,
         durationMin: duration,
         price,

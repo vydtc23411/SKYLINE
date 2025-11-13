@@ -1,7 +1,7 @@
 <div class="main-container">
 
     <header class="sidebar-header">
-        
+
         <ng-container *ngIf="isLoading()">
             <div class="header-box">
                 <div class="hightlight">Đang tải...</div>
@@ -149,15 +149,24 @@
                 <div class="form-card">
                     <h3>Thông tin hành lý</h3>
                     <p class="form-description">
-                        Theo quy định, mỗi hành khách được mang theo một hành lý xách tay miễn phí và một vật dụng cá
-                        nhân, cùng với một kiện hành lý ký gửi đầu tiên miễn phí.
+                        Theo quy định, mỗi hành khách được mang theo một hành lý xách tay miễn phí và một vật dụng cá nhân. <br>
+                        <span class="form-description-highlight">Vui lòng chọn một gói hành lý ký gửi nếu bạn có nhu cầu.</span>
                     </p>
-                    <div class="form-group quantity-selector">
-                        <label>Số lượng:</label>
-                        <button type="button" class="quantity-btn" (click)="decrementBaggage()"
-                            [disabled]="baggageQuantity <= 1">-</button>
-                        <span class="quantity-display">{{ baggageQuantity }}</span>
-                        <button type="button" class="quantity-btn" (click)="incrementBaggage()">+</button>
+
+                    <div class="baggage-options-grid">
+
+                        <div class="baggage-option" (click)="selectBaggage(null)"
+                            [class.selected]="selectedBaggage() === null">
+                            <span class="baggage-name">Không mua thêm</span>
+                            <span class="baggage-price">0đ</span>
+                        </div>
+
+                        <div *ngFor="let option of baggageOptions" class="baggage-option"
+                            (click)="selectBaggage(option)" [class.selected]="selectedBaggage() === option">
+
+                            <span class="baggage-name">{{ option.name }}</span>
+                            <span class="baggage-price">{{ option.priceDisplay }}</span>
+                        </div>
                     </div>
                 </div>
 
