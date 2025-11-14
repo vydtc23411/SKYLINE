@@ -39,12 +39,19 @@
     border-bottom: none;
   }
   
+  .setting-text { 
+    flex-grow: 1; 
+    word-wrap: break-word;
+    white-space: normal;
+    margin-right: 15px; 
+}
   /* Switch */
   .switch {
     position: relative;
     display: inline-block;
     width: 46px;
     height: 24px;
+    flex-shrink: 0;
   }
   
   .switch input {
@@ -85,3 +92,15 @@
     transform: translateX(22px);
   }
   
+  @media (max-width: 500px) {
+    .setting-item {
+        font-size: 15px;
+        padding: 10px 0;
+    }
+    
+    .setting-item span {
+        margin-right: 10px; /* Giảm lề trên mobile */
+    }
+    
+    /* Thêm các quy tắc để thu nhỏ .switch và .slider nếu bạn muốn nút gạt nhỏ hơn */
+}

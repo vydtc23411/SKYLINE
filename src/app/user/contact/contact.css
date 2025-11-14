@@ -6,6 +6,7 @@
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     font-family: 'Segoe UI', sans-serif;
+    width: 100%;
   }
   
   h2 {
@@ -117,3 +118,11 @@
     margin-bottom: 10px;
   }
   
+  @media (max-width: 768px) {
+    .contact-container {
+        /* Xóa margin auto để nó mở rộng hết mép trái/phải */
+        margin: 40px 0; 
+        /* Giảm padding để có thêm không gian cho nội dung */
+        padding: 20px; 
+    }
+}

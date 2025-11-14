@@ -1,16 +1,23 @@
 .profile-container {
+  /* Đảm bảo container này mở rộng hết cỡ trong Layout */
+  width: 100%; 
   display: flex;
   font-family: 'Segoe UI', sans-serif;
   background-color: #f8f8f8;
   min-height: 100vh;
 }
 
-/* ===== MAIN CONTENT ===== */
+/* ===== MAIN CONTENT (ĐÃ SỬA LỖI KHUẤT) ===== */
 .main-content {
   flex: 1;
   padding: 30px 50px;
   background-color: #fff;
   color: #375578;
+  /* QUAN TRỌNG: Đảm bảo nội dung không tràn ra ngoài và có thể cuộn */
+  width: 100%; 
+  max-width: 100%;
+  overflow-x: hidden; /* Ngăn cuộn ngang không mong muốn */
+  overflow-y: auto; /* Cho phép cuộn dọc nếu form dài */
 }
 
 h2 {
@@ -39,7 +46,7 @@ label {
   display: block;
   font-size: 14px;
   color: #375578;
-  font-weight: 600; /* in đậm */
+  font-weight: 600;
   margin-bottom: 6px;
 }
 
@@ -68,11 +75,10 @@ select[disabled] {
   width: 100%;
   margin-top: 30px;
   display: flex;
-  justify-content: center; /* căn giữa nút */
+  justify-content: center;
   align-items: center;
   gap: 10px;
 }
-
 
 button {
   padding: 10px 20px;
@@ -91,4 +97,15 @@ button {
 
 button:hover {
   opacity: 0.9;
+}
+
+/* --- RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 768px) {
+  .main-content {
+      padding: 20px;
+  }
+  
+  .form-group.half {
+      width: 100%; 
+  }
 }
