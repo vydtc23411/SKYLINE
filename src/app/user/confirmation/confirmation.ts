@@ -148,13 +148,20 @@ export class Confirmation {
   }
 
   backToBaggageSelection() {
-    const f = this.flight();
-    const flightId = f?.id;
+    const flightId = this.flight()?.id;
+    const seat = this.seat();
+    const type = this.seatType();
 
     if (flightId) {
-      this.router.navigate(['/baggage-selection', flightId]);
+      this.router.navigate(['/baggage-selection'], {
+        queryParams: {
+          flightId: flightId,
+          seat: seat,
+          type: type
+        }
+      });
     } else {
-      this.router.navigate(['/baggage-selection']);
+      this.router.navigate(['/tim-chuyen-bay']);
     }
   }
 
