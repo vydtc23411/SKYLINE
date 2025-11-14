@@ -567,6 +567,8 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
   margin-top: 20px;
+  justify-items: center;
+  align-items: center;
 }
 
 .donut-item {
@@ -1116,6 +1118,8 @@
   
   .donut-grid {
     grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    align-items: center;
   }
 }
 
@@ -1317,6 +1321,8 @@
   .donut-grid {
     grid-template-columns: 1fr;
     gap: 20px;
+    justify-items: center;
+    align-items: center;
   }
 
   .donut-chart {
