@@ -1,12 +1,49 @@
-<div class="payment-page">
-  <!-- Header -->
-  <div class="section-header">
-    <h2>Tên chuyến bay đã chọn</h2>
-    <p class="sub">Ngày đi</p>
-  </div>
+<header class="sidebar-header">
 
+  <ng-container *ngIf="isLoading()">
+    <div class="header-box">
+      <div class="hightlight">Đang tải...</div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="selectedFlight() as flight">
+    <div class="header-box">
+      <div class="hightlight">{{ flight.from }}</div>
+    </div>
+
+    <div class="header-box">
+      <div class="hightlight">&rarr;</div>
+    </div>
+
+    <div class="header-box">
+      <div class="hightlight">{{ flight.to }}</div>
+    </div>
+
+    <div class="header-box">
+      <div>{{ dateVN(flight.departTime) }} | {{ timeHM(flight.departTime) }}</div>
+      <div>Departing</div>
+    </div>
+
+    <div class="header-box">
+      <div>{{ dateVN(flight.arriveTime) }} | {{ timeHM(flight.arriveTime) }}</div>
+      <div>Arriving</div>
+    </div>
+
+    <div class="header-box" *ngIf="selectedSeat">
+      <div class="hightlight">{{ selectedSeat }}</div>
+      <div>Ghế đã chọn</div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!isLoading() && !selectedFlight()">
+    <div class="header-box">
+      <div class="hightlight" style="color: red;">Lỗi</div>
+      <div>Không tìm thấy chuyến bay.</div>
+    </div>
+  </ng-container>
+</header>
+<div class="payment-page">
   <div class="payment-container">
-    <!-- LEFT COLUMN -->
     <div class="payment-left">
       <h3>Phương thức thanh toán</h3>
       <p class="note">
@@ -29,7 +66,6 @@
         </button>
       </div>
 
-      <!-- FORM CHÍNH -->
       <form #paymentForm="ngForm">
         <div class="payment-details">
           <h4>Chi tiết thẻ thanh toán</h4>
@@ -38,7 +74,6 @@
             <input type="checkbox" (change)="focusCardName($event)" /> Địa chỉ thanh toán:
           </label>
 
-          <!-- Tên trên thẻ -->
           <div class="form-field">
             <input #cardNameInput type="text" name="nameOnCard" [(ngModel)]="nameOnCard" placeholder="Tên trên thẻ"
               required #cardNameRef="ngModel"
@@ -48,7 +83,6 @@
             </div>
           </div>
 
-          <!-- Số thẻ -->
           <div class="form-field">
             <input type="text" name="cardNumber" [(ngModel)]="cardNumber" placeholder="Số thẻ" required
               pattern="^\d{10}$" #cardNumberRef="ngModel"
@@ -59,7 +93,6 @@
             </div>
           </div>
 
-          <!-- Hạn và CVV -->
           <div class="form-row">
             <div class="form-field small">
               <input type="date" name="expiry" [(ngModel)]="expiry" required #expiryRef="ngModel"
@@ -97,7 +130,6 @@
       </form>
     </div>
 
-    <!-- RIGHT COLUMN -->
     <div class="payment-right">
       <div class="flight-card">
         <div class="flight-item">
@@ -141,14 +173,12 @@
           <span>{{ totalPrice() | number:'1.0-0' }} đ</span>
         </div>
 
-        <!-- Coupon Popup Overlay -->
         <div class="coupon-alert-overlay" *ngIf="showCouponAlert().show">
           <div class="coupon-alert-box">
             <p>{{ showCouponAlert().message }}</p>
           </div>
         </div>
 
-        <!-- Payment Alert -->
         <div class="payment-alert" *ngIf="showPaymentAlert()">
           <div class="payment-alert-box">
             <p>Vui lòng nhập đầy đủ thông tin địa chỉ thanh toán.</p>
@@ -156,7 +186,6 @@
           </div>
         </div>
 
-        <!-- Confirm Button -->
         <div class="confirm-btn-wrapper">
           <button class="btn-primary" (click)="confirmPayment(paymentForm)">
             Xác nhận và thanh toán

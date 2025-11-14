@@ -245,35 +245,35 @@ export class FlightManagement implements OnInit {
     this.activeTab = 'list';
   }
 
-  // THÊM: Thuộc tính phân trang
+  // Thuộc tính phân trang
   currentPage: number = 1;
   itemsPerPage: number = 10;
 
-  // THÊM: Getter cho các chuyến bay đã phân trang
+  // Getter cho các chuyến bay đã phân trang
   get paginatedFlights(): Flight[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
     return this.filteredFlights.slice(start, end);
   }
 
-  // THÊM: Getter tính tổng số trang
+  // Getter tính tổng số trang
   get totalPages(): number {
     return Math.ceil(this.filteredFlights.length / this.itemsPerPage);
   }
 
-  // THÊM: Hàm reset trang khi tìm kiếm
+  // Hàm reset trang khi tìm kiếm
   onSearchChange(newValue: string): void {
     this.searchTerm = newValue;
     this.currentPage = 1;
   }
 
-  // THÊM: Hàm reset trang khi lọc
+  // Hàm reset trang khi lọc
   onAirlineChange(newValue: string): void {
     this.selectedAirline = newValue;
     this.currentPage = 1;
   }
 
-  // THÊM: Các hàm điều khiển trang
+  // Các hàm điều khiển trang
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
