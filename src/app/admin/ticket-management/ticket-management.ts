@@ -162,8 +162,7 @@ export class TicketManagement implements OnInit {
     if (this.searchTerm) {
       filtered = filtered.filter(item =>
         item.ticket_code.toLowerCase().includes(this.searchTerm) ||
-        (item.transaction_id && item.transaction_id.toLowerCase().includes(this.searchTerm))
-      );
+        item.flight_id.toLowerCase().includes(this.searchTerm)      );
     }
 
     this.tickets = filtered;

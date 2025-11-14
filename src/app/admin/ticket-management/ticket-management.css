@@ -28,6 +28,7 @@
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   margin: 30px;
+  padding: 0 0px 1px 0px;
 }
 
 .tab-header-row {
@@ -66,6 +67,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  position: relative;
 }
 
 .search-wrap {
@@ -548,6 +550,8 @@
 .date-range-trigger {
   display: flex;
   align-items: center;
+  position: static;  
+  overflow: visible;
   gap: 10px;
   background: #f8fafc;
   border: 1px solid #D1D5DB;
@@ -580,14 +584,15 @@
 
 .date-popover {
   position: absolute;
-  top: calc(100% + 5px);
-  left: 0;
+  margin-top: 8px;
+  top: 100%;  
+  right: 0;
   width: 360px;
   background: #fff;
   border-radius: 10px;
   border: 1px solid #e2e8f0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 100;
+  z-index: 1000;
   padding: 15px;
   color: #375578;
 }
