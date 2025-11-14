@@ -6,13 +6,11 @@ html, body {
   overflow: hidden; 
 }
 
-/* Toàn bộ layout theo cột */
 :host {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
-
 
 app-header {
   position: fixed;
@@ -25,7 +23,6 @@ app-header {
   border-bottom: 1px solid #ddd;
 }
 
-
 .layout {
   display: flex; 
   flex: 1; 
@@ -36,24 +33,50 @@ app-header {
 
 app-sidebar {
   position: fixed;
-  top: 100px; 
+  top: 70px; 
   bottom: 0px; 
   left: 0;
-  width: auto; /* Chiều rộng cố định */
+  width: ato; 
   border-right: 1px solid #ddd;
   z-index: 200;
   overflow-y: auto; 
+  transition: width 0.3s ease; 
 }
 
-/* Vùng nội dung chính */
+
 .content {
-  margin-left: 150px;
+  margin-left: 260px; 
   padding: 24px 32px;
   box-sizing: border-box;
   flex-grow: 1; 
-
   height: 100%; 
-  
   overflow-y: auto;
   background: transparent;
+  transition: margin-left 0.3s ease; 
+}
+
+@media (max-width: 1024px) {
+  app-sidebar {
+      width: 200px;
+  }
+  .content {
+      margin-left: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  app-sidebar {
+      width: 180px;
+  }
+  .content {
+      margin-top: 30px;
+      margin-left: 180px;
+      padding: 15px 20px; 
+  }
+}
+
+@media (max-width: 480px) {
+  app-sidebar {
+    width: 150px;
+  }
 }

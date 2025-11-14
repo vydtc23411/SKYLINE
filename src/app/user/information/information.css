@@ -1,5 +1,4 @@
 .profile-container {
-  /* Đảm bảo container này mở rộng hết cỡ trong Layout */
   width: 100%; 
   display: flex;
   font-family: 'Segoe UI', sans-serif;
@@ -13,11 +12,10 @@
   padding: 30px 50px;
   background-color: #fff;
   color: #375578;
-  /* QUAN TRỌNG: Đảm bảo nội dung không tràn ra ngoài và có thể cuộn */
   width: 100%; 
   max-width: 100%;
-  overflow-x: hidden; /* Ngăn cuộn ngang không mong muốn */
-  overflow-y: auto; /* Cho phép cuộn dọc nếu form dài */
+  overflow-x: hidden; 
+  overflow-y: auto; 
 }
 
 h2 {
@@ -102,10 +100,40 @@ button:hover {
 /* --- RESPONSIVE ADJUSTMENTS --- */
 @media (max-width: 768px) {
   .main-content {
-      padding: 20px;
+      padding: 20px; 
   }
   
+  h2 {
+
+      font-size: 20px;
+      margin-bottom: 15px;
+  }
+
   .form-group.half {
       width: 100%; 
+  }
+  
+  label {
+      font-size: 13px; 
+  }
+
+  input, select {
+      font-size: 13px;
+      padding: 8px 10px;
+  }
+  
+  button {
+      font-size: 13px;
+      padding: 8px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+      padding: 15px; 
+  }
+  
+  h2 {
+      font-size: 18px;
   }
 }

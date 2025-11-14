@@ -92,15 +92,45 @@
     transform: translateX(22px);
   }
   
-  @media (max-width: 500px) {
-    .setting-item {
-        font-size: 15px;
-        padding: 10px 0;
-    }
-    
-    .setting-item span {
-        margin-right: 10px; /* Giảm lề trên mobile */
-    }
-    
-    /* Thêm các quy tắc để thu nhỏ .switch và .slider nếu bạn muốn nút gạt nhỏ hơn */
+  /* --- RESPONSIVE ADJUSTMENTS (THU NHỎ KHI MÀN HÌNH HẸP) --- */
+@media (max-width: 768px) {
+  .content {
+      padding: 25px; 
+  }
+  
+  h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 500px) {
+  .content {
+      padding: 15px; 
+  }
+  
+  .setting-item {
+      font-size: 14px; 
+      padding: 10px 0;
+  }
+  
+  .setting-text {
+      margin-right: 10px; 
+  }
+  
+  .switch {
+      width: 44px; 
+      height: 22px;
+  }
+   
+  .slider::before {
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+  }
+  
+  input:checked + .slider::before {
+      transform: translateX(20px); 
+  }
 }
