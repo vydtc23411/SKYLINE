@@ -17,7 +17,7 @@ import { Contact } from './user/contact/contact';
 
 export const routes: Routes = [
   // Trang mặc định khi vào app
-  { path: '', redirectTo: 'customer-sign-in', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
 
   // Đăng nhập/đăng ký Customer
   {
