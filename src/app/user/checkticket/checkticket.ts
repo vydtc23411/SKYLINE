@@ -10,6 +10,7 @@ interface Ticket {
   seat: string;
   status: string;
   route: string;
+  email: string;
 }
 
 @Component({
@@ -23,20 +24,38 @@ export class CheckTicket implements OnInit {
   searchText: string = '';
   tickets: Ticket[] = [];
   filteredTickets: Ticket[] = [];
+  currentUser: string | null = null;
 
   constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
-    // Load data từ JSON
+    const savedUser = localStorage.getItem('currentUser');
+    if (!savedUser) {
+      console.warn('Chưa đăng nhập, không load vé.');
+      return;
+    }
+
+    try {
+      const userData = JSON.parse(savedUser);
+      this.currentUser = userData.email?.trim().toLowerCase() || null; // convert lowercase
+    } catch (err) {
+      console.error('Lỗi đọc user từ localStorage:', err);
+      return;
+    }
+
+    if (!this.currentUser) return;
+
     this.http.get<Ticket[]>('assets/data/example_ticket.json').subscribe({
       next: (data) => {
-        this.tickets = data;
+        // so sánh lowercase, trim cả hai bên để chắc chắn
+        this.tickets = data.filter(t => t.email?.trim().toLowerCase() === this.currentUser);
         this.filteredTickets = [...this.tickets];
+        if (this.tickets.length === 0) {
+          console.warn('Không tìm thấy vé cho user:', this.currentUser);
+        }
       },
       error: (err) => {
         console.error('Lỗi khi đọc file JSON:', err);
-        this.tickets = [];
-        this.filteredTickets = [];
       }
     });
   }
