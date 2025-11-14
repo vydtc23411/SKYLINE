@@ -537,7 +537,8 @@ export class AdminHomeComponent implements OnInit {
     const maxValue = Math.max(...this.monthlyRevenue.data2024, ...this.monthlyRevenue.data2025, 1000000);
     const points = data.map((value, i) => {
       const x = paddingX + (i * (width - paddingX * 2) / 11);
-      const y = (value === 0) ? height : height - ((value / maxValue) * (height - 40));
+      // Y scale: 0 at y=240, maxValue at y=0
+      const y = (value === 0) ? height : height - ((value / maxValue) * height);
       return { x, y };
     });
     if (points.length === 0 || points.every(p => p.y === height)) return '';
@@ -556,7 +557,8 @@ export class AdminHomeComponent implements OnInit {
   // Get revenue data point coordinates
   getRevenueDataPoint(monthIndex: number, year: 2024 | 2025): { cx: number, cy: number } {
     const width = 1000;
-    const height = 240;
+    const chartHeight = 240; // Y position of bottom line
+    const chartTop = 0;
     const paddingX = 50;
     const maxValue = Math.max(...this.monthlyRevenue.data2024, ...this.monthlyRevenue.data2025, 1000000);
     
@@ -570,7 +572,8 @@ export class AdminHomeComponent implements OnInit {
     const value = data[monthIndex] || 0;
     
     const cx = paddingX + (monthIndex * (width - paddingX * 2) / 11);
-    const cy = height - ((value / maxValue) * (height - 40));
+    // Y scale: 0 at y=240, maxValue at y=0
+    const cy = chartHeight - ((value / maxValue) * chartHeight);
     
     return { cx, cy };
   }
@@ -607,10 +610,10 @@ export class AdminHomeComponent implements OnInit {
     const maxValue = this.getRevenueMaxValue();
     const step = maxValue / 4;
     return [
-      this.formatRevenue(step) + 'M',
-      this.formatRevenue(step * 2) + 'M',
-      this.formatRevenue(step * 3) + 'M',
-      this.formatRevenue(step * 4) + 'M'
+      this.formatRevenue(step) + 'M',      // 25% at y=180
+      this.formatRevenue(step * 2) + 'M',  // 50% at y=120
+      this.formatRevenue(step * 3) + 'M',  // 75% at y=60
+      this.formatRevenue(step * 4) + 'M'   // 100% at y=0 (top)
     ];
   }
 
