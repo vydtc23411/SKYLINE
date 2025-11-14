@@ -1,24 +1,19 @@
 <app-header></app-header>
 <div class="wrap" *ngIf="!isLoading(); else loading">
   <ng-container *ngIf="!loadError(); else err">
-
-    <!-- ===== TIÊU ĐỀ ===== -->
     <h2 class="page-title">CHI TIẾT CHUYẾN BAY</h2>
 
-    <!-- ===== THẺ TÓM TẮT (RC2, KHÔNG HIỂN THỊ GIÁ) ===== -->
     <div class="card rc2-card border-0 mb-3" *ngIf="flight() as f">
       <div class="rc2-grid rc2-no-price">
-        <!-- Logo -->
         <div class="rc2-logo">
-              <ng-container *ngIf="logoOf(f) as logo; else initials">
-                <img [src]="logo" [alt]="f.airline || getCarrierCode(f)" loading="lazy">
-              </ng-container>
-              <ng-template #initials>
-                <span class="logo-text">{{ getCarrierCode(f) }}</span>
-              </ng-template>
+          <ng-container *ngIf="logoOf(f) as logo; else initials">
+            <img [src]="logo" [alt]="f.airline || getCarrierCode(f)" loading="lazy">
+          </ng-container>
+          <ng-template #initials>
+            <span class="logo-text">{{ getCarrierCode(f) }}</span>
+          </ng-template>
         </div>
 
-        <!-- Middle -->
         <div class="rc2-mid">
           <div class="rc2-time-row">
             <div class="rc2-time">{{ timeHM(f.departTime) }}</div>
@@ -39,7 +34,6 @@
             </div>
           </div>
 
-          <!-- Meta 2 cột: trái (hãng • số hiệu), phải (ngày) -->
           <div class="rc2-meta-row">
             <div class="rc2-meta-left text-muted">
               {{ f.airline }} • {{ f.flightNo }}
@@ -52,7 +46,6 @@
       </div>
     </div>
 
-    <!-- ===== THÔNG TIN CHUYẾN BAY ===== -->
     <section class="block">
       <div class="block-title">THÔNG TIN CHUYẾN BAY:</div>
       <div class="card info-card">
@@ -66,7 +59,6 @@
             </span>
           </div>
 
-          <!-- Thời gian bay: HH:mm – HH:mm (XhYm) -->
           <div class="info-item">
             <span class="label">Thời gian bay:</span>
             <span class="value">{{ timeRangeText(f) }}</span>
@@ -82,7 +74,6 @@
             <span class="value">{{ stopsText() }}</span>
           </div>
 
-          <!-- Hạng ghế (gán sẵn) -->
           <div class="info-item">
             <span class="label">Hạng ghế:</span>
             <span class="value">{{ cabinListText() }}</span>
@@ -91,7 +82,6 @@
       </div>
     </section>
 
-    <!-- ===== LỢI ÍCH ĐI KÈM ===== -->
     <div class="block" *ngIf="perks().length">
       <div class="block-title">CÁC LỢI ÍCH ĐI KÈM:</div>
       <div class="perks">
@@ -101,7 +91,6 @@
       </div>
     </div>
 
-    <!-- ===== MỘT SỐ LƯU Ý (tĩnh) — CHUYỂN XUỐNG DƯỚI ===== -->
     <section class="block">
       <div class="block-title">MỘT SỐ LƯU Ý:</div>
       <div class="card notes-card">
@@ -114,7 +103,6 @@
       </div>
     </section>
 
-    <!-- ===== NÚT HÀNH ĐỘNG ===== -->
     <div class="sel-actions d-flex justify-content-end gap-2">
       <button type="button" class="btn rounded-pill btn-back" (click)="goBack()">
         <i class="bi bi-arrow-left"></i> Quay lại
@@ -123,7 +111,6 @@
         <i class="bi bi-person-seat"></i> Chọn hạng ghế
       </button>
     </div>
-
   </ng-container>
 </div>
 
