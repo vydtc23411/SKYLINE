@@ -533,12 +533,12 @@ export class AdminHomeComponent implements OnInit {
   formatRevenue(value: number): string { return (value / 1000000).toFixed(1); }
 
   generateRevenuePath(data: number[]): string {
-    const width = 1000, height = 240, paddingX = 50;
+    const width = 1000, height = 260, paddingX = 50;
     const maxValue = Math.max(...this.monthlyRevenue.data2024, ...this.monthlyRevenue.data2025, 1000000);
     const points = data.map((value, i) => {
       const x = paddingX + (i * (width - paddingX * 2) / 11);
-      // Y scale: 0 at y=240, maxValue at y=0
-      const y = (value === 0) ? height : height - ((value / maxValue) * height);
+      // Y scale: 0 at y=260, maxValue at y=20 (with 20px top padding)
+      const y = (value === 0) ? height : 20 + ((height - 20) - ((value / maxValue) * (height - 20)));
       return { x, y };
     });
     if (points.length === 0 || points.every(p => p.y === height)) return '';
@@ -557,8 +557,8 @@ export class AdminHomeComponent implements OnInit {
   // Get revenue data point coordinates
   getRevenueDataPoint(monthIndex: number, year: 2024 | 2025): { cx: number, cy: number } {
     const width = 1000;
-    const chartHeight = 240; // Y position of bottom line
-    const chartTop = 0;
+    const chartHeight = 260; // Y position of bottom line
+    const chartTop = 20; // Top padding
     const paddingX = 50;
     const maxValue = Math.max(...this.monthlyRevenue.data2024, ...this.monthlyRevenue.data2025, 1000000);
     
@@ -572,8 +572,8 @@ export class AdminHomeComponent implements OnInit {
     const value = data[monthIndex] || 0;
     
     const cx = paddingX + (monthIndex * (width - paddingX * 2) / 11);
-    // Y scale: 0 at y=240, maxValue at y=0
-    const cy = chartHeight - ((value / maxValue) * chartHeight);
+    // Y scale: 0 at y=260, maxValue at y=20
+    const cy = chartTop + ((chartHeight - chartTop) - ((value / maxValue) * (chartHeight - chartTop)));
     
     return { cx, cy };
   }
