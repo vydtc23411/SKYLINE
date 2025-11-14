@@ -76,7 +76,7 @@ export class FlightSelectionComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private location = inject(Location);
-  private bookingService = inject(BookingService); // <-- thêm dòng này
+  private bookingService = inject(BookingService);
 
   isLoading = signal(true);
   loadError = signal<string | null>(null);
@@ -85,7 +85,6 @@ export class FlightSelectionComponent {
   private readonly STATIC_CABINS = ['Phổ thông', 'Thương gia'];
 
   constructor() {
-    //thêm 1
     console.log('Flight chọn:', this.flight());
     const id = this.route.snapshot.paramMap.get('id')!;
     this.http.get('assets/data/flight-search-sampledata.json').subscribe({
@@ -101,29 +100,21 @@ export class FlightSelectionComponent {
     });
   }
 
-  /* ===== Điều hướng cho 2 nút ===== */
   goBack() {
     const st = (history.state && (history.state as any).search) || null;
-
-    // Ưu tiên quay lại trang tìm kiếm và khôi phục trạng thái
     if (st) {
       this.router.navigate(['/tim-chuyen-bay'], { state: { search: st } });
-      return;
-    }
-    if (window.history.length > 1) {
-      this.location.back();  // Nếu không có state (ví dụ truy cập trực tiếp), dùng back nếu có history
     } else {
-      this.router.navigate(['/tim-chuyen-bay']); // Fallback về trang tìm kiếm trống
+      this.router.navigate(['/tim-chuyen-bay']);
     }
   }
+
   goChooseCabin() {
     const id = this.flight()?.id;
     const st = (history.state && (history.state as any).search) || null;
-
     this.router.navigate(['/seat-selection', id ?? ''], { state: { search: st } });
   }
 
-  /* ===== Helpers ===== */
   getCarrierCode(f: Flight) {
     const code = (f as any)?.details?.airline_code?.toUpperCase?.();
     if (code) return code;
@@ -153,7 +144,6 @@ export class FlightSelectionComponent {
     return `${m}m`;
   }
 
-  // === Hiển thị "HH:mm – HH:mm (XhYm)" ===
   timeRangeText(f: Flight | null): string {
     if (!f) return '—';
     const start = this.timeHM(f.departTime);
@@ -162,7 +152,6 @@ export class FlightSelectionComponent {
     return `${start} – ${end} (${dur})`;
   }
 
-  // === Hạng ghế: gán sẵn mọi chuyến ===
   cabinListText(): string {
     return this.STATIC_CABINS.join(', ');
   }
@@ -178,10 +167,10 @@ export class FlightSelectionComponent {
       return new Intl.NumberFormat('en-US', { style: 'currency', currency: cur }).format(v);
     } catch { return `${v.toLocaleString('vi-VN')} ${cur}`; }
   }
+
   hasPromo(f: Flight) { return !!(f as any)?.details?.promo_code; }
   oldPrice(f: Flight) { return this.hasPromo(f) ? Math.round((f.price * 1.1) / 1000) * 1000 : null; }
 
-  /* ===== Dữ liệu hiển thị ===== */
   promo = computed(() => this.flight()?.details?.promo_code ?? null);
 
   itinerary = computed(() => {
@@ -232,7 +221,6 @@ export class FlightSelectionComponent {
     return ['Hành lý xách tay 7kg', 'Miễn phí đổi lịch trong 24h (nếu có)', 'Chọn chỗ tiêu chuẩn'];
   });
 
-  // Map mã → tên sân bay
   airportName(code?: string | null): string {
     const MAP: Record<string, string> = {
       SGN: 'Sân bay Tân Sơn Nhất',
@@ -245,11 +233,11 @@ export class FlightSelectionComponent {
     return MAP[code.toUpperCase()] ?? code.toUpperCase();
   }
 
-  // Văn bản số điểm dừng (mặc định Bay thẳng)
   stopsText(): string {
     return this.flight()?.details?.stops || 'Bay thẳng';
   }
-    private readonly logoByCode: Record<string, string> = {
+
+  private readonly logoByCode: Record<string, string> = {
     VN: 'https://upload.wikimedia.org/wikipedia/vi/b/bc/Vietnam_Airlines_logo.svg',
     VJ: 'https://upload.wikimedia.org/wikipedia/commons/1/19/VietJet_Air_logo.svg',
     QH: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Bamboo_Airways_Logo.svg',
@@ -257,9 +245,8 @@ export class FlightSelectionComponent {
     VU: 'https://upload.wikimedia.org/wikipedia/commons/e/ee/Vietravel_Airlines_Logo.png',
   };
 
-  /** Trả về URL logo nếu có & không lỗi; nếu lỗi hoặc không có → null để rơi về ô xám + ký hiệu */
   logoOf(f: any): string | null {
-    if ((f as any)?._logoError) return null; // ảnh đã báo lỗi
+    if ((f as any)?._logoError) return null;
     const byData = f?.details?.logo?.trim?.();
     if (byData) return byData;
     const code = (f?.details?.airline_code || f?.airline_code || '').toUpperCase();

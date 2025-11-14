@@ -40,14 +40,6 @@
         "status": "Đang hợp tác"
     },
     {
-        "airlineCode": "AF",
-        "airlineName": "Air France",
-        "country": "France",
-        "hotline": "3654",
-        "commissionRate": 7.50,
-        "status": "Ngừng hợp tác"
-    },
-    {
         "airlineCode": "QF",
         "airlineName": "Qantas Airways",
         "country": "Australia",
@@ -72,14 +64,6 @@
         "status": "Ngừng hợp tác"
     },
     {
-        "airlineCode": "DL",
-        "airlineName": "Delta Air Lines",
-        "country": "United States",
-        "hotline": "800-221-1212",
-        "commissionRate": 6.00,
-        "status": "Ngừng hợp tác"
-    },
-    {
         "airlineCode": "BL",
         "airlineName": "Pacific Airlines",
         "country": "Vietnam",
@@ -88,35 +72,11 @@
         "status": "Đang hợp tác"
     },
     {
-        "airlineCode": "LH",
-        "airlineName": "Lufthansa",
-        "country": "Germany",
-        "hotline": "0800 664 7672",
-        "commissionRate": 5.50,
-        "status": "Ngừng hợp tác"
-    },
-    {
-        "airlineCode": "SK",
-        "airlineName": "SAS Scandinavian Airlines",
-        "country": "Sweden",
-        "hotline": "+46 8 797 4000",
-        "commissionRate": 5.00,
-        "status": "Ngừng hợp tác"
-    },
-    {
         "airlineCode": "JL",
         "airlineName": "Japan Airlines",
         "country": "Japan",
         "hotline": "0120-25-5971",
         "commissionRate": 6.50,
-        "status": "Ngừng hợp tác"
-    },
-    {
-        "airlineCode": "KL",
-        "airlineName": "KLM Royal Dutch Airlines",
-        "country": "Netherlands",
-        "hotline": "020-474 7747",
-        "commissionRate": 5.50,
         "status": "Ngừng hợp tác"
     },
     {

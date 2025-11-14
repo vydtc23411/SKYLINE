@@ -3,17 +3,15 @@ html, body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  overflow: hidden; /* tránh double scroll */
+  overflow: hidden; 
 }
 
-/* Toàn bộ layout theo cột */
 :host {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* Header cố định trên cùng */
 app-header {
   position: fixed;
   top: 0;
@@ -25,37 +23,60 @@ app-header {
   border-bottom: 1px solid #ddd;
 }
 
-
-/* Khu vực giữa header và footer */
 .layout {
-  display: flex;
-  flex: 1;
-  background: #f5f7fa;
+  display: flex; 
+  flex: 1; 
   position: relative;
-  margin-top: 70px;    /* chừa chỗ cho header */
-  margin-bottom: 60px; /* chừa chỗ cho footer */
-  height: calc(100vh - 130px);
+  margin-top: 70px; 
+  overflow: hidden; 
 }
 
-/* Sidebar cố định toàn chiều cao giữa header và footer */
 app-sidebar {
   position: fixed;
-  top: 70px;          /* ngay dưới header */
-  bottom: 60px;       /* ngay trên footer */
+  top: 70px; 
+  bottom: 0px; 
   left: 0;
-  width: 260px;
-  background: #fff;
+  width: ato; 
   border-right: 1px solid #ddd;
   z-index: 200;
-  overflow-y: auto;   /* cuộn sidebar nếu quá dài */
+  overflow-y: auto; 
+  transition: width 0.3s ease; 
 }
 
-/* Vùng nội dung chính */
+
 .content {
-  margin-left: 260px; /* tránh bị sidebar che */
+  margin-left: 260px; 
   padding: 24px 32px;
-  width: calc(100% - 260px);
-  height: calc(100vh - 130px); /* phần còn lại giữa header & footer */
+  box-sizing: border-box;
+  flex-grow: 1; 
+  height: 100%; 
   overflow-y: auto;
   background: transparent;
+  transition: margin-left 0.3s ease; 
+}
+
+@media (max-width: 1024px) {
+  app-sidebar {
+      width: 200px;
+  }
+  .content {
+      margin-left: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  app-sidebar {
+      width: 180px;
+  }
+  .content {
+      margin-top: 30px;
+      margin-left: 180px;
+      padding: 15px 20px; 
+  }
+}
+
+@media (max-width: 480px) {
+  app-sidebar {
+    width: 150px;
+  }
 }

@@ -10,11 +10,13 @@
     width: 260px;
     background-color: #606DEC;
     padding: 20px;
+    transition: width 0.3s ease;
   }
   
   .avatar {
     text-align: center;
     margin-bottom: 30px;
+    transition: margin 0.3s ease;
   }
   
   .avatar-img {
@@ -102,3 +104,96 @@
     list-style: circle;
   }
   
+  /* ---------------------------------------------------- */
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+/* ---------------------------------------------------- */
+
+/* Tablet Landscape (Max-width: 1024px) */
+@media (max-width: 1024px) {
+  /* SIDEBAR: Thu nhỏ */
+  .sidebar {
+      width: 200px;
+      padding: 15px;
+  }
+  
+  .avatar h3 {
+      font-size: 16px;
+  }
+  .menu li {
+      font-size: 13px;
+  }
+
+  /* CONTENT: Giảm padding */
+  .rewards-content {
+      padding: 25px 35px;
+  }
+  .rank-section h4 {
+      font-size: 16px;
+  }
+  
+  .rank-section li {
+    font-size: 14px;
+  }
+}
+
+/* Tablet Portrait & Mobile (Max-width: 768px) */
+@media (max-width: 768px) {
+  /* SIDEBAR: Thu nhỏ hơn nữa */
+  .sidebar {
+      width: 160px;
+      padding: 10px;
+  }
+  
+  .avatar h3 {
+      font-size: 14px;
+  }
+  .menu li {
+      font-size: 12px;
+  }
+
+  .rank-section li {
+    font-size: 13px;
+  }
+
+  /* CONTENT: Giảm padding và thu nhỏ chữ */
+  .rewards-content {
+      padding: 20px;
+  }
+  .rewards-info {
+      padding: 12px;
+      font-size: 14px;
+  }
+  .rank-section h4 {
+      font-size: 15px;
+  }
+}
+
+/* Mobile nhỏ (Max-width: 480px) */
+@media (max-width: 480px) {
+  /* SIDEBAR: Kích thước tối thiểu */
+  .sidebar {
+      width: 130px; 
+  }
+  
+  .avatar-img {
+      width: 50px;
+      height: 50px;
+  }
+  .avatar h3 {
+      font-size: 12px;
+  }
+  .menu li {
+      font-size: 11px;
+  }
+
+  .rewards-content {
+      padding: 10px;
+  }
+  .rank-section h4 {
+      font-size: 14px;
+  }
+
+  .rank-section li {
+    font-size: 12px;
+  }
+}

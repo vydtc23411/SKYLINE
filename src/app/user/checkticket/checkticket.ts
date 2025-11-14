@@ -26,7 +26,7 @@ export class CheckTicket implements OnInit {
   filteredTickets: Ticket[] = [];
   currentUser: string | null = null;
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private http: HttpClient) { }
 
   ngOnInit(): void {
     const savedUser = localStorage.getItem('currentUser');
@@ -47,7 +47,6 @@ export class CheckTicket implements OnInit {
 
     this.http.get<Ticket[]>('assets/data/example_ticket.json').subscribe({
       next: (data) => {
-        // so sánh lowercase, trim cả hai bên để chắc chắn
         this.tickets = data.filter(t => t.email?.trim().toLowerCase() === this.currentUser);
         this.filteredTickets = [...this.tickets];
         if (this.tickets.length === 0) {

@@ -39,12 +39,19 @@
     border-bottom: none;
   }
   
+  .setting-text { 
+    flex-grow: 1; 
+    word-wrap: break-word;
+    white-space: normal;
+    margin-right: 15px; 
+}
   /* Switch */
   .switch {
     position: relative;
     display: inline-block;
     width: 46px;
     height: 24px;
+    flex-shrink: 0;
   }
   
   .switch input {
@@ -85,3 +92,45 @@
     transform: translateX(22px);
   }
   
+  /* --- RESPONSIVE ADJUSTMENTS (THU NHỎ KHI MÀN HÌNH HẸP) --- */
+@media (max-width: 768px) {
+  .content {
+      padding: 25px; 
+  }
+  
+  h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 500px) {
+  .content {
+      padding: 15px; 
+  }
+  
+  .setting-item {
+      font-size: 14px; 
+      padding: 10px 0;
+  }
+  
+  .setting-text {
+      margin-right: 10px; 
+  }
+  
+  .switch {
+      width: 44px; 
+      height: 22px;
+  }
+   
+  .slider::before {
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+  }
+  
+  input:checked + .slider::before {
+      transform: translateX(20px); 
+  }
+}

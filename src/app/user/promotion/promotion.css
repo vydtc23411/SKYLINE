@@ -462,3 +462,88 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Tablet Landscape (Max-width: 1024px) */
+@media (max-width: 1024px) {
+  /* Typography và Padding */
+  .header-text h2 { font-size: 24px; }
+  .header-text p { font-size: 14px; }
+  .deals-tabs button { font-size: 13px; }
+  
+  .deals-container {
+      padding-top: 30px;
+  }
+  .section-header h2 { font-size: 1.2rem; }
+  
+  .deal-grid {
+      grid-template-columns: repeat(3, 1fr); /* GIỮ 3 CỘT */
+      gap: 12px; /* Giảm gap */
+  }
+  
+  .deal-card {
+      font-size: 13px; /* Thu nhỏ chữ */
+  }
+  .deal-btn {
+      font-size: 13px;
+      padding: 8px 15px;
+  }
+}
+
+/* Tablet Portrait (Max-width: 768px) */
+@media (max-width: 768px) {
+  /* Typography và Padding */
+  .header-text h2 { font-size: 22px; }
+  .header-text p { font-size: 13px; }
+  .deals-tabs button { font-size: 12px; }
+
+  .deals-container {
+      padding: 20px 10px 10px; /* Giảm padding tổng thể */
+  }
+  .section-header h2 { font-size: 1.1rem; }
+
+  /* Vẫn cố gắng giữ 3 cột nhưng với padding và gap nhỏ nhất */
+  .deal-grid {
+      grid-template-columns: repeat(3, 1fr); /* GIỮ 3 CỘT */
+      gap: 8px; /* Giảm gap tối thiểu */
+  }
+  
+  .deal-card {
+      font-size: 12px; /* Thu nhỏ chữ hơn nữa */
+  }
+  .deal-btn {
+      font-size: 12px;
+      padding: 6px 12px;
+  }
+}
+
+/* Mobile (Max-width: 600px) - Bắt buộc chuyển sang 2 cột hoặc 1 cột */
+@media (max-width: 600px) {
+  /* Typography */
+  .header-text h2 { font-size: 20px; }
+  .search-bar input { width: 180px; }
+  
+  .deals-tabs button { font-size: 11px; }
+
+  /* Lưới (Bắt buộc chuyển sang 2 cột) */
+  .deal-grid {
+      grid-template-columns: repeat(2, 1fr); 
+      gap: 10px;
+  }
+  
+  .deal-card {
+      font-size: 11px;
+  }
+}
+
+/* Mobile Portrait (Max-width: 450px) - Chuyển sang 1 cột */
+@media (max-width: 450px) {
+  .deals-header { padding: 20px 0 50px; }
+  .deals-tabs-wrapper { margin-top: -30px; }
+  
+  .deal-grid {
+      grid-template-columns: 1fr; /* 1 CỘT DUY NHẤT */
+  }
+  .deal-card {
+      font-size: 13px; /* Tăng size chữ lại để dễ đọc trên màn hình nhỏ */
+  }
+}

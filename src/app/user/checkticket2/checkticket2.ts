@@ -11,8 +11,8 @@ interface Ticket {
   route: string;
   phone: string;
   email: string;
-  departure: string; // "08:00 - 2025-12-25"
-  arrival: string;   // "09:20 - 2025-12-25"
+  departure: string;
+  arrival: string;
   bookingDate: string;
   price: number;
 }

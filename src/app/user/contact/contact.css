@@ -6,6 +6,7 @@
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     font-family: 'Segoe UI', sans-serif;
+    width: 100%;
   }
   
   h2 {
@@ -117,3 +118,66 @@
     margin-bottom: 10px;
   }
   
+ /* --- RESPONSIVE ADJUSTMENTS (ĐÃ THÊM TYPOGRAPHY) --- */
+@media (max-width: 768px) {
+  .contact-container {
+      /* Xóa margin auto để nó mở rộng hết mép trái/phải */
+      margin: 20px 0; /* Giảm margin trên/dưới và xóa auto */
+      /* Giảm padding để có thêm không gian cho nội dung */
+      padding: 20px; 
+  }
+  
+  h2 {
+      font-size: 22px; /* Thu nhỏ tiêu đề chính */
+  }
+  
+  .contact-description {
+      font-size: 14px;
+  }
+  
+  .info-item span,
+  .info-item a {
+      font-size: 14px; /* Thu nhỏ thông tin liên hệ */
+  }
+  
+  .contact-form h3 {
+      font-size: 18px; /* Thu nhỏ tiêu đề form */
+  }
+  
+  label {
+      font-size: 13px; /* Thu nhỏ nhãn */
+  }
+  
+  input, textarea, select {
+      font-size: 13px; /* Thu nhỏ chữ input */
+      padding: 8px 10px;
+  }
+  
+  .submit-btn {
+      font-size: 15px;
+      padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-container {
+      padding: 15px; /* Giảm padding hơn nữa trên mobile */
+  }
+  
+  h2 {
+      font-size: 20px;
+  }
+  
+  .info-item span,
+  .info-item a {
+      font-size: 13px;
+  }
+  
+  label, input, textarea, select {
+      font-size: 12px;
+  }
+  
+  .submit-btn {
+      font-size: 14px;
+  }
+}

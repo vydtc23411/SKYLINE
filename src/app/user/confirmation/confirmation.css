@@ -34,22 +34,10 @@
   background-color: #fafafa;
 }
 
-/* ===== HEADER ===== */
-.section-header h2 {
-  font-size: 22px;
-  margin-bottom: 4px;
-}
-
-.section-header .sub {
-  font-size: 14px;
-  color: #375578;
-}
-
 /* ===== LAYOUT ===== */
 .payment-container {
   display: flex;
   gap: 40px;
-  margin-top: 30px;
 }
 
 .payment-left {
@@ -403,7 +391,7 @@
   background: #fff;
   border-radius: 12px;
   text-align: center;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
 }
 
 .payment-alert-box {
@@ -444,7 +432,7 @@
   max-width: 320px;
   transform: scale(0.9);
   animation: popupScale 0.2s forwards;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
 }
 
@@ -488,43 +476,129 @@
 
 /* ===== ANIMATIONS ===== */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes popupScale {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
-  .sidebar-header { font-size: 1vw; padding: 1vh 1.5vw; }
-  .hightlight { font-size: 2vw; }
-  .payment-page { padding: 30px 50px; }
-  .method-btn { padding: 8px 12px; font-size: 13px; }
-  .form-field input { padding: 8px; font-size: 13px; }
-  .form-field label { font-size: 12px; }
-  .summary .row { font-size: 13px; }
-  .summary .row span { font-size: 14px; }
-  .btn-primary, .btn-secondary { padding: 10px 20px; font-size: 13px; }
-  .coupon input { padding: 6px; font-size: 13px; }
-  .coupon button { padding: 6px 12px; font-size: 13px; }
-  .flight-item img { width: 100px; height: 100px; }
-  .airline { font-size: 16px; }
-  .flight-no { font-size: 14px; }
-  .time, .detail { font-size: 13px; }
+  .sidebar-header {
+    font-size: 1vw;
+    padding: 1vh 1.5vw;
+  }
+
+  .hightlight {
+    font-size: 2vw;
+  }
+
+  .payment-page {
+    padding: 30px 50px;
+  }
+
+  .method-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .form-field input {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .form-field label {
+    font-size: 12px;
+  }
+
+  .summary .row {
+    font-size: 13px;
+  }
+
+  .summary .row span {
+    font-size: 14px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+
+  .coupon input {
+    padding: 6px;
+    font-size: 13px;
+  }
+
+  .coupon button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .flight-item img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .airline {
+    font-size: 16px;
+  }
+
+  .flight-no {
+    font-size: 14px;
+  }
+
+  .time,
+  .detail {
+    font-size: 13px;
+  }
 }
 
 @media (max-width: 768px) {
-  .payment-container { flex-direction: column; gap: 20px; }
-  .payment-left, .payment-right { padding: 20px; }
-  .method-btn { flex: 1 1 45%; }
+  .payment-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .payment-left,
+  .payment-right {
+    padding: 20px;
+  }
+
+  .method-btn {
+    flex: 1 1 45%;
+  }
 }
 
 @media (max-width: 480px) {
-  .method-btn { flex: 1 1 100%; }
-  .payment-page { padding: 15px 20px; }
-  .sidebar-header { font-size: 0.9vw; }
-  .hightlight { font-size: 1.8vw; }
+  .method-btn {
+    flex: 1 1 100%;
+  }
+
+  .payment-page {
+    padding: 15px 20px;
+  }
+
+  .sidebar-header {
+    font-size: 0.9vw;
+  }
+
+  .hightlight {
+    font-size: 1.8vw;
+  }
 }

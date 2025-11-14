@@ -1,8 +1,6 @@
 <div class="admin-container">
-  <!-- Sidebar Component -->
   <app-admin-sidebar></app-admin-sidebar>
 
-  <!-- Main Content -->
   <main class="content">
     <app-admin-header></app-admin-header>
 
@@ -23,7 +21,6 @@
           </button>
         </div>
 
-        <!-- Quản lý hãng bay -->
         <div class="list-toolbar" *ngIf="activeTab === 'list'">
           <div class="search-wrap">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999">
@@ -52,7 +49,6 @@
         </div>
       </div>
 
-      <!-- Bảng Quản lý hãng bay -->
       <div *ngIf="activeTab === 'list'" class="list-container">
         <div class="table-wrapper">
           <table>
@@ -118,10 +114,8 @@
         </div>
       </div>
 
-      <!-- Form Cập nhật hãng bay -->
       <div *ngIf="activeTab === 'form'" class="form-container">
         <div class="flight-form">
-          <!-- Cột 1 -->
           <div class="form-column">
             <div>
               <label>Mã hãng bay</label>
@@ -141,7 +135,6 @@
             </div>
           </div>
 
-          <!-- Cột 2 -->
           <div class="form-column">
             <div>
               <label>Tỷ lệ hoa hồng (%)</label>
