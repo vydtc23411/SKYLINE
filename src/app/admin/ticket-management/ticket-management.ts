@@ -26,6 +26,7 @@ interface TicketFull {
   templateUrl: './ticket-management.html',
   styleUrls: ['./ticket-management.css'],
 })
+
 export class TicketManagement implements OnInit {
   activeTab: 'ticket' | 'transaction' = 'ticket';
   allData: TicketFull[] = [];
@@ -162,7 +163,7 @@ export class TicketManagement implements OnInit {
     if (this.searchTerm) {
       filtered = filtered.filter(item =>
         item.ticket_code.toLowerCase().includes(this.searchTerm) ||
-        item.flight_id.toLowerCase().includes(this.searchTerm)      );
+        item.flight_id.toLowerCase().includes(this.searchTerm));
     }
 
     this.tickets = filtered;
@@ -228,10 +229,10 @@ export class TicketManagement implements OnInit {
 
   // ------------------- ACTIONS -------------------
   onView(item: TicketFull) {
-    this.modalData = { ...item }; 
+    this.modalData = { ...item };
     this.modalType = this.activeTab;
     this.isModalOpen = true;
-    this.isEditMode = false; 
+    this.isEditMode = false;
   }
 
   // bật chế độ sửa
@@ -266,10 +267,10 @@ export class TicketManagement implements OnInit {
 
 
   onEdit(item: TicketFull) {
-    this.modalData = { ...item }; // copy data
+    this.modalData = { ...item }; 
     this.modalType = this.activeTab;
     this.isModalOpen = true;
-    this.isEditMode = true; // bật chế độ sửa luôn
+    this.isEditMode = true; 
   }
 
 

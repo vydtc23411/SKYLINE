@@ -412,6 +412,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 16px;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .modal-view .detail-item {
@@ -482,13 +483,6 @@
   gap: 15px;
 }
 
-.table-wrapper th:nth-child(3),
-.table-wrapper td:nth-child(3),
-.table-wrapper th:nth-child(4),
-.table-wrapper td:nth-child(4) {
-  display: none;
-}
-
 .form-buttons {
   justify-content: center;
 }
@@ -510,7 +504,11 @@
   }
 
   .modal-view .view-details-grid {
+    display: grid;
     grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 20px;
+    margin-bottom: 24px;
   }
 
   .form-buttons {
@@ -550,7 +548,7 @@
 .date-range-trigger {
   display: flex;
   align-items: center;
-  position: static;  
+  position: static;
   overflow: visible;
   gap: 10px;
   background: #f8fafc;
@@ -585,7 +583,7 @@
 .date-popover {
   position: absolute;
   margin-top: 8px;
-  top: 100%;  
+  top: 100%;
   right: 0;
   width: 360px;
   background: #fff;
@@ -738,6 +736,8 @@
   border-radius: 4px;
   cursor: pointer;
   font-weight: 500;
+  margin-right: 150px;
+  margin-left: 70px;
   transition: background 0.2s;
 }
 
