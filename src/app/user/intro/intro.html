@@ -84,7 +84,7 @@
         </h2>
 
         <div class="team-carousel">
-            <button class="carousel-btn prev" (click)="prevSlide()" [disabled]="currentSlide === 0">
+            <button class="carousel-btn prev" (click)="prevSlide()" [disabled]="featuredIndex === 0">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M15 18l-6-6 6-6"/>
                 </svg>
@@ -92,8 +92,7 @@
 
             <div class="team-grid">
                 <div class="team-member" *ngFor="let member of teamMembers; let i = index" 
-                     [class.featured]="member.featured"
-                     [style.transform]="'translateX(' + (-currentSlide * 280) + 'px)'">
+                     [class.featured]="isFeatured(i)">
                     <div class="member-image-wrapper">
                         <img [src]="member.image" [alt]="member.name" class="member-image">
                     </div>
@@ -101,7 +100,7 @@
                 </div>
             </div>
 
-            <button class="carousel-btn next" (click)="nextSlide()" [disabled]="currentSlide >= teamMembers.length - 3">
+            <button class="carousel-btn next" (click)="nextSlide()" [disabled]="featuredIndex === teamMembers.length - 1">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M9 18l6-6-6-6"/>
                 </svg>
