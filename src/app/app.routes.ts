@@ -68,6 +68,11 @@ export const routes: Routes = [
   },
 
   {
+    path: 'intro',
+    loadComponent: () => import('./user/intro/intro').then(m => m.Intro)
+  },
+
+  {
     path: 'promotion',
     loadComponent: () => import('./user/promotion/promotion').then(m => m.Promotion)
   },
