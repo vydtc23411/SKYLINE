@@ -70,7 +70,7 @@
 .section-title {
   font-size: 36px;
   font-weight: 700;
-  color: #2c3e50;
+  color: #375578;
   text-align: center;
   margin-bottom: 60px;
   position: relative;
@@ -149,7 +149,7 @@
 .feature-title {
   font-size: 24px;
   font-weight: 700;
-  color: #3d5a80;
+  color: #375578;
   margin-bottom: 20px;
   line-height: 1.4;
 }
@@ -223,27 +223,23 @@
 
 .team-member {
   flex-shrink: 0;
-  transition: transform 0.3s ease;
+  transition: all 0.5s ease;
+  transform: scale(0.85);
 }
 
 .team-member.featured {
-  transform: scale(1.1);
-  z-index: 5;
+  transform: scale(1);
+  z-index: 10;
 }
 
 .member-image-wrapper {
-  width: 180px;
-  height: 230px;
+  width: 210px;
+  height: 270px;
   border-radius: 0;
   overflow: visible;
   box-shadow: none;
   margin-bottom: 12px;
   position: relative;
-}
-
-.team-member.featured .member-image-wrapper {
-  width: 210px;
-  height: 270px;
 }
 
 .member-image {
@@ -254,12 +250,12 @@
 }
 
 .member-name {
-  background: #5b7cfa;
+  background: #606DEC;
   color: white;
-  padding: 8px 12px;
+  padding: 10px 16px;
   text-align: center;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 14px;
   border-radius: 0;
   box-shadow: none;
   position: relative;
@@ -302,7 +298,7 @@
 .why-title {
   font-size: 20px;
   font-weight: 700;
-  color: #2c3e50;
+  color: #375578;
   margin-bottom: 15px;
 }
 
