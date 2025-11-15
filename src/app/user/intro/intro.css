@@ -2,7 +2,7 @@
 .intro-hero {
   position: relative;
   min-height: 500px;
-  background-image: url('/SKYLINE/src/assets/img/intro/nen.png');
+  background-image: url('/assets/img/intro/nen.png');
   background-size: cover;
   background-position: center;
   display: flex;
